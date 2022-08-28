@@ -9,6 +9,7 @@ EnttHandler::EnttHandler(Global& globalVariables)
 	Cube* myCube = new Cube(global, std::string("ALPHA"));
 	entityVec.push_back(myCube);
 
+	
 
 
 }

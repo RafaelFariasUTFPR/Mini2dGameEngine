@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\C_Render.cpp" />
     <ClCompile Include="src\ComponentMaster.cpp" />
     <ClCompile Include="src\EnttHandler.cpp" />
     <ClCompile Include="src\Cube.cpp" />
@@ -166,6 +167,7 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\C_Render.h" />
     <ClInclude Include="src\ComponentMaster.h" />
     <ClInclude Include="src\EnttHandler.h" />
     <ClInclude Include="src\Cube.h" />

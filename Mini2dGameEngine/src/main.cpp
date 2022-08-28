@@ -43,13 +43,15 @@ int main()
         }
         
         */
-        //DRAW VAI AQUI
         
         ImGui::Begin("TITULO");
         ImGui::Text("TEXTO");
         ImGui::End();
         
         global.window.clear(sf::Color::Black);
+
+        //DRAW VAI AQUI
+        
 
         //After every drawing
         ImGui::SFML::Render(global.window);

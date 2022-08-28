@@ -6,6 +6,12 @@ EntityMaster::EntityMaster(Global* globalVariables, std::string myName) : compon
 	name = myName;
 }
 
+EntityMaster::~EntityMaster()
+{
+	std::cout << "DELETED\n";
+	for (int i = 0; i < myComponents.size(); i++)
+		delete myComponents.at(i);
+}
 
 void EntityMaster::beginPlay()
 {

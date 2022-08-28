@@ -12,7 +12,7 @@ class EntityMaster
 {
 public:
 	EntityMaster(Global* globalVariables, std::string myName);
-	
+	~EntityMaster();
 	virtual void beginPlay();
 	virtual void process();
 	virtual void endGame();
@@ -20,6 +20,7 @@ public:
 
 	std::string name;
 	int id;
+	std::vector<ComponentMaster*> myComponents;
 
 protected:
 	Global* global;
