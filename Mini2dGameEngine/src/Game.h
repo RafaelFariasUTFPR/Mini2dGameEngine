@@ -8,8 +8,10 @@ class Game
 {
 public:
 	Game(Global& globalPtr);
+	void beforePlay();
 	void beginPlay();
 	void process();
+	void draw();
 	void endGame();
 
 

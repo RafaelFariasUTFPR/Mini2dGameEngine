@@ -13,6 +13,7 @@ int main()
     Game game(global);
 
     ImGui::SFML::Init(global.window);
+    game.beforePlay();
     game.beginPlay();
     //Main executable loop
     while (global.window.isOpen())
@@ -27,6 +28,7 @@ int main()
         }
         
         //LOOP VAI AQUI
+        game.process();
 
         double fps = 1 / global.deltaTime;
         std::cout << fps << "\n";
@@ -52,6 +54,7 @@ int main()
 
         //DRAW VAI AQUI
         
+        game.draw();
 
         //After every drawing
         ImGui::SFML::Render(global.window);
@@ -63,6 +66,7 @@ int main()
 
 
     }
+    game.endGame();
     ImGui::SFML::Shutdown();
     std::cout << "Hello World!\n";
 }

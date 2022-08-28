@@ -9,21 +9,31 @@ EntityMaster::EntityMaster(Global* globalVariables, std::string myName) : compon
 EntityMaster::~EntityMaster()
 {
 	std::cout << "DELETED\n";
-	for (int i = 0; i < myComponents.size(); i++)
-		delete myComponents.at(i);
+
 }
+
+void EntityMaster::beforePlay()
+{
+	componentHandler.beforePlay();
+}
+
 
 void EntityMaster::beginPlay()
 {
-
+	componentHandler.beginPlay();
 }
 
 void EntityMaster::process()
 {
-
+	componentHandler.process();
 }
 
 void EntityMaster::endGame()
 {
+	componentHandler.endGame();
+}
 
+void EntityMaster::draw()
+{
+	componentHandler.draw();
 }

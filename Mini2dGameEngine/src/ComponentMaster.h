@@ -1,6 +1,10 @@
 #pragma once
 
+
+#include <iostream>
+
 #include "Global.h"
+
 class ComponentMaster
 {
 public:

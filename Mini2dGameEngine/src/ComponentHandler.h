@@ -10,11 +10,15 @@ class ComponentHandler
 {
 public:
 	ComponentHandler(Global* globalVariables);
+	~ComponentHandler();
 
-	void beginPlay();
-	void process();
+	void beforePlay() {}
+	void beginPlay() {}
+	void process() {}
 	void draw();
-	void endGame();
+	void endGame() {}
+
+	void addComponent(ComponentMaster* component);
 
 private:
 	Global* global;

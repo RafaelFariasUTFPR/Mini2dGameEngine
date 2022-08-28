@@ -13,5 +13,6 @@ C_Render::C_Render(Global* globalVariables) : ComponentMaster(globalVariables)
 
 void C_Render::draw()
 {
+    std::cout << "Draw cube\n";
     global->window.draw(vertexArr);
 }

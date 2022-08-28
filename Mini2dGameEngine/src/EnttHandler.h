@@ -13,7 +13,11 @@ public:
 	EnttHandler(Global& globalVariables);
 
 
+	void beforePlay();
 	void beginPlay();
+	void process();
+	void draw();
+	void endGame();
 
 
 

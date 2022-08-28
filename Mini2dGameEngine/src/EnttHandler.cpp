@@ -14,10 +14,42 @@ EnttHandler::EnttHandler(Global& globalVariables)
 
 }
 
+void EnttHandler::beforePlay()
+{
+	for (int i = 0; i < entityVec.size(); i++)
+	{
+		entityVec.at(i)->beforePlay();
+	}
+}
+
 void EnttHandler::beginPlay()
 {
 	for (int i = 0; i < entityVec.size(); i++)
 	{
 		entityVec.at(i)->beginPlay();
+	}
+}
+
+void EnttHandler::process()
+{
+	for (int i = 0; i < entityVec.size(); i++)
+	{
+		entityVec.at(i)->process();
+	}
+}
+
+void EnttHandler::draw()
+{
+	for (int i = 0; i < entityVec.size(); i++)
+	{
+		entityVec.at(i)->draw();
+	}
+}
+
+void EnttHandler::endGame()
+{
+	for (int i = 0; i < entityVec.size(); i++)
+	{
+		entityVec.at(i)->endGame();
 	}
 }
