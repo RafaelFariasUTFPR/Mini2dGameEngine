@@ -151,6 +151,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\ComponentMaster.cpp" />
+    <ClCompile Include="src\EnttHandler.cpp" />
+    <ClCompile Include="src\Cube.cpp" />
+    <ClCompile Include="src\EntityMaster.cpp" />
+    <ClCompile Include="src\ComponentHandler.cpp" />
+    <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="imgui\imgui-SFML.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
@@ -160,6 +166,12 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ComponentMaster.h" />
+    <ClInclude Include="src\EnttHandler.h" />
+    <ClInclude Include="src\Cube.h" />
+    <ClInclude Include="src\EntityMaster.h" />
+    <ClInclude Include="src\ComponentHandler.h" />
+    <ClInclude Include="src\Game.h" />
     <ClInclude Include="imgui\imconfig-SFML.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui-SFML.h" />
