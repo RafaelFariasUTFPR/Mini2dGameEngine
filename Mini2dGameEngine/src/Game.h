@@ -15,14 +15,12 @@ public:
 	void endGame();
 
 
-	void addEntt();
 
-	
+
+	EnttHandler enttHandler;
 
 private:
 	Global *global;
-
-	EnttHandler enttHandler;
 
 };
 

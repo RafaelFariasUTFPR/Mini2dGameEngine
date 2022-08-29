@@ -7,6 +7,9 @@
 #include "Global.h"
 #include "Game.h"
 
+
+#include "Cube.h"
+
 int main()
 {
     Global global;
@@ -15,7 +18,22 @@ int main()
     ImGui::SFML::Init(global.window);
     game.beforePlay();
     game.beginPlay();
-    //Main executable loop
+    
+    //Lembra que precisa deletar posteriormente
+    Cube* myCube = new Cube(&global, std::string("ALPHA"));
+    game.enttHandler.addEntt(myCube);
+
+
+    sf::Font arialFont;
+    sf::Text fpsText;
+    arialFont.loadFromFile("./resources/Silkscreen-Regular.ttf");
+    fpsText.setFont(arialFont);
+    fpsText.setFillColor(sf::Color::White);
+    fpsText.setCharacterSize(12);
+
+
+
+    //game.enttHandler.addEntt(myCube2);
     while (global.window.isOpen())
     {
         global.deltaTime = global.deltaClock.getElapsedTime().asSeconds();
@@ -25,26 +43,41 @@ int main()
             ImGui::SFML::ProcessEvent(global.events);
             if (global.events.type == sf::Event::Closed)
                 global.window.close();
+
         }
-        
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                std::cout << game.enttHandler.getEntityVecSize() << std::endl;
+
+                game.enttHandler.deleteEntt(game.enttHandler.getEntityVecSize()-1);
+            }
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+        {
+            
+            for (int i = 0; i < 100; i++)
+            {
+                std::cout << game.enttHandler.getEntityVecSize() << std::endl;
+
+                game.enttHandler.addEntt(new Cube(&global, std::string("Auto")));
+            }
+        }
         //LOOP VAI AQUI
         game.process();
 
+        //Calculando o FPS
         double fps = 1 / global.deltaTime;
-        std::cout << fps << "\n";
+        int intFps = (int)fps;
+        fpsText.setString("FPS: " + std::to_string(intFps));
+
 
 
         //Update e resetando o deltaClock
         ImGui::SFML::Update(global.window, global.deltaClock.restart());
 
-        /*
-        for (int i = 0; i < 10000000; i++)
-        {
-            double a = i;
-            a /= 500;
-        }
-        
-        */
+
         
         ImGui::Begin("TITULO");
         ImGui::Text("TEXTO");
@@ -53,7 +86,7 @@ int main()
         global.window.clear(sf::Color::Black);
 
         //DRAW VAI AQUI
-        
+        global.window.draw(fpsText);
         game.draw();
 
         //After every drawing
@@ -61,12 +94,7 @@ int main()
 
         global.window.display();
 
-        
-
-
-
     }
     game.endGame();
     ImGui::SFML::Shutdown();
-    std::cout << "Hello World!\n";
 }

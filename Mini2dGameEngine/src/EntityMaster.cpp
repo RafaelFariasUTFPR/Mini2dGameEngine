@@ -2,13 +2,13 @@
 
 EntityMaster::EntityMaster(Global* globalVariables, std::string myName) : componentHandler(globalVariables)
 {
+
 	global = globalVariables;
 	name = myName;
 }
 
 EntityMaster::~EntityMaster()
 {
-	std::cout << "DELETED\n";
 
 }
 

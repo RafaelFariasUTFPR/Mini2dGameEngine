@@ -20,9 +20,20 @@ public:
 	void endGame();
 
 
+	void addEntt(EntityMaster* entity);
+	void deleteEntt(int enttId);
+
+	EntityMaster* getEntityAt(int index) 
+	{
+		return entityVec.at(index);
+	}
+
+	int getEntityVecSize() { return entityVec.size(); }
+
 
 private:
 	Global* global;
+	
 	std::vector<EntityMaster*>entityVec;
 
 };

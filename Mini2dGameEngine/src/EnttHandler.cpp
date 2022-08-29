@@ -5,13 +5,6 @@ EnttHandler::EnttHandler(Global& globalVariables)
 {
 	global = &globalVariables;
 
-	//Lembra que precisa deletar posteriormente
-	Cube* myCube = new Cube(global, std::string("ALPHA"));
-	entityVec.push_back(myCube);
-
-	
-
-
 }
 
 void EnttHandler::beforePlay()
@@ -52,4 +45,23 @@ void EnttHandler::endGame()
 	{
 		entityVec.at(i)->endGame();
 	}
+}
+
+void EnttHandler::addEntt(EntityMaster* entity)
+{
+	entity->id = entityVec.size();
+	entityVec.push_back(entity);
+}
+void EnttHandler::deleteEntt(int enttId)
+{
+	if (entityVec.size() == 0)
+		return;
+	
+	delete entityVec.at(enttId);
+	entityVec.erase(entityVec.begin() + enttId);
+	for (int i = enttId; i < entityVec.size(); i++)
+		entityVec.at(i)->id = i;
+	
+	
+	
 }
