@@ -1,12 +1,12 @@
-#include "C_Render.h"
+#include "C_RenderSprite.h"
 
-C_Render::C_Render(Global* globalVariables, std::string texturePath) : ComponentMaster(globalVariables)
+C_RenderSprite::C_RenderSprite(Global* globalVariables, std::string texturePath, sf::Vector2f scale) : ComponentMaster(globalVariables)
 {
 
     texture.loadFromFile(texturePath);
     sprite.setTexture(texture);
-    sprite.setScale(sf::Vector2f(10, 10));
-    sprite.setPosition(sf::Vector2f(400, 400));
+    sprite.setScale(scale);
+    //sprite.setPosition(sf::Vector2f(400, 400));
 
 
     /*
@@ -21,7 +21,17 @@ C_Render::C_Render(Global* globalVariables, std::string texturePath) : Component
     */
 }
 
-void C_Render::draw()
+void C_RenderSprite::draw()
 {
     global->window.draw(sprite);
+    ComponentMaster::draw();
+}
+
+void C_RenderSprite::process()
+{
+
+    sprite.setScale(transform.scale);
+    sprite.setPosition(transform.position);
+    sprite.setRotation(transform.rotation);
+    ComponentMaster::process();
 }

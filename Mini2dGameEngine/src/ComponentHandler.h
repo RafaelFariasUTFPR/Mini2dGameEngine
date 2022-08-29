@@ -12,17 +12,22 @@ public:
 	ComponentHandler(Global* globalVariables);
 	~ComponentHandler();
 
-	void beforePlay() {}
-	void beginPlay() {}
-	void process() {}
+	void beforePlay();
+	void beginPlay();
+	void process();
 	void draw();
-	void endGame() {}
+	void endGame();
 
 	void addComponent(ComponentMaster* component);
 
+
+	//Standard Variables
+	math::Transform transform;
+
+
 private:
 	Global* global;
-	std::vector<ComponentMaster*>entityVec;
+	std::vector<ComponentMaster*>componentVec;
 
 };
 

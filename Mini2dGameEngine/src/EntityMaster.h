@@ -23,9 +23,14 @@ public:
 	std::string name;
 	int id;
 
+	//Standard Variables
+	math::Transform transform;
+
 protected:
 	Global* global;
 	ComponentHandler componentHandler;
+
+
 
 
 };

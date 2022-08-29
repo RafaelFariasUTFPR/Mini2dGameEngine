@@ -2,7 +2,8 @@
 #include "EntityMaster.h"
 #include "Global.h"
 
-#include "C_Render.h"
+#include "C_RenderSprite.h"
+#include "C_Physics2d.h"
 class Cube :
     public EntityMaster
 {
@@ -11,6 +12,7 @@ public:
     {
         // Adicionando os componentes
         componentHandler.addComponent(renderComponent);
+        componentHandler.addComponent(physicsComponent);
 
     }
 
@@ -18,8 +20,8 @@ public:
     void beginPlay() override;
 
     // Criando os componenetesz
-    C_Render* renderComponent = new C_Render(global, "./resources/tile_0111.png");
-
+    C_RenderSprite* renderComponent = new C_RenderSprite(global, "./resources/cube.png", sf::Vector2f(1,1));
+    C_Physics2d* physicsComponent = new C_Physics2d(global, transform, sf::Vector2f(30, 20), 0);
 
 };
 

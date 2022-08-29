@@ -86,11 +86,11 @@ int main()
         global.window.clear(sf::Color::Black);
 
         //DRAW VAI AQUI
-        global.window.draw(fpsText);
         game.draw();
 
         //After every drawing
         ImGui::SFML::Render(global.window);
+        global.window.draw(fpsText);
 
         global.window.display();
 

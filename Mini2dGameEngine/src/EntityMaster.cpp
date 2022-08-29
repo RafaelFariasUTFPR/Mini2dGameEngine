@@ -26,6 +26,8 @@ void EntityMaster::beginPlay()
 void EntityMaster::process()
 {
 	componentHandler.process();
+	
+	transform = componentHandler.transform;
 }
 
 void EntityMaster::endGame()
