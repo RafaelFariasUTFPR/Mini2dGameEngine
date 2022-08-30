@@ -47,7 +47,7 @@ int main()
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 1; i++)
             {
                 std::cout << game.enttHandler.getEntityVecSize() << std::endl;
 
@@ -57,7 +57,7 @@ int main()
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         {
             
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 1; i++)
             {
                 std::cout << game.enttHandler.getEntityVecSize() << std::endl;
 

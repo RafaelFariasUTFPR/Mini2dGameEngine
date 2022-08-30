@@ -1,6 +1,6 @@
 #include "C_Physics2d.h"
 
-C_Physics2d::C_Physics2d(Global* globalVariables, math::Transform initialTransform) : ComponentMaster(globalVariables)
+C_Physics2d::C_Physics2d(Global* globalVariables, myMath::Transform initialTransform) : ComponentMaster(globalVariables)
 {
 
 	controlsTransform = true;
@@ -9,7 +9,7 @@ C_Physics2d::C_Physics2d(Global* globalVariables, math::Transform initialTransfo
 
 C_Physics2d::C_Physics2d(
 	Global* globalVariables,
-	math::Transform initialTransform,
+	myMath::Transform initialTransform,
 	sf::Vector2f initialSpeed,
 	double initialRotationSpeed) : 
 		ComponentMaster(globalVariables)
@@ -31,7 +31,7 @@ void C_Physics2d::process()
 	ComponentMaster::process();
 }
 
-math::Transform C_Physics2d::getTransform()
+myMath::Transform C_Physics2d::getTransform()
 {
 	return transform;
 }

@@ -1,19 +1,20 @@
 #pragma once
 #include "ComponentMaster.h"
+#include "MyMath.h"
 class C_Physics2d :
     public ComponentMaster
 {
 public:
-    C_Physics2d(Global* globalVariables, math::Transform initialTransform);
+    C_Physics2d(Global* globalVariables, myMath::Transform initialTransform);
     C_Physics2d(
         Global* globalVariables, 
-        math::Transform initialTransform, 
+        myMath::Transform initialTransform,
         sf::Vector2f initialSpeed,
         double initialRotationSpeed);
 
     void process() override;
 
-    math::Transform getTransform() override;
+    myMath::Transform getTransform() override;
 
 
     sf::Vector2f getSpeed() { return speed; }
@@ -27,11 +28,11 @@ public:
 
     bool gravity = 0;
 
-    math::Transform transform;
+    myMath::Transform transform;
 
 private:
     sf::Vector2f speed;
-    double rotationSpeed;
+    double rotationSpeed = 0;
 
 };
 

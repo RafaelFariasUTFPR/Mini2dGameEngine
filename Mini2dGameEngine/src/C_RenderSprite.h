@@ -9,7 +9,7 @@ class C_RenderSprite :
     public ComponentMaster
 {
 public:
-    C_RenderSprite(Global* globalVariables, std::string texturePath, sf::Vector2f scale);
+    C_RenderSprite(Global* globalVariables, std::string texturePath, sf::Vector2f _initialScale);
 
     void process() override;
     void draw() override;
@@ -18,6 +18,7 @@ public:
     sf::Sprite sprite;
 private:
     sf::VertexArray vertexArr;
+    sf::Vector2f initialScale;
 
 
 };

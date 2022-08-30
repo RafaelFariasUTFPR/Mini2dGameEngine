@@ -24,7 +24,7 @@ public:
 	int id;
 
 	//Standard Variables
-	math::Transform transform;
+	myMath::Transform transform;
 
 protected:
 	Global* global;

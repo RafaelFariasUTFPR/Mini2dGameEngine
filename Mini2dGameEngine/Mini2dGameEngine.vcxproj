@@ -151,6 +151,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\C_Collider2d.cpp" />
+    <ClCompile Include="src\MyMath.cpp" />
     <ClCompile Include="src\C_Physics2d.cpp" />
     <ClCompile Include="src\C_RenderSprite.cpp" />
     <ClCompile Include="src\ComponentMaster.cpp" />
@@ -166,8 +168,11 @@
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\Global.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\S_Collision2d.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\C_Collider2d.h" />
+    <ClInclude Include="src\MyMath.h" />
     <ClInclude Include="src\C_Physics2d.h" />
     <ClInclude Include="src\C_RenderSprite.h" />
     <ClInclude Include="src\ComponentMaster.h" />
@@ -186,6 +191,7 @@
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="src\Global.h" />
+    <ClInclude Include="src\S_Collision2d.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -19,9 +19,8 @@ public:
     //Quando fizer override da função parent deve chamar a função no Base
     void beginPlay() override;
 
-    // Criando os componenetesz
-    C_RenderSprite* renderComponent = new C_RenderSprite(global, "./resources/cube.png", sf::Vector2f(1,1));
+    // Criando os componenetes
+    C_RenderSprite* renderComponent = new C_RenderSprite(global, "./resources/cube.png", sf::Vector2f(5,1));
     C_Physics2d* physicsComponent = new C_Physics2d(global, transform, sf::Vector2f(30, 20), 0);
-
 };
 

@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "Global.h"
+#include "MyMath.h"
 
 class ComponentMaster
 {
@@ -16,13 +17,13 @@ public:
 	virtual void endGame() {}
 	virtual void draw() {}
 
-	virtual math::Transform getTransform() { return transform; }
-	void setTransform(math::Transform _transform) { transform = _transform; }
+	virtual myMath::Transform getTransform() { return transform; }
+	void setTransform(myMath::Transform _transform) { transform = _transform; }
 
 	bool controlsTransform = false;
 
 protected:
-	math::Transform transform;
+	myMath::Transform transform;
 	Global* global;
 
 	//Standard Variables

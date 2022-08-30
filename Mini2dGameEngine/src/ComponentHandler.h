@@ -22,7 +22,7 @@ public:
 
 
 	//Standard Variables
-	math::Transform transform;
+	myMath::Transform transform;
 
 
 private:

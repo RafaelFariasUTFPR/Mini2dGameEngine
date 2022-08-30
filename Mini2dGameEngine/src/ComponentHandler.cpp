@@ -9,6 +9,7 @@ ComponentHandler::ComponentHandler(Global* globalVariables)
 
 ComponentHandler::~ComponentHandler()
 {
+
 	for (int i = 0; i < componentVec.size(); i++)
 		delete componentVec.at(i);
 }
