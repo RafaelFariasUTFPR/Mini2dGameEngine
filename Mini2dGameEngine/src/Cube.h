@@ -11,6 +11,13 @@ class Cube :
 public:
     Cube(Global* globalVariables, std::string myName) : EntityMaster(globalVariables, myName)
     {
+
+        collisionVertexArray.append(sf::Vertex(sf::Vector2f(10, 0)));
+        collisionVertexArray.append(sf::Vertex(sf::Vector2f(200, 200)));
+        collisionVertexArray.append(sf::Vertex(sf::Vector2f(10, 200)));
+        collisionVertexArray.append(sf::Vertex(sf::Vector2f(10, 0)));
+        colliderComponent->drawDebug = true;
+
         isDynamic = true;
         // Adicionando os componentes
         componentHandler.addComponent(renderComponent);
@@ -23,9 +30,12 @@ public:
     //Quando fizer override da função parent deve chamar a função no Base
     void beginPlay() override;
 
+    // Boundaries of the collision polygon
+    sf::VertexArray collisionVertexArray;
+
     // Criando os componenetes
     C_RenderSprite* renderComponent = new C_RenderSprite(global, "./resources/cube.png", sf::Vector2f(5,1));
+    C_Collider2d* colliderComponent = new C_Collider2d(global, collisionVertexArray);
     C_Physics2d* physicsComponent = new C_Physics2d(global, transform, sf::Vector2f(30, 20), 0);
-    C_Collider2d* colliderComponent = new C_Collider2d(global);
 };
 

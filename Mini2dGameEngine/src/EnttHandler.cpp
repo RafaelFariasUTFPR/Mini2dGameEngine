@@ -67,8 +67,10 @@ void EnttHandler::deleteEntt(int enttId)
 	if (entityVec.size() == 0)
 		return;
 
-	delete entityVec.at(enttId);
-	entityVec.at(enttId) = nullptr;
+	EntityMaster* ptr = entityVec.at(enttId);
+
+	delete ptr;
+	ptr = nullptr;
 	
 	entityVec.erase(entityVec.begin() + enttId);
 	for (int i = enttId; i < entityVec.size(); i++)

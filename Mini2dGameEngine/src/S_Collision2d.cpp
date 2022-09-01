@@ -64,4 +64,5 @@ void Coll2d::runCollisionSystem(std::vector<EntityMaster*> _entityVec)
 			}
 		}
 	}
+	
 }
