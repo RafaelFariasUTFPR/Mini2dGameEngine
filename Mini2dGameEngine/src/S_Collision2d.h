@@ -4,6 +4,10 @@
 #include <vector>
 
 #include "MyMath.h"
+#include "C_Physics2d.h"
+#include "C_Collider2d.h"
+
+#include "EntityMaster.h"
 
 
 namespace Coll2d
@@ -16,5 +20,7 @@ namespace Coll2d
 
 	CollisionResult calculateCollision(sf::Vector2f startPos, sf::Vector2f endPos, sf::VertexArray collider);
 
+	void runCollisionSystem(std::vector<EntityMaster*> _entityVec);
 
 }
+

@@ -49,7 +49,7 @@ int main()
         {
             for (int i = 0; i < 1; i++)
             {
-                std::cout << game.enttHandler.getEntityVecSize() << std::endl;
+                std::cout << game.enttHandler.getEntityVecSize()-i << std::endl;
 
                 game.enttHandler.deleteEntt(game.enttHandler.getEntityVecSize()-1);
             }
@@ -76,7 +76,6 @@ int main()
 
         //Update e resetando o deltaClock
         ImGui::SFML::Update(global.window, global.deltaClock.restart());
-
 
         
         ImGui::Begin("TITULO");

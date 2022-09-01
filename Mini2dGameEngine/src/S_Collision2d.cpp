@@ -1,10 +1,7 @@
 #include "S_Collision2d.h"
 
-using namespace Coll2d;
 
-
-
-CollisionResult Coll2d::calculateCollision(sf::Vector2f startPos, sf::Vector2f endPos, sf::VertexArray collider)
+Coll2d::CollisionResult Coll2d::calculateCollision(sf::Vector2f startPos, sf::Vector2f endPos, sf::VertexArray collider)
 {
 	CollisionResult collisionResult;
 	sf::VertexArray collisionDebugLines;
@@ -51,6 +48,20 @@ CollisionResult Coll2d::calculateCollision(sf::Vector2f startPos, sf::Vector2f e
 	return collisionResult;
 }
 
+void Coll2d::runCollisionSystem(std::vector<EntityMaster*> _entityVec)
+{
+	std::vector<C_Physics2d*> physicsCompVec;
+	for (int i = 0; i < _entityVec.size(); i++)
+	{
+		if (_entityVec.at(i) == nullptr)
+			continue;
+		for (int j = 0; j < _entityVec[i]->componentHandler.componentVec.size(); j++)
+		{
+			if (dynamic_cast<C_Physics2d*> (_entityVec[i]->componentHandler.componentVec[j]))
+			{
+				physicsCompVec.push_back(dynamic_cast<C_Physics2d*> (_entityVec[i]->componentHandler.componentVec[j]));
 
-
-
+			}
+		}
+	}
+}

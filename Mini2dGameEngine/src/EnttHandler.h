@@ -5,6 +5,9 @@
 
 #include "EntityMaster.h"
 #include "Cube.h"
+#include "C_Collider2d.h"
+
+#include "S_Collision2d.h"
 
 
 class EnttHandler
@@ -23,9 +26,10 @@ public:
 	void addEntt(EntityMaster* entity);
 	void deleteEntt(int enttId);
 
-	EntityMaster* getEntityAt(int index) 
+	EntityMaster* getEntityAt(int index)
 	{
 		return entityVec.at(index);
+
 	}
 
 	int getEntityVecSize() { return entityVec.size(); }
@@ -34,7 +38,7 @@ public:
 private:
 	Global* global;
 	
-	std::vector<EntityMaster*>entityVec;
+	std::vector<EntityMaster*> entityVec;
 
 };
 

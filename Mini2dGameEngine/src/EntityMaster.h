@@ -25,10 +25,11 @@ public:
 
 	//Standard Variables
 	myMath::Transform transform;
+	bool isDynamic = false;
 
+	ComponentHandler componentHandler;
 protected:
 	Global* global;
-	ComponentHandler componentHandler;
 
 
 

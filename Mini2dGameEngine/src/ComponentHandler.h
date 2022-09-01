@@ -25,9 +25,9 @@ public:
 	myMath::Transform transform;
 
 
+	std::vector<ComponentMaster*>componentVec;
 private:
 	Global* global;
-	std::vector<ComponentMaster*>componentVec;
 
 };
 

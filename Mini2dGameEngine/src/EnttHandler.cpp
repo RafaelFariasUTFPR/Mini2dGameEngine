@@ -1,5 +1,7 @@
 #include "EnttHandler.h"
 
+#include <stdlib.h>
+#include <stdio.h>
 
 EnttHandler::EnttHandler(Global& globalVariables)
 {
@@ -25,8 +27,12 @@ void EnttHandler::beginPlay()
 
 void EnttHandler::process()
 {
+	Coll2d::runCollisionSystem(entityVec);
 	for (int i = 0; i < entityVec.size(); i++)
 	{
+		if (entityVec.at(i) == nullptr)
+			continue;
+
 		entityVec.at(i)->process();
 	}
 }
@@ -35,6 +41,8 @@ void EnttHandler::draw()
 {
 	for (int i = 0; i < entityVec.size(); i++)
 	{
+		if (entityVec.at(i) == nullptr)
+			continue;
 		entityVec.at(i)->draw();
 	}
 }
@@ -43,6 +51,8 @@ void EnttHandler::endGame()
 {
 	for (int i = 0; i < entityVec.size(); i++)
 	{
+		if (entityVec.at(i) == nullptr)
+			continue;
 		entityVec.at(i)->endGame();
 	}
 }
@@ -58,9 +68,12 @@ void EnttHandler::deleteEntt(int enttId)
 		return;
 
 	delete entityVec.at(enttId);
+	entityVec.at(enttId) = nullptr;
+	
 	entityVec.erase(entityVec.begin() + enttId);
 	for (int i = enttId; i < entityVec.size(); i++)
 		entityVec.at(i)->id = i;
+	
 	
 	
 	

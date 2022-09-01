@@ -1,6 +1,8 @@
 #pragma once
+
 #include "ComponentMaster.h"
 #include "MyMath.h"
+
 class C_Physics2d :
     public ComponentMaster
 {
