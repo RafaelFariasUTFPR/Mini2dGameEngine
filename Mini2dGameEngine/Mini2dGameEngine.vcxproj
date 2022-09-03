@@ -152,12 +152,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\C_Collider2d.cpp" />
+    <ClCompile Include="src\entts\Ground.cpp" />
     <ClCompile Include="src\MyMath.cpp" />
     <ClCompile Include="src\C_Physics2d.cpp" />
     <ClCompile Include="src\C_RenderSprite.cpp" />
     <ClCompile Include="src\ComponentMaster.cpp" />
     <ClCompile Include="src\EnttHandler.cpp" />
-    <ClCompile Include="src\Cube.cpp" />
+    <ClCompile Include="src\entts\Cube.cpp" />
     <ClCompile Include="src\EntityMaster.cpp" />
     <ClCompile Include="src\ComponentHandler.cpp" />
     <ClCompile Include="src\Game.cpp" />
@@ -172,12 +173,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\C_Collider2d.h" />
+    <ClInclude Include="src\entts\Ground.h" />
     <ClInclude Include="src\MyMath.h" />
     <ClInclude Include="src\C_Physics2d.h" />
     <ClInclude Include="src\C_RenderSprite.h" />
     <ClInclude Include="src\ComponentMaster.h" />
     <ClInclude Include="src\EnttHandler.h" />
-    <ClInclude Include="src\Cube.h" />
+    <ClInclude Include="src\entts\Cube.h" />
     <ClInclude Include="src\EntityMaster.h" />
     <ClInclude Include="src\ComponentHandler.h" />
     <ClInclude Include="src\Game.h" />

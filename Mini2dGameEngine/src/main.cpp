@@ -10,7 +10,8 @@
 #include "Game.h"
 
 
-#include "Cube.h"
+#include "entts/Cube.h"
+#include "entts/Ground.h"
 
 int main()
 {
@@ -18,12 +19,14 @@ int main()
     Game game(global);
 
     ImGui::SFML::Init(global.window);
-    game.beforePlay();
-    game.beginPlay();
+
     
     //Lembra que precisa deletar posteriormente
     std::shared_ptr<Cube> myCube = std::make_shared<Cube>(&global, std::string("ALPHA"));
     game.enttHandler.addEntt(myCube);
+
+    std::shared_ptr<Ground> groundPlane = std::make_shared<Ground>(&global, std::string("Ground"));
+    game.enttHandler.addEntt(groundPlane);
 
 
     sf::Font arialFont;
@@ -33,8 +36,10 @@ int main()
     fpsText.setFillColor(sf::Color::White);
     fpsText.setCharacterSize(12);
 
-
-
+    int spawnNumber = 1;
+    int fpsLock = 0;
+    game.beforePlay();
+    game.beginPlay();
     //game.enttHandler.addEntt(myCube2);
     while (global.window.isOpen())
     {
@@ -47,25 +52,16 @@ int main()
                 global.window.close();
 
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        {
-            for (int i = 0; i < 2; i++)
-            {
-                std::cout << game.enttHandler.getEntityVecSize()-i << std::endl;
 
-                game.enttHandler.deleteEntt(game.enttHandler.getEntityVecSize()-1);
-            }
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        {
-            
-            for (int i = 0; i < 2; i++)
-            {
-                std::cout << game.enttHandler.getEntityVecSize() << std::endl;
-                
-                game.enttHandler.addEntt(std::make_shared<Cube>(&global, std::string("Auto")));
-            }
-        }
+
+
+
+        global.window.setFramerateLimit(fpsLock);
+
+
+
+
+
         //LOOP VAI AQUI
         game.process();
 
@@ -79,14 +75,31 @@ int main()
         //Update e resetando o deltaClock
         ImGui::SFML::Update(global.window, global.deltaClock.restart());
 
+        ImGui::Begin("DEBUG");
+        ImGui::Text("Entidades: %i", game.enttHandler.getEntityVecSize());
         
-        ImGui::Begin("TITULO");
-        ImGui::Text("TEXTO");
+        if (ImGui::Button("Adicionar entidade"))
+            for (int i = 0; i < spawnNumber; i++)
+                game.enttHandler.addEntt(std::make_shared<Cube>(&global, std::string("Auto")));
+        
+        if (ImGui::Button("Remover entidade"))
+            for (int i = 0; i < spawnNumber; i++)
+                game.enttHandler.deleteEntt(game.enttHandler.getEntityVecSize() - 1);
+        
+        ImGui::SliderInt("Numero de entidades", &spawnNumber, 1, 500);
+
+        ImGui::SliderInt("FPS lock:", &fpsLock, 5, 120);
+        if (ImGui::Button("FPS sem limite"))
+            fpsLock = 0;
+
         ImGui::End();
         
         global.window.clear(sf::Color::Black);
 
         //DRAW VAI AQUI
+
+
+
         game.draw();
 
         //After every drawing

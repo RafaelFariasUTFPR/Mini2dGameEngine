@@ -28,7 +28,8 @@ public:
     void setRotationSpeed(double newRotationSpeed) { rotationSpeed = newRotationSpeed; }
 
 
-    bool gravity = 0;
+    float gravity = 0;
+    bool isSolid = true;
 
     myMath::Transform transform;
 

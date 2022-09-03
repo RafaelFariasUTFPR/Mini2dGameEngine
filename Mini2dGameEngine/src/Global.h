@@ -2,8 +2,6 @@
 #include <SFML/Graphics.hpp>
 
 
-
-
 class Global
 {
 public:
@@ -19,4 +17,3 @@ public:
 	sf::Event events;
 
 };
-

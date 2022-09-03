@@ -6,19 +6,9 @@ C_RenderSprite::C_RenderSprite(Global* globalVariables, std::string texturePath,
     texture.loadFromFile(texturePath);
     sprite.setTexture(texture);
     initialScale = _initialScale;
-    //sprite.setPosition(sf::Vector2f(400, 400));
 
 
-    /*
-    vertexArr.setPrimitiveType(sf::LinesStrip);
 
-    //Gerando o formato da nave
-    vertexArr.append(sf::Vertex(sf::Vector2f(-5, 5), sf::Color::White));
-    vertexArr.append(sf::Vertex(sf::Vector2f(0, -10), sf::Color::White));
-    vertexArr.append(sf::Vertex(sf::Vector2f(5, 5), sf::Color::White));
-    vertexArr.append(sf::Vertex(sf::Vector2f(-5, 5), sf::Color::White));
-    
-    */
 }
 
 void C_RenderSprite::draw()

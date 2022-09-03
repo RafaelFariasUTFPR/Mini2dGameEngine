@@ -1,7 +1,5 @@
 #include "EnttHandler.h"
 
-#include <stdlib.h>
-#include <stdio.h>
 
 
 EnttHandler::EnttHandler(Global& globalVariables)

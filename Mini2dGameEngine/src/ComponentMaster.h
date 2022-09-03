@@ -25,8 +25,5 @@ public:
 protected:
 	myMath::Transform transform;
 	Global* global;
-
-	//Standard Variables
-
 };
 

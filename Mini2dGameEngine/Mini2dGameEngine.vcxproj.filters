@@ -45,7 +45,7 @@
     <ClCompile Include="src\EntityMaster.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Cube.cpp">
+    <ClCompile Include="src\entts\Cube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\EnttHandler.cpp">
@@ -67,6 +67,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\C_Collider2d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entts\Ground.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -110,7 +113,7 @@
     <ClInclude Include="src\EntityMaster.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Cube.h">
+    <ClInclude Include="src\entts\Cube.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\EnttHandler.h">
@@ -132,6 +135,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\C_Collider2d.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entts\Ground.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
