@@ -1,6 +1,8 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
+#include <memory>
+
 #include "../imgui/imgui.h"
 #include "../imgui/imgui-SFML.h"
 
@@ -20,7 +22,7 @@ int main()
     game.beginPlay();
     
     //Lembra que precisa deletar posteriormente
-    Cube* myCube = new Cube(&global, std::string("ALPHA"));
+    std::shared_ptr<Cube> myCube = std::make_shared<Cube>(&global, std::string("ALPHA"));
     game.enttHandler.addEntt(myCube);
 
 
@@ -47,7 +49,7 @@ int main()
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 2; i++)
             {
                 std::cout << game.enttHandler.getEntityVecSize()-i << std::endl;
 
@@ -57,11 +59,11 @@ int main()
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         {
             
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 2; i++)
             {
                 std::cout << game.enttHandler.getEntityVecSize() << std::endl;
-
-                game.enttHandler.addEntt(new Cube(&global, std::string("Auto")));
+                
+                game.enttHandler.addEntt(std::make_shared<Cube>(&global, std::string("Auto")));
             }
         }
         //LOOP VAI AQUI
@@ -94,6 +96,8 @@ int main()
         global.window.display();
 
     }
+
+
     game.endGame();
     ImGui::SFML::Shutdown();
 }

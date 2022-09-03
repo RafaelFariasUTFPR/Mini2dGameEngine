@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+
 EnttHandler::EnttHandler(Global& globalVariables)
 {
 	global = &globalVariables;
@@ -57,26 +58,21 @@ void EnttHandler::endGame()
 	}
 }
 
-void EnttHandler::addEntt(EntityMaster* entity)
+void EnttHandler::addEntt(std::shared_ptr<EntityMaster> entity)
 {
 	entity->id = entityVec.size();
 	entityVec.push_back(entity);
 }
+
+
 void EnttHandler::deleteEntt(int enttId)
 {
 	if (entityVec.size() == 0)
 		return;
-
-	EntityMaster* ptr = entityVec.at(enttId);
-
-	delete ptr;
-	ptr = nullptr;
 	
 	entityVec.erase(entityVec.begin() + enttId);
 	for (int i = enttId; i < entityVec.size(); i++)
 		entityVec.at(i)->id = i;
-	
-	
 	
 	
 }

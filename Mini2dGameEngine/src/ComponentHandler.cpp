@@ -9,13 +9,8 @@ ComponentHandler::ComponentHandler(Global* globalVariables)
 
 ComponentHandler::~ComponentHandler()
 {
-	for (int i = 0; i < componentVec.size(); i++)
-	{
-		ComponentMaster* ptr;
-		ptr = componentVec.at(i);
-		delete ptr;
-		ptr = nullptr;
-	}
+	//std::cout << "Delet";
+
 }
 
 void ComponentHandler::beforePlay()
@@ -55,7 +50,7 @@ void ComponentHandler::endGame()
 		componentVec.at(i)->endGame();
 }
 
-void ComponentHandler::addComponent(ComponentMaster* component)
+void ComponentHandler::addComponent(std::shared_ptr<ComponentMaster> component)
 {
 	componentVec.push_back(component);
 }

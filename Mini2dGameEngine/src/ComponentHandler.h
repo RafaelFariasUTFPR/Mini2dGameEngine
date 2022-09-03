@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <iostream>
+#include <memory>
 
 #include "ComponentMaster.h"
 #include "Global.h"
@@ -18,14 +19,14 @@ public:
 	void draw();
 	void endGame();
 
-	void addComponent(ComponentMaster* component);
+	void addComponent(std::shared_ptr<ComponentMaster> component);
 
 
 	//Standard Variables
 	myMath::Transform transform;
 
+	std::vector<std::shared_ptr<ComponentMaster>> componentVec;
 
-	std::vector<ComponentMaster*>componentVec;
 private:
 	Global* global;
 

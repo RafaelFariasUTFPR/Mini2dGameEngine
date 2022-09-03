@@ -48,18 +48,18 @@ Coll2d::CollisionResult Coll2d::calculateCollision(sf::Vector2f startPos, sf::Ve
 	return collisionResult;
 }
 
-void Coll2d::runCollisionSystem(std::vector<EntityMaster*> _entityVec)
+void Coll2d::runCollisionSystem(std::vector<std::shared_ptr<EntityMaster>> _entityVec)
 {
-	std::vector<C_Physics2d*> physicsCompVec;
+	std::vector<std::shared_ptr<C_Physics2d>> physicsCompVec;
 	for (int i = 0; i < _entityVec.size(); i++)
 	{
 		if (_entityVec.at(i) == nullptr)
 			continue;
 		for (int j = 0; j < _entityVec[i]->componentHandler.componentVec.size(); j++)
 		{
-			if (dynamic_cast<C_Physics2d*> (_entityVec[i]->componentHandler.componentVec[j]))
+			if (std::dynamic_pointer_cast<C_Physics2d> (_entityVec[i]->componentHandler.componentVec[j]))
 			{
-				physicsCompVec.push_back(dynamic_cast<C_Physics2d*> (_entityVec[i]->componentHandler.componentVec[j]));
+				physicsCompVec.push_back(std::dynamic_pointer_cast<C_Physics2d> (_entityVec[i]->componentHandler.componentVec[j]));
 
 			}
 		}

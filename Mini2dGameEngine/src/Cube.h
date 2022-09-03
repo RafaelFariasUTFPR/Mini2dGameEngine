@@ -34,8 +34,9 @@ public:
     sf::VertexArray collisionVertexArray;
 
     // Criando os componenetes
-    C_RenderSprite* renderComponent = new C_RenderSprite(global, "./resources/cube.png", sf::Vector2f(5,1));
-    C_Collider2d* colliderComponent = new C_Collider2d(global, collisionVertexArray);
-    C_Physics2d* physicsComponent = new C_Physics2d(global, transform, sf::Vector2f(30, 20), 0);
+    std::shared_ptr<C_RenderSprite> renderComponent = std::make_shared<C_RenderSprite>(global, "./resources/cube.png", sf::Vector2f(5, 1));
+    std::shared_ptr<C_Collider2d> colliderComponent = std::make_shared<C_Collider2d>(global, collisionVertexArray);
+    std::shared_ptr<C_Physics2d> physicsComponent = std::make_shared<C_Physics2d>(global, transform, sf::Vector2f(30, 20), 0);
+
 };
 

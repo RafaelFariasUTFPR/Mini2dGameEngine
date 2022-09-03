@@ -20,7 +20,7 @@ namespace Coll2d
 
 	CollisionResult calculateCollision(sf::Vector2f startPos, sf::Vector2f endPos, sf::VertexArray collider);
 
-	void runCollisionSystem(std::vector<EntityMaster*> _entityVec);
+	void runCollisionSystem(std::vector<std::shared_ptr<EntityMaster>> _entityVec);
 
 }
 

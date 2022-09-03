@@ -2,6 +2,7 @@
 
 #include <string>
 #include <iostream>
+#include <memory>
 
 #include "Global.h"
 #include "ComponentHandler.h"

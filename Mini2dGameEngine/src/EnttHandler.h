@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <iostream>
+#include <memory>
 
 #include "EntityMaster.h"
 #include "Cube.h"
@@ -23,10 +24,12 @@ public:
 	void endGame();
 
 
-	void addEntt(EntityMaster* entity);
+	void addEntt(std::shared_ptr<EntityMaster> entity);
+
+
 	void deleteEntt(int enttId);
 
-	EntityMaster* getEntityAt(int index)
+	std::shared_ptr<EntityMaster> getEntityAt(int index)
 	{
 		return entityVec.at(index);
 
@@ -38,7 +41,7 @@ public:
 private:
 	Global* global;
 	
-	std::vector<EntityMaster*> entityVec;
+	std::vector<std::shared_ptr<EntityMaster>> entityVec;
 
 };
 
