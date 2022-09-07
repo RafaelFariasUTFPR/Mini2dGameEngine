@@ -7,19 +7,18 @@ Coll2d::CollisionResult Coll2d::calculatePointCollision(sf::Vector2f startPos, s
 	sf::VertexArray collisionDebugLines;
 	collisionDebugLines.setPrimitiveType(sf::Lines);
 
-	int targetArrVertexCount = collider.getVertexCount();
 	bool isInside = false;
 
 	for (int i = 0; i < startCollider.getVertexCount() - 1; i++)
 	{
-		collisionDebugLines.append(sf::Vertex(startPos, sf::Color::Red));
-		collisionDebugLines.append(sf::Vertex(endPos, sf::Color::Red));
+		collisionDebugLines.append(sf::Vertex(startPos, debugLineColor));
+		collisionDebugLines.append(sf::Vertex(endPos, debugLineColor));
 
 		bool intersectedLines = false;
-		for (int j = 1; j < targetArrVertexCount; j++)
+		for (int j = 1; j < collider.getVertexCount(); j++)
 		{
-			sf::Vector2f initialLinePoint(collider[j - 1].position);
-			sf::Vector2f endLinePoint(collider[j].position);
+			sf::Vector2f initialLinePoint(collider[j].position);
+			sf::Vector2f endLinePoint(collider[j - 1].position);
 
 			if (myMath::doLinesIntersect(startPos, endPos, initialLinePoint, endLinePoint))
 			{
@@ -58,7 +57,6 @@ Coll2d::CollisionResult Coll2d::calculateCollision(sf::Vector2f startPos, sf::Ve
 	sf::VertexArray collisionDebugLines;
 	collisionDebugLines.setPrimitiveType(sf::Lines);
 
-	int targetArrVertexCount = collider.getVertexCount();
 	bool isInside = false;
 	collisionResult.result = false;
 
@@ -67,14 +65,14 @@ Coll2d::CollisionResult Coll2d::calculateCollision(sf::Vector2f startPos, sf::Ve
 	{
 		sf::Vector2f endPos = startCollider[i].position;
 
-		collisionDebugLines.append(sf::Vertex(startPos, sf::Color::Red));
-		collisionDebugLines.append(sf::Vertex(endPos, sf::Color::Red));
+		collisionDebugLines.append(sf::Vertex(startPos, debugLineColor));
+		collisionDebugLines.append(sf::Vertex(endPos, debugLineColor));
 
 		bool intersectedLines = false;
-		for (int j = 0; j < targetArrVertexCount-1; j++)
+		for (int j = 1; j < collider.getVertexCount(); j++)
 		{
 			sf::Vector2f initialLinePoint(collider[j].position);
-			sf::Vector2f endLinePoint(collider[j + 1].position);
+			sf::Vector2f endLinePoint(collider[j - 1].position);
 
 
 			if (myMath::doLinesIntersect(startPos, endPos, initialLinePoint, endLinePoint))
@@ -85,14 +83,15 @@ Coll2d::CollisionResult Coll2d::calculateCollision(sf::Vector2f startPos, sf::Ve
 				collisionResult.result = true;
 				collisionResult.collisionDebugLinesArr.push_back(collisionDebugLines);
 
-				return collisionResult;
+				collisionResult.displacement += myMath::calcDisplacement(startPos, endPos, initialLinePoint, endLinePoint);
+				
+				//return collisionResult;
 			}
 
 		}
 		collisionResult.collisionDebugLinesArr.push_back(collisionDebugLines);
 
 	}
-
 
 	return collisionResult;
 	
@@ -158,7 +157,39 @@ void Coll2d::runCollisionSystem(std::vector<std::shared_ptr<EntityMaster>> _enti
 
 			}
 
+			if (colResult.result)
+			{
 
+				//Tentando remover um pouco da ocilação
+				const int disAmount = 50;
+				const int maxDisplacement = 10;
+				if (colResult.displacement.x > maxDisplacement)
+					colResult.displacement.x = maxDisplacement;
+				if (colResult.displacement.x < -maxDisplacement)
+					colResult.displacement.x = -maxDisplacement;
+
+				if (colResult.displacement.y > maxDisplacement)
+					colResult.displacement.y = maxDisplacement;
+				if (colResult.displacement.y < -maxDisplacement)
+					colResult.displacement.y = -maxDisplacement;
+				colResult.displacement = sf::Vector2f(colResult.displacement.x * disAmount * global->deltaTime, colResult.displacement.y * disAmount * global->deltaTime);
+
+
+
+
+
+
+				if (physicsCompVec.at(i)->getIsDynamic())
+				{
+					physicsCompVec.at(i)->setPosition(physicsCompVec.at(i)->transform.position - colResult.displacement);
+				}
+				// Se o objeto não for dinamico mova o que fez a colisão
+				else if (physicsCompVec.at(i2)->getIsDynamic())
+				{
+					physicsCompVec.at(i2)->setPosition(physicsCompVec.at(i2)->transform.position + colResult.displacement);
+				}
+
+			}
 
 
 
