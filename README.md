@@ -4,6 +4,16 @@ Uma mini *Game Engine* 2d, o principal intuito foi aprender mais sobre [ECS](htt
 
 Um dos grandes focos é a otimização do código, fazendo algo sem muitas funcionalidades que ficarão sem ser utilizadas.
 
+## Biblioteca gráfica e de utilidade
+* [SFML](https://www.sfml-dev.org/)
+* [ImGui](https://github.com/ocornut/imgui)
+* [ImGui-SFML](https://github.com/eliasdaler/imgui-sfml)
+
+ ![Captura de tela 2022-09-07 202610](https://user-images.githubusercontent.com/107453198/189002674-5b0bab33-e1f0-4c46-b558-5f4786907f7b.jpg)
+
+* ...
+
+
 ## Entity component system (ECS)
 * ECS foi a arquitetura escolhida para sistema de gerenciamento de dados dessa *engine*;
 * Todas as **entidades** e **componentes** herdam as seguintes função:
