@@ -1,7 +1,7 @@
 #include "S_Collision2d.h"
 
 // Talvez tenha algum bug
-Coll2d::CollisionResult Coll2d::calculatePointCollision(sf::Vector2f startPos, sf::Vector2f endPos, sf::VertexArray collider)
+Coll2d::CollisionResult Coll2d::calculatePointCollision(sf::Vector2f startPos, sf::VertexArray startCollider, sf::Vector2f endPos, sf::VertexArray collider)
 {
 	CollisionResult collisionResult;
 	sf::VertexArray collisionDebugLines;
@@ -10,40 +10,42 @@ Coll2d::CollisionResult Coll2d::calculatePointCollision(sf::Vector2f startPos, s
 	int targetArrVertexCount = collider.getVertexCount();
 	bool isInside = false;
 
-
-	
-	collisionDebugLines.append(sf::Vertex(startPos, sf::Color::Red));
-	collisionDebugLines.append(sf::Vertex(endPos, sf::Color::Red));
-
-	bool intersectedLines = false;
-	for (int j = 1; j < targetArrVertexCount; j++)
+	for (int i = 0; i < startCollider.getVertexCount() - 1; i++)
 	{
-		sf::Vector2f initialLinePoint(collider[j - 1].position);
-		sf::Vector2f endLinePoint(collider[j].position);
+		collisionDebugLines.append(sf::Vertex(startPos, sf::Color::Red));
+		collisionDebugLines.append(sf::Vertex(endPos, sf::Color::Red));
 
-		if (myMath::doLinesIntersect(startPos, endPos, initialLinePoint, endLinePoint))
+		bool intersectedLines = false;
+		for (int j = 1; j < targetArrVertexCount; j++)
 		{
+			sf::Vector2f initialLinePoint(collider[j - 1].position);
+			sf::Vector2f endLinePoint(collider[j].position);
 
-			collisionDebugLines.append(sf::Vertex(initialLinePoint, sf::Color::Blue));
-			collisionDebugLines.append(sf::Vertex(endLinePoint, sf::Color::Blue));
+			if (myMath::doLinesIntersect(startPos, endPos, initialLinePoint, endLinePoint))
+			{
+				collisionResult.collisionDebugLinesArr.push_back(collisionDebugLines);
 
-			collisionResult.collisionDebugLinesArr.push_back(collisionDebugLines);
+				intersectedLines = true;
+				collisionResult.result = false;
 
-			intersectedLines = true;
+				return collisionResult;
+
+			}
 
 		}
 
+		if (!intersectedLines)
+		{
+			collisionResult.collisionDebugLinesArr.push_back(collisionDebugLines);
+
+			collisionResult.result = true;
+			return collisionResult;
+		}
+
 	}
-
-	if (!intersectedLines)
-	{
-		collisionResult.result = true;
-		return collisionResult;
-	}
-
-
-
 	
+	collisionResult.collisionDebugLinesArr.push_back(collisionDebugLines);
+
 	collisionResult.result = false;
 	return collisionResult;
 }
@@ -91,6 +93,7 @@ Coll2d::CollisionResult Coll2d::calculateCollision(sf::Vector2f startPos, sf::Ve
 
 	}
 
+
 	return collisionResult;
 	
 }
@@ -137,14 +140,27 @@ void Coll2d::runCollisionSystem(std::vector<std::shared_ptr<EntityMaster>> _enti
 				continue;
 
 			CollisionResult colResult = calculateCollision(physicsCompVec.at(i)->transform.position, physicsCompVec.at(i)->collider->getCollisionPoligon(), physicsCompVec.at(i2)->collider->getCollisionPoligon());
+
+
 			if (physicsCompVec.at(i)->collider->drawDebug)
-			{
 				for (int j = 0; j < colResult.collisionDebugLinesArr.size(); j++)
-				{
 					global->debugVertexArray.push_back(colResult.collisionDebugLinesArr.at(j));
-				}
+
+			
+			// Checando se o objeto está dentro do outro
+			if (!colResult.result)
+			{
+				colResult = calculatePointCollision(physicsCompVec.at(i)->transform.position, physicsCompVec.at(i)->collider->getCollisionPoligon(), physicsCompVec.at(i2)->transform.position, physicsCompVec.at(i2)->collider->getCollisionPoligon());
+				
+				if (physicsCompVec.at(i)->collider->drawDebug)
+					for (int j = 0; j < colResult.collisionDebugLinesArr.size(); j++)
+						global->debugVertexArray.push_back(colResult.collisionDebugLinesArr.at(j));
 
 			}
+
+
+
+
 
 		}
 

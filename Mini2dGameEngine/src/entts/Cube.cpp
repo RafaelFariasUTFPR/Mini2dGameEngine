@@ -10,8 +10,10 @@ Cube::Cube(Global* globalVariables, std::string myName) : EntityMaster(globalVar
 
 void Cube::beginPlay()
 {
-	// Chamando o metodo na classe base
+	// Chamando o metodo na classe base	
 	EntityMaster::beginPlay();
+
+
 }
 
 void Cube::process()

@@ -26,7 +26,7 @@ public:
 
         isDynamic = false;
         // Adicionando os componentes
-        componentHandler.addComponent(renderComponent);
+        //componentHandler.addComponent(renderComponent);
         componentHandler.addComponent(physicsComponent);
         componentHandler.addComponent(colliderComponent);
 

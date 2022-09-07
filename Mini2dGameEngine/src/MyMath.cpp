@@ -75,6 +75,20 @@ bool myMath::doLinesIntersect(sf::Vector2f p1, sf::Vector2f q1, sf::Vector2f p2,
 
 	return false; // Doesn't fall in any of the above cases
 }
+
+bool myMath::doLinesIntersect2(sf::Vector2f p1, sf::Vector2f q1, sf::Vector2f p2, sf::Vector2f q2)
+{
+	
+	float h = (q2.x - p2.x) * (p1.y - q1.y) - (p1.x - q1.x) * (q2.y - p2.y);
+	float t1 = ((p2.y - q2.y) * (p1.x - p2.x) + (q2.x - p2.x) * (p1.y - p2.y)) / h;
+	float t2 = ((p1.y - q1.y) * (p1.x - p2.x) + (q1.x - p1.x) * (p1.y - p2.y)) / h;
+
+	if (t1 >= 0.0f && t1 < 1.0f && t2 >= 0.0f && t2 < 1.0f)
+	{
+		return true;
+	}
+	return false;
+}
 double myMath::deg2rad(double angle)
 {
 	return angle * (PI / 180);
