@@ -152,7 +152,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\C_Collider2d.cpp" />
-    <ClCompile Include="src\entts\Ground.cpp" />
     <ClCompile Include="src\MyMath.cpp" />
     <ClCompile Include="src\C_Physics2d.cpp" />
     <ClCompile Include="src\C_RenderSprite.cpp" />

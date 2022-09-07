@@ -22,7 +22,6 @@ void C_Collider2d::process()
 
 void C_Collider2d::draw()
 {
-
 	if (drawDebug)
 		global->window.draw(collisionPoligon);
 

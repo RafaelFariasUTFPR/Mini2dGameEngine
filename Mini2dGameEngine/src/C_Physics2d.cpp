@@ -1,8 +1,8 @@
 #include "C_Physics2d.h"
 
-C_Physics2d::C_Physics2d(Global* globalVariables, myMath::Transform initialTransform) : ComponentMaster(globalVariables)
+C_Physics2d::C_Physics2d(Global* globalVariables, myMath::Transform initialTransform, std::shared_ptr<C_Collider2d> _collider) : ComponentMaster(globalVariables)
 {
-
+	collider = _collider;
 	controlsTransform = true;
 
 }
@@ -11,13 +11,15 @@ C_Physics2d::C_Physics2d(
 	Global* globalVariables,
 	myMath::Transform initialTransform,
 	sf::Vector2f initialSpeed,
-	double initialRotationSpeed) : 
+	double initialRotationSpeed,
+	std::shared_ptr<C_Collider2d> _collider) :
 		ComponentMaster(globalVariables)
 {
 	
 	transform = initialTransform;
 	setSpeed(initialSpeed);
 	setRotationSpeed(initialRotationSpeed);
+	collider = _collider;
 	controlsTransform = true;
 
 }

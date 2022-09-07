@@ -3,16 +3,19 @@
 #include "ComponentMaster.h"
 #include "MyMath.h"
 
+#include "C_Collider2d.h"
+
 class C_Physics2d :
     public ComponentMaster
 {
 public:
-    C_Physics2d(Global* globalVariables, myMath::Transform initialTransform);
+    C_Physics2d(Global* globalVariables, myMath::Transform initialTransform, std::shared_ptr<C_Collider2d> _collider);
     C_Physics2d(
         Global* globalVariables, 
         myMath::Transform initialTransform,
         sf::Vector2f initialSpeed,
-        double initialRotationSpeed);
+        double initialRotationSpeed,
+        std::shared_ptr<C_Collider2d> _collider);
 
     void process() override;
 
@@ -32,6 +35,8 @@ public:
     bool isSolid = true;
 
     myMath::Transform transform;
+
+    std::shared_ptr<C_Collider2d> collider;
 
 private:
     sf::Vector2f speed;

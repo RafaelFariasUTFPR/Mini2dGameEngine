@@ -26,7 +26,7 @@ void EnttHandler::beginPlay()
 
 void EnttHandler::process()
 {
-	Coll2d::runCollisionSystem(entityVec);
+	Coll2d::runCollisionSystem(entityVec,global);
 	for (int i = 0; i < entityVec.size(); i++)
 	{
 		if (entityVec.at(i) == nullptr)

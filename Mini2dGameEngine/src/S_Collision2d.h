@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <thread>
 
 #include "MyMath.h"
 #include "C_Physics2d.h"
@@ -18,9 +19,10 @@ namespace Coll2d
 		std::vector <sf::VertexArray> collisionDebugLinesArr;
 	};
 
-	CollisionResult calculateCollision(sf::Vector2f startPos, sf::Vector2f endPos, sf::VertexArray collider);
+	CollisionResult calculateCollision(sf::VertexArray startCollider, sf::Vector2f endPos, sf::VertexArray collider);
 
-	void runCollisionSystem(std::vector<std::shared_ptr<EntityMaster>> _entityVec);
+	void runCollisionSystem(std::vector<std::shared_ptr<EntityMaster>> _entityVec, Global* global);
+
 
 }
 

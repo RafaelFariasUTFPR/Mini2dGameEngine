@@ -19,7 +19,7 @@ public:
 private:
     sf::VertexArray vertexArr;
     sf::Vector2f initialScale;
-
+    sf::Vector2f centerOffset;
 
 };
 

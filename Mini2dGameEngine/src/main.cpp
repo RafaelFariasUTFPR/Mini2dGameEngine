@@ -43,7 +43,7 @@ int main()
     //game.enttHandler.addEntt(myCube2);
     while (global.window.isOpen())
     {
-        global.deltaTime = global.deltaClock.getElapsedTime().asSeconds();
+        global.debugVertexArray.clear();
         
         while (global.window.pollEvent(global.events))
         {
@@ -53,14 +53,7 @@ int main()
 
         }
 
-
-
-
         global.window.setFramerateLimit(fpsLock);
-
-
-
-
 
         //LOOP VAI AQUI
         game.process();
@@ -70,7 +63,7 @@ int main()
         int intFps = (int)fps;
         fpsText.setString("FPS: " + std::to_string(intFps));
 
-
+        global.deltaTime = global.deltaClock.getElapsedTime().asSeconds();
 
         //Update e resetando o deltaClock
         ImGui::SFML::Update(global.window, global.deltaClock.restart());
@@ -93,14 +86,17 @@ int main()
             fpsLock = 0;
 
         ImGui::End();
-        
         global.window.clear(sf::Color::Black);
+
 
         //DRAW VAI AQUI
 
 
 
         game.draw();
+
+        for (int i = 0; i < global.debugVertexArray.size(); i++)
+            global.window.draw(global.debugVertexArray.at(i));
 
         //After every drawing
         ImGui::SFML::Render(global.window);

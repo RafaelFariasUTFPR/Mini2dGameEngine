@@ -12,12 +12,12 @@ public:
     Cube(Global* globalVariables, std::string myName) : EntityMaster(globalVariables, myName)
     {
 
-        collisionVertexArray.append(sf::Vertex(sf::Vector2f(0, 0)));
-        collisionVertexArray.append(sf::Vertex(sf::Vector2f(50, 0)));
-        collisionVertexArray.append(sf::Vertex(sf::Vector2f(50, 50)));
-        collisionVertexArray.append(sf::Vertex(sf::Vector2f(0, 50)));
-        collisionVertexArray.append(sf::Vertex(sf::Vector2f(0, 0)));
-        colliderComponent->drawDebug = true;
+        collisionVertexArray.append(sf::Vertex(sf::Vector2f(-25, -25)));
+        collisionVertexArray.append(sf::Vertex(sf::Vector2f(25, -25)));
+        collisionVertexArray.append(sf::Vertex(sf::Vector2f(25, 25)));
+        collisionVertexArray.append(sf::Vertex(sf::Vector2f(-25, 25)));
+        collisionVertexArray.append(sf::Vertex(sf::Vector2f(-25, -25)));
+        colliderComponent->drawDebug = false;
 
         isDynamic = true;
         // Adicionando os componentes
@@ -38,7 +38,7 @@ public:
     // Criando os componenetes
     std::shared_ptr<C_RenderSprite> renderComponent = std::make_shared<C_RenderSprite>(global, "./resources/cube.png", sf::Vector2f(1, 1));
     std::shared_ptr<C_Collider2d> colliderComponent = std::make_shared<C_Collider2d>(global, collisionVertexArray);
-    std::shared_ptr<C_Physics2d> physicsComponent = std::make_shared<C_Physics2d>(global, transform);
+    std::shared_ptr<C_Physics2d> physicsComponent = std::make_shared<C_Physics2d>(global, transform, colliderComponent);
 
 };
 

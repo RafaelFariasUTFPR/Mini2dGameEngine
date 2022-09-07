@@ -16,4 +16,6 @@ public:
 	sf::RenderWindow window;
 	sf::Event events;
 
+	std::vector <sf::VertexArray> debugVertexArray;
+
 };
