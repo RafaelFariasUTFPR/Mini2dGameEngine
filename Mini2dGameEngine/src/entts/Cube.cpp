@@ -34,6 +34,14 @@ void Cube::process()
 	{
 		movementVector += sf::Vector2f(0, movementSpeed);
 	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+	{
+		physicsComponent->setRotation(physicsComponent->transform.rotation - (60 * global->deltaTime));
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+	{
+		physicsComponent->setRotation(physicsComponent->transform.rotation + (60 * global->deltaTime));
+	}
 
 
 

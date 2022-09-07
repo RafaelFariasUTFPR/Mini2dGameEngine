@@ -14,12 +14,13 @@ public:
     void process() override;
     void draw() override;
 
+
     sf::Texture texture;
     sf::Sprite sprite;
 private:
     sf::VertexArray vertexArr;
     sf::Vector2f initialScale;
-    sf::Vector2f centerOffset;
+    sf::Vector2f centerPivot;
 
 };
 

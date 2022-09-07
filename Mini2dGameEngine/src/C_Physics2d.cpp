@@ -1,9 +1,10 @@
 #include "C_Physics2d.h"
 
-C_Physics2d::C_Physics2d(Global* globalVariables, myMath::Transform initialTransform, std::shared_ptr<C_Collider2d> _collider) : ComponentMaster(globalVariables)
+C_Physics2d::C_Physics2d(Global* globalVariables, myMath::Transform initialTransform, std::shared_ptr<C_Collider2d> _collider, bool& _isDynamic) : ComponentMaster(globalVariables)
 {
 	collider = _collider;
 	controlsTransform = true;
+	isDynamic = &_isDynamic;
 
 }
 
@@ -12,7 +13,8 @@ C_Physics2d::C_Physics2d(
 	myMath::Transform initialTransform,
 	sf::Vector2f initialSpeed,
 	double initialRotationSpeed,
-	std::shared_ptr<C_Collider2d> _collider) :
+	std::shared_ptr<C_Collider2d> _collider,
+	bool& _isDynamic) :
 		ComponentMaster(globalVariables)
 {
 	
@@ -21,6 +23,7 @@ C_Physics2d::C_Physics2d(
 	setRotationSpeed(initialRotationSpeed);
 	collider = _collider;
 	controlsTransform = true;
+	isDynamic = &_isDynamic;
 
 }
 
@@ -36,4 +39,9 @@ void C_Physics2d::process()
 myMath::Transform C_Physics2d::getTransform()
 {
 	return transform;
+}
+
+void C_Physics2d::setRotation(double newRotation)
+{
+	transform.rotation = newRotation; 
 }

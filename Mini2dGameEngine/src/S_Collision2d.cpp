@@ -1,7 +1,7 @@
 #include "S_Collision2d.h"
 
-
-Coll2d::CollisionResult Coll2d::calculateCollision(sf::VertexArray startCollider, sf::Vector2f endPos, sf::VertexArray collider)
+// Talvez tenha algum bug
+Coll2d::CollisionResult Coll2d::calculatePointCollision(sf::Vector2f startPos, sf::Vector2f endPos, sf::VertexArray collider)
 {
 	CollisionResult collisionResult;
 	sf::VertexArray collisionDebugLines;
@@ -11,42 +11,86 @@ Coll2d::CollisionResult Coll2d::calculateCollision(sf::VertexArray startCollider
 	bool isInside = false;
 
 
+	
+	collisionDebugLines.append(sf::Vertex(startPos, sf::Color::Red));
+	collisionDebugLines.append(sf::Vertex(endPos, sf::Color::Red));
+
+	bool intersectedLines = false;
+	for (int j = 1; j < targetArrVertexCount; j++)
+	{
+		sf::Vector2f initialLinePoint(collider[j - 1].position);
+		sf::Vector2f endLinePoint(collider[j].position);
+
+		if (myMath::doLinesIntersect(startPos, endPos, initialLinePoint, endLinePoint))
+		{
+
+			collisionDebugLines.append(sf::Vertex(initialLinePoint, sf::Color::Blue));
+			collisionDebugLines.append(sf::Vertex(endLinePoint, sf::Color::Blue));
+
+			collisionResult.collisionDebugLinesArr.push_back(collisionDebugLines);
+
+			intersectedLines = true;
+
+		}
+
+	}
+
+	if (!intersectedLines)
+	{
+		collisionResult.result = true;
+		return collisionResult;
+	}
+
+
+
+	
+	collisionResult.result = false;
+	return collisionResult;
+}
+
+
+// Colisão pelo metodo das diagonais
+Coll2d::CollisionResult Coll2d::calculateCollision(sf::Vector2f startPos, sf::VertexArray startCollider, sf::VertexArray collider)
+{
+	CollisionResult collisionResult;
+	sf::VertexArray collisionDebugLines;
+	collisionDebugLines.setPrimitiveType(sf::Lines);
+
+	int targetArrVertexCount = collider.getVertexCount();
+	bool isInside = false;
+	collisionResult.result = false;
+
+
 	for (int i = 0; i < startCollider.getVertexCount() - 1; i++)
 	{
-		sf::Vector2f startPos = startCollider[i].position;
+		sf::Vector2f endPos = startCollider[i].position;
+
 		collisionDebugLines.append(sf::Vertex(startPos, sf::Color::Red));
 		collisionDebugLines.append(sf::Vertex(endPos, sf::Color::Red));
 
 		bool intersectedLines = false;
-		for (int j = 1; j < targetArrVertexCount; j++)
+		for (int j = 0; j < targetArrVertexCount-1; j++)
 		{
-			sf::Vector2f initialLinePoint(collider[j - 1].position);
-			sf::Vector2f endLinePoint(collider[j].position);
+			sf::Vector2f initialLinePoint(collider[j].position);
+			sf::Vector2f endLinePoint(collider[j + 1].position);
+
 
 			if (myMath::doLinesIntersect(startPos, endPos, initialLinePoint, endLinePoint))
 			{
-
 				collisionDebugLines.append(sf::Vertex(initialLinePoint, sf::Color::Blue));
 				collisionDebugLines.append(sf::Vertex(endLinePoint, sf::Color::Blue));
 
+				collisionResult.result = true;
 				collisionResult.collisionDebugLinesArr.push_back(collisionDebugLines);
 
-				intersectedLines = true;
-
+				return collisionResult;
 			}
 
 		}
+		collisionResult.collisionDebugLinesArr.push_back(collisionDebugLines);
 
-		if (!intersectedLines)
-		{
-			collisionResult.result = true;
-			return collisionResult;
-		}
-
-
-		
 	}
-	collisionResult.result = false;
+
 	return collisionResult;
 	
 }
@@ -73,10 +117,12 @@ void Coll2d::runCollisionSystem(std::vector<std::shared_ptr<EntityMaster>> _enti
 	// Essa colisão está muito lenta
 	// Precisa mudar o tipo de colisão ja que não conta se não tiver vertices se sobrepondo
 
+	//Implementar colisão AABB
+
 	for (int i = 0; i < physicsCompVec.size(); i++)
 	{
 		//Skipping if theres no vertex in the poligon
-		if (!physicsCompVec.at(i)->collider->collisionPoligon.getVertexCount())
+		if (!physicsCompVec.at(i)->collider->getCollisionPoligon().getVertexCount())
 			continue;
 
 
@@ -84,7 +130,13 @@ void Coll2d::runCollisionSystem(std::vector<std::shared_ptr<EntityMaster>> _enti
 		{
 			if (i2 == i)
 				continue;
-			CollisionResult colResult = calculateCollision(physicsCompVec.at(i)->collider->collisionPoligon, physicsCompVec.at(i2)->transform.position, physicsCompVec.at(i2)->collider->collisionPoligon);
+
+			//Otimização
+			double influenceDist = physicsCompVec.at(i)->collider->influenceRadius + physicsCompVec.at(i2)->collider->influenceRadius;
+			if (myMath::distBetweenPoints(physicsCompVec.at(i)->transform.position, physicsCompVec.at(i2)->transform.position) > influenceDist)
+				continue;
+
+			CollisionResult colResult = calculateCollision(physicsCompVec.at(i)->transform.position, physicsCompVec.at(i)->collider->getCollisionPoligon(), physicsCompVec.at(i2)->collider->getCollisionPoligon());
 			if (physicsCompVec.at(i)->collider->drawDebug)
 			{
 				for (int j = 0; j < colResult.collisionDebugLinesArr.size(); j++)

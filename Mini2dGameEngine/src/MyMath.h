@@ -21,6 +21,8 @@ namespace myMath
 
 	double deg2rad(double angle);
 
+	double distBetweenPoints(sf::Vector2f p1, sf::Vector2f p2);
+
 }
 
 

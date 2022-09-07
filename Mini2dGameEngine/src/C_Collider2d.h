@@ -1,19 +1,29 @@
 #pragma once
 #include "ComponentMaster.h"
+
+
+
 class C_Collider2d :
     public ComponentMaster
 {
 public:
-    C_Collider2d(Global* globalVariables, sf::VertexArray& _collisionVertexArray);
+    C_Collider2d(Global* globalVariables, sf::VertexArray _collisionVertexArray);
+    C_Collider2d(Global* globalVariables);
 
     void process() override;
 
     void draw() override;
 
-    sf::VertexArray* collisionVertexArray;
-    sf::VertexArray collisionPoligon;
+    void setCollisionPoligon(sf::VertexArray _collisionVertexArray);
+    sf::VertexArray getCollisionPoligon() { return collisionPoligon; }
+
 
     bool drawDebug = false;
+    double influenceRadius = 0;
+
+private:
+    sf::VertexArray collisionVertexArray;
+    sf::VertexArray collisionPoligon;
 
 };
 

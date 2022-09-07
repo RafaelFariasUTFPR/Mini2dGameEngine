@@ -40,7 +40,7 @@ int main()
     int fpsLock = 0;
     game.beforePlay();
     game.beginPlay();
-    //game.enttHandler.addEntt(myCube2);
+
     while (global.window.isOpen())
     {
         global.debugVertexArray.clear();

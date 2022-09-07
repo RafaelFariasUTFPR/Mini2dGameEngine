@@ -26,6 +26,8 @@ public:
 
 	//Standard Variables
 	myMath::Transform transform;
+
+	// A entidade possui capacidade de se mover?
 	bool isDynamic = false;
 
 	ComponentHandler componentHandler;

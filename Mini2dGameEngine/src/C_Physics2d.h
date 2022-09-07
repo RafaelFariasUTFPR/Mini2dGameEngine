@@ -9,13 +9,14 @@ class C_Physics2d :
     public ComponentMaster
 {
 public:
-    C_Physics2d(Global* globalVariables, myMath::Transform initialTransform, std::shared_ptr<C_Collider2d> _collider);
+    C_Physics2d(Global* globalVariables, myMath::Transform initialTransform, std::shared_ptr<C_Collider2d> _collider, bool& _isDynamic);
     C_Physics2d(
         Global* globalVariables, 
         myMath::Transform initialTransform,
         sf::Vector2f initialSpeed,
         double initialRotationSpeed,
-        std::shared_ptr<C_Collider2d> _collider);
+        std::shared_ptr<C_Collider2d> _collider,
+        bool& _isDynamic);
 
     void process() override;
 
@@ -24,15 +25,17 @@ public:
 
     sf::Vector2f getSpeed() { return speed; }
     double getRotationSpeed() { return rotationSpeed; }
+    bool getIsDynamic() { return *isDynamic; }
 
     void setPosition(sf::Vector2f newPosition) { transform.position = newPosition; }
-    void setRotation(double newRotation) { transform.rotation = newRotation; }
+    void setRotation(double newRotation);
     void setSpeed(sf::Vector2f newSpeed) { speed = newSpeed; }
     void setRotationSpeed(double newRotationSpeed) { rotationSpeed = newRotationSpeed; }
 
 
     float gravity = 0;
     bool isSolid = true;
+
 
     myMath::Transform transform;
 
@@ -42,5 +45,7 @@ private:
     sf::Vector2f speed;
     double rotationSpeed = 0;
 
+    // Ponteiro para a variavel "isDynamic" da entidade
+    bool* isDynamic;
 };
 

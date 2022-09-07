@@ -26,7 +26,7 @@ int orientation(sf::Vector2f p, sf::Vector2f q, sf::Vector2f r)
 sf::Vector2f myMath::rotatePointArrounPoint(sf::Vector2f myPoint, sf::Vector2f centerPoint, float rotationAngle)
 {
 	// Convertendo de graus para radianos e invertendo o sentido de rotação
-	rotationAngle = (-rotationAngle) * (PI / 180);
+	rotationAngle = (rotationAngle) * (PI / 180);
 
 	float s = sin(rotationAngle);
 	float c = cos(rotationAngle);
@@ -80,4 +80,11 @@ double myMath::deg2rad(double angle)
 	return angle * (PI / 180);
 }
 
+double myMath::distBetweenPoints(sf::Vector2f p1, sf::Vector2f p2)
+{
+	float dx = p2.x - p1.x;
+	float dy = p2.y - p1.y;
+	double dist = sqrt(pow(dx, 2) + pow(dy, 2));
+	return dist;
+}
 

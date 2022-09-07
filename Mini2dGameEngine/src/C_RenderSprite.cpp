@@ -7,8 +7,8 @@ C_RenderSprite::C_RenderSprite(Global* globalVariables, std::string texturePath,
     sprite.setTexture(texture);
     initialScale = _initialScale;
 
-    centerOffset = sf::Vector2f(texture.getSize().x / 2, texture.getSize().y / 2);
-    sprite.setPosition(transform.position - centerOffset);
+    centerPivot = sf::Vector2f(texture.getSize().x / 2, texture.getSize().y / 2);
+    sprite.setOrigin(centerPivot);
 
 }
 
@@ -21,7 +21,7 @@ void C_RenderSprite::draw()
 void C_RenderSprite::process()
 {
     sprite.setScale(sf::Vector2f(initialScale.x * transform.scale.x, initialScale.y * transform.scale.y));
-    sprite.setPosition(transform.position - centerOffset);
+    sprite.setPosition(transform.position);
     sprite.setRotation(transform.rotation);
     ComponentMaster::process();
 }
