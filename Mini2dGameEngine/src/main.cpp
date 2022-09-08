@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <memory>
+#include <thread>
 
 #include "../imgui/imgui.h"
 #include "../imgui/imgui-SFML.h"
@@ -12,6 +13,35 @@
 
 #include "entts/Cube.h"
 #include "entts/Ground.h"
+
+#define MULTYTHREAD
+
+#ifdef MULTYTHREAD
+std::atomic<bool> isSafe = true;
+std::atomic<bool> isRunning = false;
+
+void runPhysicsThread(EnttHandler *handler)
+{
+    //return;
+    while (isRunning)
+    {
+        while (isSafe)
+        {
+            sf::Clock clock;
+            
+            handler->threadPhysicsProcess();
+
+            double delta = clock.getElapsedTime().asSeconds();
+
+            double fps = 1 / delta;
+            int intFps = (int)fps;
+            std::cout << intFps << std::endl;
+        }
+
+    }
+}
+#endif // MULTYTHREAD
+
 
 int main()
 {
@@ -41,8 +71,21 @@ int main()
     game.beforePlay();
     game.beginPlay();
 
+#ifdef MULTYTHREAD
+
+    isRunning = true;
+    std::thread physicsThread(runPhysicsThread, &game.enttHandler);
+    physicsThread.detach();
+
+#endif // MULTYTHREAD
+
+
     while (global.window.isOpen())
     {
+#ifdef MULTYTHREAD
+        isSafe = false;
+#endif // MULTYTHREAD
+
         global.debugVertexArray.clear();
         
         while (global.window.pollEvent(global.events))
@@ -56,7 +99,12 @@ int main()
         global.window.setFramerateLimit(fpsLock);
 
         //LOOP VAI AQUI
+#ifndef MULTYTHREAD
+        game.enttHandler.physicsProcess();
+
+#endif // !MULTYTHREAD
         game.process();
+        
 
         //Calculando o FPS
         double fps = 1 / global.deltaTime;
@@ -91,13 +139,19 @@ int main()
 
         //DRAW VAI AQUI
 
-
+#ifdef MULTYTHREAD
+        isSafe = true;
+#endif // MULTYTHREAD
 
         game.draw();
+
+
 
         for (int i = 0; i < global.debugVertexArray.size(); i++)
             global.window.draw(global.debugVertexArray.at(i));
 
+        
+        
         //After every drawing
         ImGui::SFML::Render(global.window);
         global.window.draw(fpsText);
@@ -105,7 +159,13 @@ int main()
         global.window.display();
 
     }
+#ifdef MULTYTHREAD
 
+    isRunning = false;
+    isSafe = false;
+#endif
+
+    //physicsThread.join();
 
     game.endGame();
     ImGui::SFML::Shutdown();

@@ -2,8 +2,6 @@
 
 #include <vector>
 #include <iostream>
-#include <memory>
-#include <thread>
 
 
 
@@ -22,6 +20,9 @@ public:
 
 	void beforePlay();
 	void beginPlay();
+	void physicsProcess();
+	void threadPhysicsProcess();
+
 	void process();
 	void draw();
 	void endGame();

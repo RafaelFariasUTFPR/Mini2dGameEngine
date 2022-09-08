@@ -26,7 +26,7 @@ void EnttHandler::beginPlay()
 
 void EnttHandler::process()
 {
-	Coll2d::runCollisionSystem(entityVec,global);
+	//Coll2d::runCollisionSystem(entityVec,global);
 	for (int i = 0; i < entityVec.size(); i++)
 	{
 		if (entityVec.at(i) == nullptr)
@@ -34,6 +34,20 @@ void EnttHandler::process()
 
 		entityVec.at(i)->process();
 	}
+
+}
+
+void EnttHandler::physicsProcess()
+{
+	Coll2d::runCollisionSystem(entityVec, global);
+
+
+}
+void EnttHandler::threadPhysicsProcess()
+{
+	Coll2d::runThreadCollisionSystem(entityVec, global);
+
+
 }
 
 void EnttHandler::draw()

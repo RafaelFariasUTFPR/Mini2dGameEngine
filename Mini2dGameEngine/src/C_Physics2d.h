@@ -35,6 +35,8 @@ public:
 
     float gravity = 0;
     bool isSolid = true;
+    bool wasCollidingLastFrame = false;
+
 
 
     myMath::Transform transform;

@@ -6,15 +6,14 @@ Coll2d::CollisionResult Coll2d::calculatePointCollision(sf::Vector2f startPos, s
 	CollisionResult collisionResult;
 	sf::VertexArray collisionDebugLines;
 	collisionDebugLines.setPrimitiveType(sf::Lines);
-
 	bool isInside = false;
+	bool intersectedLines = false;
 
 	for (int i = 0; i < startCollider.getVertexCount() - 1; i++)
 	{
 		collisionDebugLines.append(sf::Vertex(startPos, debugLineColor));
 		collisionDebugLines.append(sf::Vertex(endPos, debugLineColor));
 
-		bool intersectedLines = false;
 		for (int j = 1; j < collider.getVertexCount(); j++)
 		{
 			sf::Vector2f initialLinePoint(collider[j].position);
@@ -22,6 +21,8 @@ Coll2d::CollisionResult Coll2d::calculatePointCollision(sf::Vector2f startPos, s
 
 			if (myMath::doLinesIntersect(startPos, endPos, initialLinePoint, endLinePoint))
 			{
+				collisionDebugLines.append(sf::Vertex(initialLinePoint, sf::Color::Blue));
+				collisionDebugLines.append(sf::Vertex(endLinePoint, sf::Color::Blue));
 				collisionResult.collisionDebugLinesArr.push_back(collisionDebugLines);
 
 				intersectedLines = true;
@@ -38,6 +39,12 @@ Coll2d::CollisionResult Coll2d::calculatePointCollision(sf::Vector2f startPos, s
 			collisionResult.collisionDebugLinesArr.push_back(collisionDebugLines);
 
 			collisionResult.result = true;
+			double displacementForce = 1000 / myMath::distBetweenPoints(startPos, endPos);
+
+			collisionResult.displacement.x = displacementForce;
+
+			collisionResult.displacement.y = displacementForce;
+
 			return collisionResult;
 		}
 
@@ -77,8 +84,8 @@ Coll2d::CollisionResult Coll2d::calculateCollision(sf::Vector2f startPos, sf::Ve
 
 			if (myMath::doLinesIntersect(startPos, endPos, initialLinePoint, endLinePoint))
 			{
-				collisionDebugLines.append(sf::Vertex(initialLinePoint, sf::Color::Blue));
-				collisionDebugLines.append(sf::Vertex(endLinePoint, sf::Color::Blue));
+				//collisionDebugLines.append(sf::Vertex(initialLinePoint, sf::Color::Blue));
+				//collisionDebugLines.append(sf::Vertex(endLinePoint, sf::Color::Blue));
 
 				collisionResult.result = true;
 				collisionResult.collisionDebugLinesArr.push_back(collisionDebugLines);
@@ -97,8 +104,6 @@ Coll2d::CollisionResult Coll2d::calculateCollision(sf::Vector2f startPos, sf::Ve
 	
 }
 
-
-
 void Coll2d::runCollisionSystem(std::vector<std::shared_ptr<EntityMaster>> _entityVec, Global* global)
 {
 	std::vector<std::shared_ptr<C_Physics2d>> physicsCompVec;
@@ -116,10 +121,7 @@ void Coll2d::runCollisionSystem(std::vector<std::shared_ptr<EntityMaster>> _enti
 		}
 	}
 
-	// Essa colisão está muito lenta
-	// Precisa mudar o tipo de colisão ja que não conta se não tiver vertices se sobrepondo
 
-	//Implementar colisão AABB
 
 	for (int i = 0; i < physicsCompVec.size(); i++)
 	{
@@ -145,12 +147,12 @@ void Coll2d::runCollisionSystem(std::vector<std::shared_ptr<EntityMaster>> _enti
 				for (int j = 0; j < colResult.collisionDebugLinesArr.size(); j++)
 					global->debugVertexArray.push_back(colResult.collisionDebugLinesArr.at(j));
 
-			
+
 			// Checando se o objeto está dentro do outro
 			if (!colResult.result)
 			{
 				colResult = calculatePointCollision(physicsCompVec.at(i)->transform.position, physicsCompVec.at(i)->collider->getCollisionPoligon(), physicsCompVec.at(i2)->transform.position, physicsCompVec.at(i2)->collider->getCollisionPoligon());
-				
+
 				if (physicsCompVec.at(i)->collider->drawDebug)
 					for (int j = 0; j < colResult.collisionDebugLinesArr.size(); j++)
 						global->debugVertexArray.push_back(colResult.collisionDebugLinesArr.at(j));
@@ -159,37 +161,167 @@ void Coll2d::runCollisionSystem(std::vector<std::shared_ptr<EntityMaster>> _enti
 
 			if (colResult.result)
 			{
-
-				//Tentando remover um pouco da ocilação
-				const int disAmount = 50;
-				const int maxDisplacement = 10;
-				if (colResult.displacement.x > maxDisplacement)
-					colResult.displacement.x = maxDisplacement;
-				if (colResult.displacement.x < -maxDisplacement)
-					colResult.displacement.x = -maxDisplacement;
-
-				if (colResult.displacement.y > maxDisplacement)
-					colResult.displacement.y = maxDisplacement;
-				if (colResult.displacement.y < -maxDisplacement)
-					colResult.displacement.y = -maxDisplacement;
-				colResult.displacement = sf::Vector2f(colResult.displacement.x * disAmount * global->deltaTime, colResult.displacement.y * disAmount * global->deltaTime);
-
-
-
-
-
-
-				if (physicsCompVec.at(i)->getIsDynamic())
+				//std::cout << colResult.result;
+				//continue;
+				// Se eles forem solidos
+				if (physicsCompVec.at(i)->isSolid && physicsCompVec.at(i2)->isSolid)
 				{
-					physicsCompVec.at(i)->setPosition(physicsCompVec.at(i)->transform.position - colResult.displacement);
+					/*Tentando remover um pouco da ocilação
+					const int disAmount = 50;
+					const int maxDisplacement = 10;
+					if (colResult.displacement.x > maxDisplacement)
+						colResult.displacement.x = maxDisplacement;
+					if (colResult.displacement.x < -maxDisplacement)
+						colResult.displacement.x = -maxDisplacement;
+
+					if (colResult.displacement.y > maxDisplacement)
+						colResult.displacement.y = maxDisplacement;
+					if (colResult.displacement.y < -maxDisplacement)
+						colResult.displacement.y = -maxDisplacement;
+					colResult.displacement = sf::Vector2f(colResult.displacement.x * disAmount * global->deltaTime, colResult.displacement.y * disAmount * global->deltaTime);
+					const int maxDisplacement = 30;
+					*/
+
+
+
+					if (physicsCompVec.at(i)->getIsDynamic())
+					{
+						physicsCompVec.at(i)->setPosition(physicsCompVec.at(i)->transform.position - colResult.displacement);
+					}
+					// Se o objeto não for dinamico mova o que fez a colisão
+					if (physicsCompVec.at(i2)->getIsDynamic())
+					{
+						physicsCompVec.at(i2)->setPosition(physicsCompVec.at(i2)->transform.position + colResult.displacement);
+
+					}
+
+
 				}
-				// Se o objeto não for dinamico mova o que fez a colisão
-				else if (physicsCompVec.at(i2)->getIsDynamic())
+				// Se for apenas um trigger
+				else
 				{
-					physicsCompVec.at(i2)->setPosition(physicsCompVec.at(i2)->transform.position + colResult.displacement);
+
 				}
 
 			}
+
+
+
+		}
+
+
+
+
+	}
+
+
+}
+
+void Coll2d::runThreadCollisionSystem(std::vector<std::shared_ptr<EntityMaster>> _entityVec, Global* global)
+{
+	std::vector<std::shared_ptr<C_Physics2d>> physicsCompVec;
+
+	for (int i = 0; i < _entityVec.size(); i++)
+	{
+		if (_entityVec.at(i) == nullptr)
+			continue;
+		for (int j = 0; j < _entityVec[i]->componentHandler.componentVec.size(); j++)
+		{
+			if (std::dynamic_pointer_cast<C_Physics2d> (_entityVec[i]->componentHandler.componentVec[j]))
+			{
+				physicsCompVec.push_back(std::dynamic_pointer_cast<C_Physics2d> (_entityVec[i]->componentHandler.componentVec[j]));
+			}
+		}
+	}
+
+
+
+	for (int i = 0; i < physicsCompVec.size(); i++)
+	{
+		//Skipping if theres no vertex in the poligon
+		if (!physicsCompVec.at(i)->collider->getCollisionPoligon().getVertexCount())
+			continue;
+
+
+		for (int i2 = 0; i2 < physicsCompVec.size(); i2++)
+		{
+			if (i2 == i)
+				continue;
+
+
+			//Otimização
+			double influenceDist = physicsCompVec.at(i)->collider->influenceRadius + physicsCompVec.at(i2)->collider->influenceRadius;
+			if (myMath::distBetweenPoints(physicsCompVec.at(i)->transform.position, physicsCompVec.at(i2)->transform.position) > influenceDist)
+				continue;
+
+			CollisionResult colResult = calculateCollision(physicsCompVec.at(i)->transform.position, physicsCompVec.at(i)->collider->getCollisionPoligon(), physicsCompVec.at(i2)->collider->getCollisionPoligon());
+
+
+
+			
+			// Checando se o objeto está dentro do outro
+			if (!colResult.result)
+			{
+				colResult = calculatePointCollision(physicsCompVec.at(i)->collider->getTransform().position, physicsCompVec.at(i)->collider->getCollisionPoligon(), physicsCompVec.at(i2)->collider->getTransform().position, physicsCompVec.at(i2)->collider->getCollisionPoligon());
+				
+			}
+
+			//	#######################################################
+			//
+			//			PRECISA MELHORAR ESSE DISPLACEMENT!
+			//
+			//	#######################################################
+
+			if (colResult.result && physicsCompVec.at(i)->wasCollidingLastFrame)
+			{
+				//std::cout << colResult.result;
+				//continue;
+				// Se eles forem solidos
+				if (physicsCompVec.at(i)->isSolid && physicsCompVec.at(i2)->isSolid)
+				{
+					/*Tentando remover um pouco da ocilação
+					const int disAmount = 50;
+					const int maxDisplacement = 10;
+					if (colResult.displacement.x > maxDisplacement)
+						colResult.displacement.x = maxDisplacement;
+					if (colResult.displacement.x < -maxDisplacement)
+						colResult.displacement.x = -maxDisplacement;
+
+					if (colResult.displacement.y > maxDisplacement)
+						colResult.displacement.y = maxDisplacement;
+					if (colResult.displacement.y < -maxDisplacement)
+						colResult.displacement.y = -maxDisplacement;
+					colResult.displacement = sf::Vector2f(colResult.displacement.x * disAmount * global->deltaTime, colResult.displacement.y * disAmount * global->deltaTime);
+
+
+					*/
+					const int maxDisplacement = 30;
+
+
+
+					if (physicsCompVec.at(i)->getIsDynamic())
+					{
+						physicsCompVec.at(i)->setPosition(physicsCompVec.at(i)->transform.position - colResult.displacement);
+					}
+					// Se o objeto não for dinamico mova o que fez a colisão
+					if (physicsCompVec.at(i2)->getIsDynamic())
+					{
+						physicsCompVec.at(i2)->setPosition(physicsCompVec.at(i2)->transform.position + colResult.displacement);
+
+					}
+
+
+				}
+				// Se for apenas um trigger
+				else
+				{
+
+				}
+
+			}
+
+			physicsCompVec.at(i)->wasCollidingLastFrame = colResult.result;
+
 
 
 

@@ -19,6 +19,8 @@ public:
 
 
     bool drawDebug = false;
+
+
     double influenceRadius = 0;
 
 private:

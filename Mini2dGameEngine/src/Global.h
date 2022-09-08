@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 
 
+
 class Global
 {
 public:
@@ -17,5 +18,7 @@ public:
 	sf::Event events;
 
 	std::vector <sf::VertexArray> debugVertexArray;
+	std::vector <sf::VertexArray> physicsThreadDebugVertexArray;
+
 
 };
