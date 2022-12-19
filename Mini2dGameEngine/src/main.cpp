@@ -92,17 +92,6 @@ int main()
     global.sceneBuffer.renderState.texture = &t1;
     
 
-    sf::VertexArray quad(sf::Quads, 4);
-
-    quad[0].texCoords = sf::Vector2f(0, 0);
-    quad[1].texCoords = sf::Vector2f(global.tileSize, 0);
-    quad[2].texCoords = sf::Vector2f(global.tileSize, global.tileSize);
-    quad[3].texCoords = sf::Vector2f(0, global.tileSize);
-
-    quad[0].position = sf::Vector2f(0, 0);
-    quad[1].position = sf::Vector2f(50, 0);
-    quad[2].position = sf::Vector2f(50, 50);
-    quad[3].position = sf::Vector2f(0, 50);
     while (global.window.isOpen())
     {
 #ifdef MULTYTHREAD

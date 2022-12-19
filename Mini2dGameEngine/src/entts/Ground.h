@@ -44,7 +44,7 @@ public:
 
 
     // Criando os componenetes
-    std::shared_ptr<C_RenderSprite> renderComponent = std::make_shared<C_RenderSprite>(global, 0, sf::Vector2u(1,0), sf::Vector2f(256, 256));
+    std::shared_ptr<C_RenderSprite> renderComponent = std::make_shared<C_RenderSprite>(global, sf::Vector2u(256, 0), sf::Vector2f(256, 40), sf::Vector2u(256, 40));
     std::shared_ptr<C_Collider2d> colliderComponent = std::make_shared<C_Collider2d>(global);
     std::shared_ptr<C_Physics2d> physicsComponent = std::make_shared<C_Physics2d>(global, transform, colliderComponent, isDynamic);
 

@@ -32,7 +32,7 @@ public:
 	
 	render::RenderArray sceneArray;
 	render::RenderArray sceneBuffer;
-	unsigned int tileSize = 256;
+	//unsigned int tileSize = 256;
 
 	std::vector <sf::VertexArray> debugVertexArray;
 	std::vector <sf::VertexArray> physicsThreadDebugVertexArray;
