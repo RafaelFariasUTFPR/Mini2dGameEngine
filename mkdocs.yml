@@ -1,0 +1,7 @@
+site_name: My Docs
+nav:
+    - Home: index.md
+    - Documentacao: document.md
+theme: 
+    name: readthedocs
+    locale: pt
