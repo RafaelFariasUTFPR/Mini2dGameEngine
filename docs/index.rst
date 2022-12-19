@@ -1,5 +1,5 @@
 .. Mini2dGameEngine documentation master file, created by
-   sphinx-quickstart on Mon Dec 19 18:50:02 2022.
+   sphinx-quickstart on Mon Dec 19 18:55:18 2022.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
@@ -10,7 +10,7 @@ Welcome to Mini2dGameEngine's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   Pagina Inicial
+   Testando o rst
 
 Indices and tables
 ==================

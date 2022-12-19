@@ -9,7 +9,6 @@
 project = 'Mini2dGameEngine'
 copyright = '2022, ZRafaF'
 author = 'ZRafaF'
-release = '0.0.1'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -17,7 +16,7 @@ release = '0.0.1'
 extensions = ["myst_parser"]
 
 templates_path = ['_templates']
-exclude_patterns = []
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 language = 'pt'
 
