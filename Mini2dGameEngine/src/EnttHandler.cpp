@@ -26,15 +26,16 @@ void EnttHandler::beginPlay()
 
 void EnttHandler::process()
 {
+	global->m.lock();
 	//Coll2d::runCollisionSystem(entityVec,global);
 	for (int i = 0; i < entityVec.size(); i++)
 	{
 		if (entityVec.at(i) == nullptr)
 			continue;
-
 		entityVec.at(i)->process();
-	}
 
+	}
+	global->m.unlock();
 }
 
 void EnttHandler::physicsProcess()
@@ -43,10 +44,11 @@ void EnttHandler::physicsProcess()
 
 
 }
-void EnttHandler::threadPhysicsProcess()
+void EnttHandler::threadPhysicsProcess(int min, int max)
 {
-	Coll2d::runThreadCollisionSystem(entityVec, global);
-
+	global->m.lock();
+	Coll2d::runThreadCollisionSystem(entityVec, global,min, max);
+	global->m.unlock();
 
 }
 

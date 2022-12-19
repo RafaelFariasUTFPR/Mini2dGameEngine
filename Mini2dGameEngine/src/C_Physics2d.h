@@ -34,8 +34,9 @@ public:
 
 
     float gravity = 0;
+
+    // Define se o sistema de colisão pode mover ou não a entidade
     bool isSolid = true;
-    bool wasCollidingLastFrame = false;
 
 
 

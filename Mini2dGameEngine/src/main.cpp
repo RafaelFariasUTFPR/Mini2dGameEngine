@@ -14,30 +14,27 @@
 #include "entts/Cube.h"
 #include "entts/Ground.h"
 
-#define MULTYTHREAD
+//#define MULTYTHREAD
+
+
 
 #ifdef MULTYTHREAD
-std::atomic<bool> isSafe = true;
 std::atomic<bool> isRunning = false;
 
-void runPhysicsThread(EnttHandler *handler)
+void runPhysicsThread(EnttHandler *handler, int min, int max)
 {
     //return;
     while (isRunning)
     {
-        while (isSafe)
-        {
-            sf::Clock clock;
-            
-            handler->threadPhysicsProcess();
 
-            double delta = clock.getElapsedTime().asSeconds();
+        sf::Clock clock;
+        handler->threadPhysicsProcess(min, max);
+        double delta = clock.getElapsedTime().asSeconds();
 
-            double fps = 1 / delta;
-            int intFps = (int)fps;
-            std::cout << intFps << std::endl;
-        }
-
+        double fps = 1 / delta;
+        int intFps = (int)fps;
+        std::cout << intFps << std::endl;
+        
     }
 }
 #endif // MULTYTHREAD
@@ -58,6 +55,14 @@ int main()
     std::shared_ptr<Ground> groundPlane = std::make_shared<Ground>(&global, std::string("Ground"));
     game.enttHandler.addEntt(groundPlane);
 
+    groundPlane->physicsComponent->setPosition(sf::Vector2f(200, 300));
+    groundPlane->physicsComponent->setRotation(10);
+
+    std::shared_ptr<Ground> groundPlane2 = std::make_shared<Ground>(&global, std::string("Ground"));
+    game.enttHandler.addEntt(groundPlane2);
+
+    groundPlane2->physicsComponent->setPosition(sf::Vector2f(350, 300));
+    groundPlane2->physicsComponent->setRotation(90);
 
     sf::Font arialFont;
     sf::Text fpsText;
@@ -74,17 +79,37 @@ int main()
 #ifdef MULTYTHREAD
 
     isRunning = true;
-    std::thread physicsThread(runPhysicsThread, &game.enttHandler);
-    physicsThread.detach();
+    global.m.native_handle();
+    std::thread physicsThread(runPhysicsThread, &game.enttHandler, 0, 30);
+    //std::thread physicsThread2(runPhysicsThread, &game.enttHandler, 31, 60);
+    //std::thread physicsThread3(runPhysicsThread, &game.enttHandler, 61, 120);
+
 
 #endif // MULTYTHREAD
+    sf::Texture t1;
+    t1.loadFromFile("./resources/spriteSheet01.png");
+    global.sceneArray.renderState.texture = &t1;
+    global.sceneBuffer.renderState.texture = &t1;
+    
 
+    sf::VertexArray quad(sf::Quads, 4);
 
+    quad[0].texCoords = sf::Vector2f(0, 0);
+    quad[1].texCoords = sf::Vector2f(global.tileSize, 0);
+    quad[2].texCoords = sf::Vector2f(global.tileSize, global.tileSize);
+    quad[3].texCoords = sf::Vector2f(0, global.tileSize);
+
+    quad[0].position = sf::Vector2f(0, 0);
+    quad[1].position = sf::Vector2f(50, 0);
+    quad[2].position = sf::Vector2f(50, 50);
+    quad[3].position = sf::Vector2f(0, 50);
     while (global.window.isOpen())
     {
 #ifdef MULTYTHREAD
-        isSafe = false;
 #endif // MULTYTHREAD
+
+
+
 
         global.debugVertexArray.clear();
         
@@ -103,8 +128,9 @@ int main()
         game.enttHandler.physicsProcess();
 
 #endif // !MULTYTHREAD
+
         game.process();
-        
+
 
         //Calculando o FPS
         double fps = 1 / global.deltaTime;
@@ -139,30 +165,41 @@ int main()
 
         //DRAW VAI AQUI
 
-#ifdef MULTYTHREAD
-        isSafe = true;
-#endif // MULTYTHREAD
 
         game.draw();
-
+        global.window.draw(global.sceneBuffer.vArray, &t1);
 
 
         for (int i = 0; i < global.debugVertexArray.size(); i++)
             global.window.draw(global.debugVertexArray.at(i));
+#ifdef MULTYTHREAD
+        global.m.lock();
+        for (int i = 0; i < global.physicsThreadDebugVertexArray.size(); i++)
+            global.window.draw(global.physicsThreadDebugVertexArray.at(i));
+        global.physicsThreadDebugVertexArray.clear();
+        global.m.unlock();
+#endif
 
-        
-        
+        global.sceneArray.vArray.clear();
+        global.sceneArray.vArray = global.sceneBuffer.vArray;
+        global.sceneBuffer.vArray.clear();
+
+        global.window.draw(global.sceneArray.vArray, global.sceneArray.renderState);
         //After every drawing
         ImGui::SFML::Render(global.window);
         global.window.draw(fpsText);
 
+
         global.window.display();
+
 
     }
 #ifdef MULTYTHREAD
-
     isRunning = false;
-    isSafe = false;
+    physicsThread.join();
+    //physicsThread2.join();
+    //physicsThread3.join();
+
 #endif
 
     //physicsThread.join();

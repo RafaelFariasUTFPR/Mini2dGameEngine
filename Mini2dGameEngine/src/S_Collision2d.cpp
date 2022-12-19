@@ -21,8 +21,8 @@ Coll2d::CollisionResult Coll2d::calculatePointCollision(sf::Vector2f startPos, s
 
 			if (myMath::doLinesIntersect(startPos, endPos, initialLinePoint, endLinePoint))
 			{
-				collisionDebugLines.append(sf::Vertex(initialLinePoint, sf::Color::Blue));
-				collisionDebugLines.append(sf::Vertex(endLinePoint, sf::Color::Blue));
+				//collisionDebugLines.append(sf::Vertex(initialLinePoint, sf::Color::Blue));
+				//collisionDebugLines.append(sf::Vertex(endLinePoint, sf::Color::Blue));
 				collisionResult.collisionDebugLinesArr.push_back(collisionDebugLines);
 
 				intersectedLines = true;
@@ -84,8 +84,8 @@ Coll2d::CollisionResult Coll2d::calculateCollision(sf::Vector2f startPos, sf::Ve
 
 			if (myMath::doLinesIntersect(startPos, endPos, initialLinePoint, endLinePoint))
 			{
-				//collisionDebugLines.append(sf::Vertex(initialLinePoint, sf::Color::Blue));
-				//collisionDebugLines.append(sf::Vertex(endLinePoint, sf::Color::Blue));
+				collisionDebugLines.append(sf::Vertex(initialLinePoint, sf::Color::Blue));
+				collisionDebugLines.append(sf::Vertex(endLinePoint, sf::Color::Blue));
 
 				collisionResult.result = true;
 				collisionResult.collisionDebugLinesArr.push_back(collisionDebugLines);
@@ -217,10 +217,9 @@ void Coll2d::runCollisionSystem(std::vector<std::shared_ptr<EntityMaster>> _enti
 
 }
 
-void Coll2d::runThreadCollisionSystem(std::vector<std::shared_ptr<EntityMaster>> _entityVec, Global* global)
+void Coll2d::runThreadCollisionSystem(std::vector<std::shared_ptr<EntityMaster>> _entityVec, Global* global, int min, int max)
 {
 	std::vector<std::shared_ptr<C_Physics2d>> physicsCompVec;
-
 	for (int i = 0; i < _entityVec.size(); i++)
 	{
 		if (_entityVec.at(i) == nullptr)
@@ -236,8 +235,10 @@ void Coll2d::runThreadCollisionSystem(std::vector<std::shared_ptr<EntityMaster>>
 
 
 
-	for (int i = 0; i < physicsCompVec.size(); i++)
+	for (int i = min; i <= max; i++)
 	{
+		if (i > physicsCompVec.size() - 1)
+			break;
 		//Skipping if theres no vertex in the poligon
 		if (!physicsCompVec.at(i)->collider->getCollisionPoligon().getVertexCount())
 			continue;
@@ -257,24 +258,30 @@ void Coll2d::runThreadCollisionSystem(std::vector<std::shared_ptr<EntityMaster>>
 			CollisionResult colResult = calculateCollision(physicsCompVec.at(i)->transform.position, physicsCompVec.at(i)->collider->getCollisionPoligon(), physicsCompVec.at(i2)->collider->getCollisionPoligon());
 
 
-
+			if (physicsCompVec.at(i)->collider->drawDebug)
+				for (int j = 0; j < colResult.collisionDebugLinesArr.size(); j++)
+					global->physicsThreadDebugVertexArray.push_back(colResult.collisionDebugLinesArr.at(j));
 			
 			// Checando se o objeto está dentro do outro
 			if (!colResult.result)
 			{
 				colResult = calculatePointCollision(physicsCompVec.at(i)->collider->getTransform().position, physicsCompVec.at(i)->collider->getCollisionPoligon(), physicsCompVec.at(i2)->collider->getTransform().position, physicsCompVec.at(i2)->collider->getCollisionPoligon());
-				
+				if (physicsCompVec.at(i)->collider->drawDebug)
+					for (int j = 0; j < colResult.collisionDebugLinesArr.size(); j++)
+						global->physicsThreadDebugVertexArray.push_back(colResult.collisionDebugLinesArr.at(j));
 			}
+
 
 			//	#######################################################
 			//
 			//			PRECISA MELHORAR ESSE DISPLACEMENT!
 			//
 			//	#######################################################
+			//std::cout << colResult.result;
 
-			if (colResult.result && physicsCompVec.at(i)->wasCollidingLastFrame)
+			if (colResult.result)
 			{
-				//std::cout << colResult.result;
+
 				//continue;
 				// Se eles forem solidos
 				if (physicsCompVec.at(i)->isSolid && physicsCompVec.at(i2)->isSolid)
@@ -298,17 +305,17 @@ void Coll2d::runThreadCollisionSystem(std::vector<std::shared_ptr<EntityMaster>>
 					const int maxDisplacement = 30;
 
 
-
 					if (physicsCompVec.at(i)->getIsDynamic())
 					{
 						physicsCompVec.at(i)->setPosition(physicsCompVec.at(i)->transform.position - colResult.displacement);
 					}
 					// Se o objeto não for dinamico mova o que fez a colisão
-					if (physicsCompVec.at(i2)->getIsDynamic())
+					else if (physicsCompVec.at(i2)->getIsDynamic())
 					{
 						physicsCompVec.at(i2)->setPosition(physicsCompVec.at(i2)->transform.position + colResult.displacement);
 
 					}
+
 
 
 				}
@@ -320,8 +327,7 @@ void Coll2d::runThreadCollisionSystem(std::vector<std::shared_ptr<EntityMaster>>
 
 			}
 
-			physicsCompVec.at(i)->wasCollidingLastFrame = colResult.result;
-
+			//physicsCompVec.at(i)->wasCollidingLastFrame = colResult.result;
 
 
 

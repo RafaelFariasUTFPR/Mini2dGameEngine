@@ -28,7 +28,7 @@ namespace Coll2d
 
 
 	void runCollisionSystem(std::vector<std::shared_ptr<EntityMaster>> _entityVec, Global* global);
-	void runThreadCollisionSystem(std::vector<std::shared_ptr<EntityMaster>> _entityVec, Global* global);
+	void runThreadCollisionSystem(std::vector<std::shared_ptr<EntityMaster>> _entityVec, Global* global, int min, int max);
 
 
 }
