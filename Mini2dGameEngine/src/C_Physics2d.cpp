@@ -30,9 +30,12 @@ C_Physics2d::C_Physics2d(
 
 void C_Physics2d::process()
 {
-
+	float deltaGain = global->deltaTime * 2200;
 	setRotation(transform.rotation + (getRotationSpeed() * global->deltaTime));
 	setPosition(transform.position + sf::Vector2f((getSpeed().x * global->deltaTime), (getSpeed().y * global->deltaTime)));
+	velocity.x = (transform.position.x - lastPosition.x) * deltaGain;
+	velocity.y = (transform.position.y - lastPosition.y) * deltaGain;
+	lastPosition = transform.position;
 	ComponentMaster::process();
 }
 

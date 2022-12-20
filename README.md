@@ -2,7 +2,7 @@
 
 Uma mini *Game Engine* 2d, o principal intuito foi aprender mais sobre [ECS](https://en.wikipedia.org/wiki/Entity_component_system), colisões, computação gráfica etc.
 
-[Documentação](https://mini2dgameengine.readthedocs.io/en/latest/)
+[Documentação](https://github.com/ZRafaF/Mini2dGameEngine/wiki)
 
 Um dos grandes focos é a otimização do código, fazendo algo sem muitas funcionalidades que ficarão sem ser utilizadas.
 

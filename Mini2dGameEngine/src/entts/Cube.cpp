@@ -18,8 +18,8 @@ void Cube::beginPlay()
 
 void Cube::process()
 {
-	float movementSpeed = 100;
-	sf::Vector2f movementVector;
+	float movementSpeed = 200 * global->deltaTime;
+	sf::Vector2f movementVector = physicsComponent->getSpeed();
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
 		movementVector += sf::Vector2f(-movementSpeed, 0);

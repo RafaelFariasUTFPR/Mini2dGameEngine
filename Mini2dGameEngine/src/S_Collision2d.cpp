@@ -91,7 +91,7 @@ Coll2d::CollisionResult Coll2d::calculateCollision(sf::Vector2f startPos, sf::Ve
 				collisionResult.collisionDebugLinesArr.push_back(collisionDebugLines);
 
 				collisionResult.displacement += myMath::calcDisplacement(startPos, endPos, initialLinePoint, endLinePoint);
-				
+				//collisionResult.calculatedDeltaSpeed = myMath::calcElasticColl()
 				//return collisionResult;
 			}
 
@@ -128,6 +128,8 @@ void Coll2d::runCollisionSystem(std::vector<std::shared_ptr<EntityMaster>> _enti
 		//Skipping if theres no vertex in the poligon
 		if (!physicsCompVec.at(i)->collider->getCollisionPoligon().getVertexCount())
 			continue;
+		physicsCompVec.at(i)->setFutureSpeed(physicsCompVec.at(i)->getSpeed());
+
 
 
 		for (int i2 = 0; i2 < physicsCompVec.size(); i2++)
@@ -139,6 +141,7 @@ void Coll2d::runCollisionSystem(std::vector<std::shared_ptr<EntityMaster>> _enti
 			double influenceDist = physicsCompVec.at(i)->collider->influenceRadius + physicsCompVec.at(i2)->collider->influenceRadius;
 			if (myMath::distBetweenPoints(physicsCompVec.at(i)->transform.position, physicsCompVec.at(i2)->transform.position) > influenceDist)
 				continue;
+
 
 			CollisionResult colResult = calculateCollision(physicsCompVec.at(i)->transform.position, physicsCompVec.at(i)->collider->getCollisionPoligon(), physicsCompVec.at(i2)->collider->getCollisionPoligon());
 
@@ -164,36 +167,34 @@ void Coll2d::runCollisionSystem(std::vector<std::shared_ptr<EntityMaster>> _enti
 				//std::cout << colResult.result;
 				//continue;
 				// Se eles forem solidos
+				float collisionMultiplier = 1;
 				if (physicsCompVec.at(i)->isSolid && physicsCompVec.at(i2)->isSolid)
 				{
-					/*Tentando remover um pouco da ocilação
-					const int disAmount = 50;
-					const int maxDisplacement = 10;
-					if (colResult.displacement.x > maxDisplacement)
-						colResult.displacement.x = maxDisplacement;
-					if (colResult.displacement.x < -maxDisplacement)
-						colResult.displacement.x = -maxDisplacement;
+					myMath::ElasticColRes resolveResult = myMath::calcElasticColl(physicsCompVec.at(i)->velocity, physicsCompVec.at(i)->mass, physicsCompVec.at(i2)->velocity, physicsCompVec.at(i2)->mass);
+					
+					resolveResult.velocity1.x *= collisionMultiplier;
+					resolveResult.velocity1.y *= collisionMultiplier;
 
-					if (colResult.displacement.y > maxDisplacement)
-						colResult.displacement.y = maxDisplacement;
-					if (colResult.displacement.y < -maxDisplacement)
-						colResult.displacement.y = -maxDisplacement;
-					colResult.displacement = sf::Vector2f(colResult.displacement.x * disAmount * global->deltaTime, colResult.displacement.y * disAmount * global->deltaTime);
-					const int maxDisplacement = 30;
-					*/
+					resolveResult.velocity2.x *= collisionMultiplier;
+					resolveResult.velocity2.y *= collisionMultiplier;
 
-
+					//std::cout << physicsCompVec.at(i)->velocity.x << std::endl;
+					physicsCompVec.at(i)->setFutureSpeed(physicsCompVec.at(i)-> getSpeed() + resolveResult.velocity1);
+					physicsCompVec.at(i2)->setFutureSpeed(physicsCompVec.at(i)->getSpeed() + resolveResult.velocity2);
 
 					if (physicsCompVec.at(i)->getIsDynamic())
 					{
 						physicsCompVec.at(i)->setPosition(physicsCompVec.at(i)->transform.position - colResult.displacement);
 					}
 					// Se o objeto não for dinamico mova o que fez a colisão
-					if (physicsCompVec.at(i2)->getIsDynamic())
+					else if (physicsCompVec.at(i2)->getIsDynamic())
 					{
 						physicsCompVec.at(i2)->setPosition(physicsCompVec.at(i2)->transform.position + colResult.displacement);
 
 					}
+
+					
+
 
 
 				}
@@ -213,6 +214,8 @@ void Coll2d::runCollisionSystem(std::vector<std::shared_ptr<EntityMaster>> _enti
 
 
 	}
+	for (int i = 0; i < physicsCompVec.size(); i++)
+		physicsCompVec.at(i)->setSpeed(physicsCompVec.at(i)->getFutureSpeed());
 
 
 }

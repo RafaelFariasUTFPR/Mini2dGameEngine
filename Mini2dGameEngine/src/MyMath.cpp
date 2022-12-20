@@ -105,3 +105,26 @@ double myMath::distBetweenPoints(sf::Vector2f p1, sf::Vector2f p2)
 	return dist;
 }
 
+ElasticColRes myMath::calcElasticColl(sf::Vector2f velocity1, float mass1, sf::Vector2f velocity2, float mass2)
+{
+	float xVel = ((((mass1 - mass2) / (mass1 + mass2)) * velocity1.x) + (((2 * mass2) / (mass1 + mass2)) * velocity2.x));
+	float yVel = ((((mass1 - mass2) / (mass1 + mass2)) * velocity1.y) + (((2 * mass2) / (mass1 + mass2)) * velocity2.y));
+	//float yVel = ((((2 * mass1) / (mass1 + mass2)) * velocity1.y) + (((mass2 - mass1) / (mass1 + mass2)) * velocity2.y));
+	//xVel /= 2;
+	//yVel /= 2;
+	sf::Vector2f deltaSpeed = sf::Vector2f(xVel - velocity1.x, yVel - velocity1.y);
+	//std::cout << deltaSpeed.x << "  " << deltaSpeed.y << std::endl;
+	float xVel2 = ((((2 * mass1) / (mass1 + mass2)) * velocity1.x) + (((mass2 - mass1) / (mass1 + mass2)) * velocity2.x));
+	float yVel2 = ((((2 * mass1) / (mass1 + mass2)) * velocity1.y) + (((mass2 - mass1) / (mass1 + mass2)) * velocity2.y));
+	//xVel2 /= 2;
+	//yVel2 /= 2;
+	//sf::Vector2f deltaSpeed2 = sf::Vector2f(xVel2 - velocity2.x, yVel2 - velocity2.y);
+	sf::Vector2f deltaSpeed2 = sf::Vector2f(xVel2 - velocity2.x, yVel2 - velocity2.y);
+
+	myMath::ElasticColRes result;
+	result.velocity1 = deltaSpeed;
+	result.velocity2 = deltaSpeed2;
+
+	return result;
+
+}

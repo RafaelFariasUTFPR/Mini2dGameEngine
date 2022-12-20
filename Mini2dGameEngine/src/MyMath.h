@@ -4,6 +4,9 @@
 
 #include <SFML/Graphics.hpp>
 #include <math.h>
+
+#include <iostream>
+
 namespace myMath
 {
 
@@ -12,6 +15,13 @@ namespace myMath
 		sf::Vector2f position = sf::Vector2f(0, 0);
 		sf::Vector2f scale = sf::Vector2f(1, 1);
 		double rotation = 0;
+	};
+
+	struct ElasticColRes
+	{
+		sf::Vector2f velocity1;
+		sf::Vector2f velocity2;
+
 	};
 
 
@@ -26,6 +36,8 @@ namespace myMath
 	double deg2rad(double angle);
 
 	double distBetweenPoints(sf::Vector2f p1, sf::Vector2f p2);
+
+	ElasticColRes calcElasticColl(sf::Vector2f velocity1, float mass1, sf::Vector2f velocity2, float mass2);
 
 }
 
