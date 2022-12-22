@@ -15,6 +15,7 @@ public:
 	virtual void beforePlay() {}
 	virtual void beginPlay() {}
 	virtual void process() {}
+	virtual void processDeltaTime(double deltaTime) {}
 	virtual void endGame() {}
 	virtual void draw() {}
 

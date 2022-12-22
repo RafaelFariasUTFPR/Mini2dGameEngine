@@ -19,7 +19,7 @@ public:
         bool& _isDynamic);
 
     void process() override;
-
+    void processDeltaTime(double deltaTime) override;
 
     sf::Vector2f getSpeed() { return speed; }
     double getRotationSpeed() { return rotationSpeed; }
@@ -40,16 +40,15 @@ public:
     bool isSolid = true;
     float mass = 1.0;
 
-    sf::Vector2f gravity = sf::Vector2f(0, 1);
+    sf::Vector2f gravity = sf::Vector2f(0, 100);
 
     myMath::Transform transform;
     myMath::Transform lastTransform;
 
     std::shared_ptr<C_Collider2d> collider;
-    sf::Vector2f velocity;
 
 private:
-    void updatePosition();
+    void updatePosition(double deltaTime);
     void applyGravity();
     sf::Vector2f speed;
     

@@ -36,13 +36,13 @@ int main()
     groundPlane->physicsComponent->setPosition(sf::Vector2f(200, 300));
     groundPlane->physicsComponent->setRotation(10);
 
-    /*
+    
     std::shared_ptr<Ground> groundPlane2 = std::make_shared<Ground>(&global, std::string("Ground"));
     game.enttHandler.addEntt(groundPlane2);
 
     groundPlane2->physicsComponent->setPosition(sf::Vector2f(350, 300));
     groundPlane2->physicsComponent->setRotation(90);
-    */
+    
     
 
     sf::Font arialFont;
@@ -79,7 +79,6 @@ int main()
         global.window.setFramerateLimit(fpsLock);
 
         //LOOP VAI AQUI
-        global.deltaTime = global.deltaClock.getElapsedTime().asSeconds();
 
         game.process();
         game.enttHandler.physicsProcess();
@@ -92,6 +91,7 @@ int main()
 
 
         //Update e resetando o deltaClock
+        global.deltaTime = global.deltaClock.getElapsedTime().asSeconds();
         ImGui::SFML::Update(global.window, global.deltaClock.restart());
 
         ImGui::Begin("DEBUG");

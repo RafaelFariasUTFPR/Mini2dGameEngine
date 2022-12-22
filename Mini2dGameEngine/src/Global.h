@@ -3,7 +3,6 @@
 
 
 
-
 namespace render {
 	typedef struct RenderArray {
 		sf::VertexArray vArray;
@@ -29,6 +28,9 @@ public:
 	sf::Clock deltaClock;
 	sf::RenderWindow window;
 	sf::Event events;
+
+	// Numero de subPassos para cada tick da simulação fisica
+	uint16_t physicsSubSteps = 2;
 	
 	render::RenderArray sceneArray;
 	render::RenderArray sceneBuffer;

@@ -38,9 +38,26 @@ void EnttHandler::process()
 
 void EnttHandler::physicsProcess()
 {
-	Coll2d::runCollisionSystem(entityVec, global);
+	double dtSubstep = global->deltaTime / global->physicsSubSteps;
+	std::vector<std::shared_ptr<C_Physics2d>> physicsCompVec;
+	for (int i = 0; i < entityVec.size(); i++)
+	{
+		if (entityVec.at(i) == nullptr)
+			continue;
+		for (int j = 0; j < entityVec[i]->componentHandler.componentVec.size(); j++)
+		{
+			if (std::dynamic_pointer_cast<C_Physics2d> (entityVec[i]->componentHandler.componentVec[j]))
+			{
+				physicsCompVec.push_back(std::dynamic_pointer_cast<C_Physics2d> (entityVec[i]->componentHandler.componentVec[j]));
 
+			}
+		}
+	}
 
+	for (int i = 0; i < global->physicsSubSteps; i++)
+	{
+		Coll2d::runCollisionSystem(physicsCompVec, dtSubstep, global);
+	}
 }
 
 void EnttHandler::draw()
