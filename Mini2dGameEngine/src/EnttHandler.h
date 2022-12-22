@@ -21,7 +21,6 @@ public:
 	void beforePlay();
 	void beginPlay();
 	void physicsProcess();
-	void threadPhysicsProcess(int min, int max);
 
 	void process();
 	void draw();

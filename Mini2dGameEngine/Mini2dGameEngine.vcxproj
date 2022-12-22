@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\SAT_Collision.cpp" />
     <ClCompile Include="src\C_Collider2d.cpp" />
     <ClCompile Include="src\MyMath.cpp" />
     <ClCompile Include="src\C_Physics2d.cpp" />
@@ -171,6 +172,7 @@
     <ClCompile Include="src\S_Collision2d.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\SAT_Collision.h" />
     <ClInclude Include="src\C_Collider2d.h" />
     <ClInclude Include="src\entts\Ground.h" />
     <ClInclude Include="src\MyMath.h" />

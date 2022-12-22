@@ -14,30 +14,6 @@
 #include "entts/Cube.h"
 #include "entts/Ground.h"
 
-//#define MULTYTHREAD
-
-
-
-#ifdef MULTYTHREAD
-std::atomic<bool> isRunning = false;
-
-void runPhysicsThread(EnttHandler *handler, int min, int max)
-{
-    //return;
-    while (isRunning)
-    {
-
-        sf::Clock clock;
-        handler->threadPhysicsProcess(min, max);
-        double delta = clock.getElapsedTime().asSeconds();
-
-        double fps = 1 / delta;
-        int intFps = (int)fps;
-        std::cout << intFps << std::endl;
-        
-    }
-}
-#endif // MULTYTHREAD
 
 
 int main()
@@ -52,17 +28,22 @@ int main()
     std::shared_ptr<Cube> myCube = std::make_shared<Cube>(&global, std::string("ALPHA"));
     game.enttHandler.addEntt(myCube);
 
+    
+    
     std::shared_ptr<Ground> groundPlane = std::make_shared<Ground>(&global, std::string("Ground"));
     game.enttHandler.addEntt(groundPlane);
 
     groundPlane->physicsComponent->setPosition(sf::Vector2f(200, 300));
     groundPlane->physicsComponent->setRotation(10);
 
+    /*
     std::shared_ptr<Ground> groundPlane2 = std::make_shared<Ground>(&global, std::string("Ground"));
     game.enttHandler.addEntt(groundPlane2);
 
     groundPlane2->physicsComponent->setPosition(sf::Vector2f(350, 300));
     groundPlane2->physicsComponent->setRotation(90);
+    */
+    
 
     sf::Font arialFont;
     sf::Text fpsText;
@@ -76,16 +57,6 @@ int main()
     game.beforePlay();
     game.beginPlay();
 
-#ifdef MULTYTHREAD
-
-    isRunning = true;
-    global.m.native_handle();
-    std::thread physicsThread(runPhysicsThread, &game.enttHandler, 0, 30);
-    //std::thread physicsThread2(runPhysicsThread, &game.enttHandler, 31, 60);
-    //std::thread physicsThread3(runPhysicsThread, &game.enttHandler, 61, 120);
-
-
-#endif // MULTYTHREAD
     sf::Texture t1;
     t1.loadFromFile("./resources/spriteSheet01.png");
     global.sceneArray.renderState.texture = &t1;
@@ -94,11 +65,6 @@ int main()
 
     while (global.window.isOpen())
     {
-#ifdef MULTYTHREAD
-#endif // MULTYTHREAD
-
-
-
 
         global.debugVertexArray.clear();
         
@@ -113,12 +79,10 @@ int main()
         global.window.setFramerateLimit(fpsLock);
 
         //LOOP VAI AQUI
-#ifndef MULTYTHREAD
-        game.enttHandler.physicsProcess();
-
-#endif // !MULTYTHREAD
+        global.deltaTime = global.deltaClock.getElapsedTime().asSeconds();
 
         game.process();
+        game.enttHandler.physicsProcess();
 
 
         //Calculando o FPS
@@ -126,7 +90,6 @@ int main()
         int intFps = (int)fps;
         fpsText.setString("FPS: " + std::to_string(intFps));
 
-        global.deltaTime = global.deltaClock.getElapsedTime().asSeconds();
 
         //Update e resetando o deltaClock
         ImGui::SFML::Update(global.window, global.deltaClock.restart());
@@ -161,13 +124,7 @@ int main()
 
         for (int i = 0; i < global.debugVertexArray.size(); i++)
             global.window.draw(global.debugVertexArray.at(i));
-#ifdef MULTYTHREAD
-        global.m.lock();
-        for (int i = 0; i < global.physicsThreadDebugVertexArray.size(); i++)
-            global.window.draw(global.physicsThreadDebugVertexArray.at(i));
-        global.physicsThreadDebugVertexArray.clear();
-        global.m.unlock();
-#endif
+
 
         global.sceneArray.vArray.clear();
         global.sceneArray.vArray = global.sceneBuffer.vArray;
@@ -183,15 +140,6 @@ int main()
 
 
     }
-#ifdef MULTYTHREAD
-    isRunning = false;
-    physicsThread.join();
-    //physicsThread2.join();
-    //physicsThread3.join();
-
-#endif
-
-    //physicsThread.join();
 
     game.endGame();
     ImGui::SFML::Shutdown();

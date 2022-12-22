@@ -17,7 +17,7 @@ public:
         collisionVertexArray.append(sf::Vertex(sf::Vector2f(25, -25)));
         collisionVertexArray.append(sf::Vertex(sf::Vector2f(25, 25)));
         collisionVertexArray.append(sf::Vertex(sf::Vector2f(-25, 25)));
-        collisionVertexArray.append(sf::Vertex(sf::Vector2f(-25, -25)));
+        //collisionVertexArray.append(sf::Vertex(sf::Vector2f(-25, -25)));
         colliderComponent->drawDebug = true;
         colliderComponent->setCollisionPoligon(collisionVertexArray);
 

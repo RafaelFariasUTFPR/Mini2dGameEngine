@@ -30,12 +30,11 @@ C_Physics2d::C_Physics2d(
 
 void C_Physics2d::process()
 {
-	float deltaGain = global->deltaTime * 2200;
 	setRotation(transform.rotation + (getRotationSpeed() * global->deltaTime));
-	setPosition(transform.position + sf::Vector2f((getSpeed().x * global->deltaTime), (getSpeed().y * global->deltaTime)));
-	velocity.x = (transform.position.x - lastPosition.x) * deltaGain;
-	velocity.y = (transform.position.y - lastPosition.y) * deltaGain;
-	lastPosition = transform.position;
+	applyGravity();
+	updatePosition();
+
+
 	ComponentMaster::process();
 }
 
@@ -43,8 +42,40 @@ myMath::Transform C_Physics2d::getTransform()
 {
 	return transform;
 }
-
+	
 void C_Physics2d::setRotation(double newRotation)
 {
 	transform.rotation = newRotation; 
 }
+void C_Physics2d::accelerate(sf::Vector2f _acceleration)
+{
+	acceleration += _acceleration;
+	//std::cout << acceleration.y << std::endl;
+}
+void C_Physics2d::updatePosition()
+{
+	if (!*isDynamic)
+		return;
+
+	const sf::Vector2f displacement = transform.position - lastTransform.position;
+	lastTransform.position = transform.position;
+
+	float dt = global->deltaTime;
+
+	sf::Vector2f newPos = (transform.position + displacement + (acceleration * dt * dt)) ;
+	
+	setPosition(newPos);
+
+
+	acceleration = {};
+
+}
+
+void C_Physics2d::applyGravity()
+{
+	if (*isDynamic)
+	{
+		accelerate(gravity);
+	}
+}
+

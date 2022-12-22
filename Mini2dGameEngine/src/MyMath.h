@@ -37,7 +37,21 @@ namespace myMath
 
 	double distBetweenPoints(sf::Vector2f p1, sf::Vector2f p2);
 
-	ElasticColRes calcElasticColl(sf::Vector2f velocity1, float mass1, sf::Vector2f velocity2, float mass2);
+
+
+	float DotProduct(sf::Vector2f v0, sf::Vector2f v1);
+
+	float CrossProduct(sf::Vector2f v0, sf::Vector2f v1);
+
+	float Distance(sf::Vector2f v0, sf::Vector2f v1);
+
+	float Length(sf::Vector2f v);
+
+	sf::Vector2f Normalize(sf::Vector2f v);
+
+
+	//sf::Vector2f VecAbs(sf::Vector2f v);
+
 
 }
 

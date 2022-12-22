@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
-#include <mutex>
+
 
 
 namespace render {
@@ -37,7 +37,6 @@ public:
 	std::vector <sf::VertexArray> debugVertexArray;
 	std::vector <sf::VertexArray> physicsThreadDebugVertexArray;
 
-	std::mutex m;
 
 
 
