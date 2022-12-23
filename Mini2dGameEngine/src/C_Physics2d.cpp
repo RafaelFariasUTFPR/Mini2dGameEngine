@@ -63,13 +63,13 @@ void C_Physics2d::updatePosition(float deltaTime)
 {
 	if (!*isDynamic)
 		return;
-	calculateSpeed(deltaTime);
+	//calculateSpeed(deltaTime);
 
 	applyGravity();
 	setSpeed((transform.position - lastTransform.position));
 	lastTransform.position = transform.position;
 
-	sf::Vector2f newPos = transform.position + (speed * deltaTime) + (0.5f * (acceleration * deltaTime * deltaTime));
+	sf::Vector2f newPos = transform.position + (speed) + (0.5f * (acceleration * deltaTime * deltaTime));
 
 	setPosition(newPos);
 

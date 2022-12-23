@@ -14,7 +14,13 @@
 #include "entts/Cube.h"
 #include "entts/Ground.h"
 
-
+void threadPhysicsUpdate(Game* game)
+{
+    while (game->running)
+    {
+        game->enttHandler.physicsProcess();
+    }
+}
 
 int main()
 {
@@ -62,7 +68,7 @@ int main()
     global.sceneArray.renderState.texture = &t1;
     global.sceneBuffer.renderState.texture = &t1;
     
-
+    std::thread physicsThread(threadPhysicsUpdate, &game);
     while (global.window.isOpen())
     {
 
@@ -80,15 +86,19 @@ int main()
 
         //LOOP VAI AQUI
 
-        game.enttHandler.physicsProcess();
+        //game.enttHandler.physicsProcess();
+
         game.process();
 
 
         //Calculando o FPS
-        double fps = 1 / (global.deltaTime);
+        float fps = 1 / (global.deltaTime);
         int intFps = (int)fps;
-        fpsText.setString("FPS: " + std::to_string(intFps));
 
+        float physicsHeartz = 1/global.actualPhysicsUpdateTime;
+        int intHeartz = (int)physicsHeartz;
+
+        fpsText.setString("FPS: " + std::to_string(intFps) + "\nSIM: " + std::to_string(intHeartz));
 
         //Update e resetando o deltaClock
         global.deltaTime = global.deltaClock.getElapsedTime().asSeconds();
@@ -141,7 +151,8 @@ int main()
 
 
     }
-
+    game.running = false;
     game.endGame();
+    physicsThread.join();
     ImGui::SFML::Shutdown();
 }

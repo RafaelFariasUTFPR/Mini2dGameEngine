@@ -30,7 +30,8 @@ public:
 	sf::Event events;
 
 	// Numero de subPassos para cada tick da simulação fisica
-	uint16_t physicsSubSteps = 2;
+	uint16_t physicsSubSteps = 4;
+	float actualPhysicsUpdateTime;
 	
 	render::RenderArray sceneArray;
 	render::RenderArray sceneBuffer;

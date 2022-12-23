@@ -5,7 +5,7 @@
 EnttHandler::EnttHandler(Global& globalVariables)
 {
 	global = &globalVariables;
-
+	substepDt = stepDt / global->physicsSubSteps;
 }
 
 void EnttHandler::beforePlay()
@@ -57,20 +57,20 @@ void EnttHandler::physicsProcess()
 	//double dtSubstep = 0.015;
 	double startingTime = physicsClock.getElapsedTime().asSeconds() ;
 	
-	float physicsTime = 0.015;
-	double currentTime = 0;
-	uint16_t numberOfSubSteps = 0;
-	do
-	{
-		numberOfSubSteps++;
-		currentTime = physicsClock.getElapsedTime().asSeconds();
-		if (numberOfSubSteps < 10)
-		{
-			double dt = currentTime - startingTime;
-			Coll2d::runCollisionSystem(physicsCompVec, dt, global);
-		}
-	} while (currentTime < physicsTime);
 
+	double currentTime = 0;
+	
+	for (uint8_t i = 0; i < global->physicsSubSteps; i++)
+	{
+		Coll2d::runCollisionSystem(physicsCompVec, substepDt, global);
+	}
+	currentTime = physicsClock.getElapsedTime().asSeconds();
+	while (currentTime < stepDt)
+	{
+		currentTime = physicsClock.getElapsedTime().asSeconds();
+
+	}
+	global->actualPhysicsUpdateTime = currentTime;
 	//printf("Number of steps %u\n", numberOfSubSteps);
 }
 

@@ -15,7 +15,7 @@ public:
 	void endGame();
 
 
-
+	bool running = true;
 
 	EnttHandler enttHandler;
 
