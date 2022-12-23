@@ -129,6 +129,30 @@ namespace myMath
 		return length ? v / length : sf::Vector2f();
 	}
 
+	sf::Vector2f GetCenter(sf::VertexArray body) {
+		sf::Vector2f center;
+
+		uint32_t count = body.getVertexCount();
+
+		float A = 0.0f;
+
+		float area = 0.0f;
+
+		for (uint32_t i = 0; i < count; i++) {
+			auto& v0 = body[i].position;
+			auto& v1 = body[i + 1 != count ? i + 1 : 0].position;
+			float b = myMath::CrossProduct(v0, v1);
+
+			A += b;
+
+			center += (v0 + v1) * b;
+		}
+
+		center *= 1.0f / (3.0f * A);
+
+		return center;
+	}
+
 	/*
 	sf::Vector2f VecAbs(sf::Vector2f v) {
 		return sf::Vector2f

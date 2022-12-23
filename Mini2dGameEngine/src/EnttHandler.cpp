@@ -38,7 +38,8 @@ void EnttHandler::process()
 
 void EnttHandler::physicsProcess()
 {
-	double dtSubstep = global->deltaTime / global->physicsSubSteps;
+	physicsClock.restart();
+
 	std::vector<std::shared_ptr<C_Physics2d>> physicsCompVec;
 	for (int i = 0; i < entityVec.size(); i++)
 	{
@@ -49,15 +50,28 @@ void EnttHandler::physicsProcess()
 			if (std::dynamic_pointer_cast<C_Physics2d> (entityVec[i]->componentHandler.componentVec[j]))
 			{
 				physicsCompVec.push_back(std::dynamic_pointer_cast<C_Physics2d> (entityVec[i]->componentHandler.componentVec[j]));
-
 			}
 		}
 	}
 
-	for (int i = 0; i < global->physicsSubSteps; i++)
+	//double dtSubstep = 0.015;
+	double startingTime = physicsClock.getElapsedTime().asSeconds() ;
+	
+	float physicsTime = 0.015;
+	double currentTime = 0;
+	uint16_t numberOfSubSteps = 0;
+	do
 	{
-		Coll2d::runCollisionSystem(physicsCompVec, dtSubstep, global);
-	}
+		numberOfSubSteps++;
+		currentTime = physicsClock.getElapsedTime().asSeconds();
+		if (numberOfSubSteps < 10)
+		{
+			double dt = currentTime - startingTime;
+			Coll2d::runCollisionSystem(physicsCompVec, dt, global);
+		}
+	} while (currentTime < physicsTime);
+
+	//printf("Number of steps %u\n", numberOfSubSteps);
 }
 
 void EnttHandler::draw()

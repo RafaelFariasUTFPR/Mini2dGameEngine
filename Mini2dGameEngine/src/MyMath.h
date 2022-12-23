@@ -49,6 +49,8 @@ namespace myMath
 
 	sf::Vector2f Normalize(sf::Vector2f v);
 
+	sf::Vector2f GetCenter(sf::VertexArray body);
+
 
 	//sf::Vector2f VecAbs(sf::Vector2f v);
 

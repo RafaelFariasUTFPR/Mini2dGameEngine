@@ -18,7 +18,7 @@ void Cube::beginPlay()
 
 void Cube::process()
 {
-	float movementSpeed = 2 * global->deltaTime;;
+	float movementSpeed = 20 * global->deltaTime;
 	sf::Vector2f movementVector = sf::Vector2f();
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
@@ -47,7 +47,7 @@ void Cube::process()
 
 
 
-	physicsComponent->setPosition(physicsComponent->getTransform().position + movementVector);
+	physicsComponent->setPosition(movementVector + physicsComponent->getTransform().position);
 
 	EntityMaster::process();
 }

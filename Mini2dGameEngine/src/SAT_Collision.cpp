@@ -1,3 +1,5 @@
+// CREDITOS https://github.com/xSnapi/SAT-Collision
+
 #include "SAT_Collision.h"
 
 namespace SAT
@@ -54,7 +56,7 @@ namespace SAT
 			}
 		}
 
-		if (myMath::DotProduct(GetCenter(body) - GetCenter(other), result.displacement) < 0.0f)
+		if (myMath::DotProduct(myMath::GetCenter(bodyVertices) - myMath::GetCenter(otherVertices), result.displacement) < 0.0f)
 			result.displacement *= -1.0f;
 		/*
 		if (body.Trigger)
@@ -155,29 +157,7 @@ namespace SAT
 		return true;
 	}
 	*/
-	sf::Vector2f GetCenter(C_Collider2d body){
-		sf::Vector2f center;
 	
-		uint32_t count = body.getCollisionPoligon().getVertexCount();
-
-		float A = 0.0f;
-
-		float area = 0.0f;
-
-		for (uint32_t i = 0; i < count; i++) {
-			auto& v0 = body.getCollisionPoligon()[i].position;
-			auto& v1 = body.getCollisionPoligon()[i + 1 != count ? i + 1 : 0].position;
-			float b = myMath::CrossProduct(v0, v1);
-
-			A += b;
-
-			center += (v0 + v1) * b;
-		}
-
-		center *= 1.0f / (3.0f * A);
-
-		return center;
-	}
 
 	sf::Vector2f CircleAxis(sf::VertexArray vertices, uint32_t count, sf::Vector2f center) {
 		sf::Vector2f axis;
@@ -209,6 +189,7 @@ namespace SAT
 		}
 
 		sf::Vector2f v = myMath::Normalize(vertices[i0].position - vertices[i1].position);
+
 
 		return
 		{

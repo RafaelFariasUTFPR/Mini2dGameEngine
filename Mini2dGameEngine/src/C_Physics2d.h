@@ -40,17 +40,18 @@ public:
     bool isSolid = true;
     float mass = 1.0;
 
-    sf::Vector2f gravity = sf::Vector2f(0, 100);
+    sf::Vector2f gravity = sf::Vector2f(0, 1000);
 
     myMath::Transform transform;
     myMath::Transform lastTransform;
 
     std::shared_ptr<C_Collider2d> collider;
+    void calculateSpeed(float dt);
 
 private:
-    void updatePosition(double deltaTime);
+    void updatePosition(float deltaTime);
     void applyGravity();
-    sf::Vector2f speed;
+    sf::Vector2f speed = sf::Vector2f(0,0);
     
     sf::Vector2f acceleration = sf::Vector2f(0,0);
     double rotationSpeed = 0;

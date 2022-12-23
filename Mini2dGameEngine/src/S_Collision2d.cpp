@@ -28,8 +28,10 @@ void Coll2d::runCollisionSystem(std::vector<std::shared_ptr<C_Physics2d>> physic
 				continue;
 
 			if (result.result)
+			{
 				physicsCompVec.at(i)->transform.position += result.displacement;
-			//std::cout << result.result << std::endl;
+
+			}
 
 		}
 

@@ -59,18 +59,18 @@ void C_Physics2d::accelerate(sf::Vector2f _acceleration)
 	acceleration += _acceleration;
 	//std::cout << acceleration.y << std::endl;
 }
-void C_Physics2d::updatePosition(double deltaTime)
+void C_Physics2d::updatePosition(float deltaTime)
 {
 	if (!*isDynamic)
 		return;
+	calculateSpeed(deltaTime);
 
-	const sf::Vector2f displacement = transform.position - lastTransform.position;
+	applyGravity();
+	setSpeed((transform.position - lastTransform.position));
 	lastTransform.position = transform.position;
 
-	float dt = deltaTime;
+	sf::Vector2f newPos = transform.position + (speed * deltaTime) + (0.5f * (acceleration * deltaTime * deltaTime));
 
-	sf::Vector2f newPos = (transform.position + (displacement + (acceleration * dt * dt)));
-	
 	setPosition(newPos);
 
 
@@ -86,3 +86,7 @@ void C_Physics2d::applyGravity()
 	}
 }
 
+void C_Physics2d::calculateSpeed(float dt)
+{
+	setSpeed(speed + (acceleration * dt));
+}

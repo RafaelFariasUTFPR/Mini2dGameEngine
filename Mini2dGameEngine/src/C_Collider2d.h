@@ -24,7 +24,10 @@ public:
     double influenceRadius = 0;
 
 private:
+    // Shape of the collider
     sf::VertexArray collisionVertexArray;
+
+    // Actual collider
     sf::VertexArray collisionPoligon;
 
 };

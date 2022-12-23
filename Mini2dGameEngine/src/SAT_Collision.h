@@ -1,3 +1,5 @@
+// CREDITOS https://github.com/xSnapi/SAT-Collision
+
 #pragma once
 
 #include <SFML/Graphics.hpp>
@@ -31,7 +33,6 @@ namespace SAT
 	sf::Vector2f ProjectOnto(sf::VertexArray vertices, uint32_t count, sf::Vector2f axis);
 	sf::Vector2f ProjectCircle(sf::Vector2f circleCenter, float radius, sf::Vector2f axis);
 
-	sf::Vector2f GetCenter(C_Collider2d body);
 
 	float Overlap(sf::Vector2f v0, sf::Vector2f v1);
 }

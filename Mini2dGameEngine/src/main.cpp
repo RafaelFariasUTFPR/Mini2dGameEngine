@@ -80,18 +80,19 @@ int main()
 
         //LOOP VAI AQUI
 
-        game.process();
         game.enttHandler.physicsProcess();
+        game.process();
 
 
         //Calculando o FPS
-        double fps = 1 / global.deltaTime;
+        double fps = 1 / (global.deltaTime);
         int intFps = (int)fps;
         fpsText.setString("FPS: " + std::to_string(intFps));
 
 
         //Update e resetando o deltaClock
         global.deltaTime = global.deltaClock.getElapsedTime().asSeconds();
+        //std::cout << global.deltaTime << std::endl;
         ImGui::SFML::Update(global.window, global.deltaClock.restart());
 
         ImGui::Begin("DEBUG");

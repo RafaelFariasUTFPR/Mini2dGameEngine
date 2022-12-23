@@ -14,7 +14,7 @@ C_Collider2d::C_Collider2d(Global* globalVariables) : ComponentMaster(globalVari
 void C_Collider2d::setCollisionPoligon(sf::VertexArray _collisionVertexArray)
 {
 	collisionVertexArray = _collisionVertexArray;
-	collisionVertexArray.setPrimitiveType(sf::LinesStrip);
+	collisionVertexArray.setPrimitiveType(sf::LineStrip);
 
 	for (int i = 0; i < collisionVertexArray.getVertexCount() - 1; i++)
 	{
@@ -45,8 +45,14 @@ void C_Collider2d::process()
 
 void C_Collider2d::draw()
 {
-	if (drawDebug)
-		global->window.draw(collisionPoligon);
+	if (drawDebug && collisionPoligon.getVertexCount())
+	{
+		sf::VertexArray collisionDebugVertexArray = collisionPoligon;
+		collisionDebugVertexArray.append(collisionPoligon[0]);
+
+		global->window.draw(collisionDebugVertexArray);
+
+	}
 
 	ComponentMaster::draw();
 }

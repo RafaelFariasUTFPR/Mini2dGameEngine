@@ -45,6 +45,7 @@ private:
 	Global* global;
 	
 	std::vector<std::shared_ptr<EntityMaster>> entityVec;
+	sf::Clock physicsClock;
 
 };
 
