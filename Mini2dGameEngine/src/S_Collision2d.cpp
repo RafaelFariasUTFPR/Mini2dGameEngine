@@ -24,12 +24,21 @@ void Coll2d::runCollisionSystem(std::vector<std::shared_ptr<C_Physics2d>> physic
 			SAT::ColResult result = SAT::SATCollision(*physicsCompVec.at(i)->collider, *physicsCompVec.at(i2)->collider);
 
 			// Talvez tirar isso
-			if (!physicsCompVec.at(i)->getIsDynamic())
-				continue;
+			//if (!physicsCompVec.at(i)->getIsDynamic())
+			//	continue;
 
 			if (result.result)
 			{
-				physicsCompVec.at(i)->transform.position += result.displacement;
+				myMath::CollResult solveResult = myMath::calculateInelasticCollision(physicsCompVec.at(i)->getSpeed(), physicsCompVec.at(i)->mass, physicsCompVec.at(i2)->getSpeed(), physicsCompVec.at(i2)->mass, 1);
+				if (physicsCompVec.at(i)->getIsDynamic())
+				{
+					physicsCompVec.at(i)->transform.position += result.displacement;
+					physicsCompVec.at(i)->setSpeed(physicsCompVec.at(i)->getSpeed() + (solveResult.velocity1 - physicsCompVec.at(i)->getSpeed()));
+
+				}
+				if (physicsCompVec.at(i2)->getIsDynamic())
+					physicsCompVec.at(i2)->setSpeed(physicsCompVec.at(i2)->getSpeed() + (solveResult.velocity2 - physicsCompVec.at(i2)->getSpeed()));
+
 
 			}
 

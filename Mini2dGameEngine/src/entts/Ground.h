@@ -24,7 +24,7 @@ public:
         colliderComponent->drawDebug = true;
         colliderComponent->setCollisionPoligon(collisionVertexArray);
 
-        physicsComponent->mass = 1000.1;
+        physicsComponent->mass = 1;
         isDynamic = false;
         // Adicionando os componentes
         componentHandler.addComponent(renderComponent);

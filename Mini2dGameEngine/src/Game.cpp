@@ -14,6 +14,7 @@ void Game::beforePlay()
 void Game::beginPlay()
 {
 	enttHandler.beginPlay();
+	running = true;
 }
 
 void Game::process()
@@ -28,6 +29,7 @@ void Game::draw()
 
 void Game::endGame()
 {
+	running = false;
 	enttHandler.endGame();
 }
 

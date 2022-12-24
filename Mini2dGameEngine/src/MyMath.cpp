@@ -163,5 +163,16 @@ namespace myMath
 	}
 	*/
 
+	CollResult calculateInelasticCollision(sf::Vector2f velocity1, float mass1, sf::Vector2f velocity2, float mass2, float elasticity)
+	{
+		CollResult result;
+		result.velocity1 = (elasticity * mass2 * (velocity2 - velocity1)) + (mass1 * velocity1) + (mass2 * velocity2);
+		result.velocity1 = result.velocity1 / (mass1 + mass2);
+
+		
+		result.velocity2 = (elasticity * mass1 * (velocity1 - velocity2)) + (mass1 * velocity1) + (mass2 * velocity2);
+		result.velocity2 = result.velocity1 / (mass1 + mass2);
+		return result;
+	}
 
 }

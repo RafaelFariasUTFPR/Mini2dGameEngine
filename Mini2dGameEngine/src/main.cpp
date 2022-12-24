@@ -35,7 +35,6 @@ int main()
     game.enttHandler.addEntt(myCube);
 
     
-    
     std::shared_ptr<Ground> groundPlane = std::make_shared<Ground>(&global, std::string("Ground"));
     game.enttHandler.addEntt(groundPlane);
 
@@ -151,7 +150,6 @@ int main()
 
 
     }
-    game.running = false;
     game.endGame();
     physicsThread.join();
     ImGui::SFML::Shutdown();

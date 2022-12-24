@@ -17,7 +17,7 @@ namespace myMath
 		double rotation = 0;
 	};
 
-	struct ElasticColRes
+	struct CollResult
 	{
 		sf::Vector2f velocity1;
 		sf::Vector2f velocity2;
@@ -54,7 +54,7 @@ namespace myMath
 
 	//sf::Vector2f VecAbs(sf::Vector2f v);
 
-
+	CollResult calculateInelasticCollision(sf::Vector2f velocity1, float mass1, sf::Vector2f velocity2, float mass2, float elasticity);
 }
 
 

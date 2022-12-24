@@ -63,13 +63,23 @@ void EnttHandler::physicsProcess()
 	for (uint8_t i = 0; i < global->physicsSubSteps; i++)
 	{
 		Coll2d::runCollisionSystem(physicsCompVec, substepDt, global);
+		currentTime = physicsClock.getElapsedTime().asSeconds();
+		double finishedCalcTime = physicsClock.getElapsedTime().asSeconds();
+		while (currentTime < finishedCalcTime + substepDt)
+		{
+			currentTime = physicsClock.getElapsedTime().asSeconds();
+
+		}
+
 	}
+	/*
 	currentTime = physicsClock.getElapsedTime().asSeconds();
 	while (currentTime < stepDt)
 	{
 		currentTime = physicsClock.getElapsedTime().asSeconds();
 
 	}
+	*/
 	global->actualPhysicsUpdateTime = currentTime;
 	//printf("Number of steps %u\n", numberOfSubSteps);
 }

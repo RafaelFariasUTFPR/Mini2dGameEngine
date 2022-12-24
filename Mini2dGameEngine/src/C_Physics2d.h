@@ -40,7 +40,7 @@ public:
     bool isSolid = true;
     float mass = 1.0;
 
-    sf::Vector2f gravity = sf::Vector2f(0, 100);
+    sf::Vector2f gravity = sf::Vector2f(0, 0);
 
     myMath::Transform transform;
     myMath::Transform lastTransform;
