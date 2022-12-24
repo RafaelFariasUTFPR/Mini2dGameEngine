@@ -38,6 +38,12 @@ void EnttHandler::process()
 
 void EnttHandler::physicsProcess()
 {
+	while (operateEnttMutex.try_lock())
+	{
+
+	}
+	
+
 	physicsClock.restart();
 
 	std::vector<std::shared_ptr<C_Physics2d>> physicsCompVec;
@@ -80,6 +86,8 @@ void EnttHandler::physicsProcess()
 
 	}
 	*/
+	operateEnttMutex.unlock();
+
 	global->actualPhysicsUpdateTime = currentTime;
 	//printf("Number of steps %u\n", numberOfSubSteps);
 }
@@ -113,12 +121,18 @@ void EnttHandler::addEntt(std::shared_ptr<EntityMaster> entity)
 
 void EnttHandler::deleteEntt(int enttId)
 {
+	operateEnttMutex.lock();
 	if (entityVec.size() == 0)
+	{
+		operateEnttMutex.unlock();
 		return;
-	
+	}
+
 	entityVec.erase(entityVec.begin() + enttId);
 	for (int i = enttId; i < entityVec.size(); i++)
 		entityVec.at(i)->id = i;
-	
-	
+
+		
+	operateEnttMutex.unlock();
+
 }

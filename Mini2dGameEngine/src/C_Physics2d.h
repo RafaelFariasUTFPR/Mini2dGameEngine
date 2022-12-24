@@ -1,5 +1,7 @@
 #pragma once
 
+#include <mutex>
+
 #include "ComponentMaster.h"
 #include "MyMath.h"
 
@@ -25,7 +27,12 @@ public:
     double getRotationSpeed() { return rotationSpeed; }
     bool getIsDynamic() { return *isDynamic; }
 
-    void setPosition(sf::Vector2f newPosition) { transform->position = newPosition; }
+    void setPosition(sf::Vector2f newPosition) 
+    { 
+        positionMutex.lock();
+        transform->position = newPosition;
+        positionMutex.unlock();
+    }
     void setRotation(double newRotation);
     void setSpeed(sf::Vector2f newSpeed) { speed = newSpeed; }
 
@@ -39,7 +46,7 @@ public:
     bool isSolid = true;
     float mass = 1.0;
 
-    sf::Vector2f gravity = sf::Vector2f(0, 0);
+    sf::Vector2f gravity = sf::Vector2f(0, 2);
 
     myMath::Transform lastTransform;
 
@@ -56,5 +63,7 @@ private:
 
     // Ponteiro para a variavel "isDynamic" da entidade
     bool* isDynamic;
+
+    std::mutex positionMutex;
 };
 

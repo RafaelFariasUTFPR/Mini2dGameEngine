@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <iostream>
+#include <mutex>
 
 
 
@@ -46,9 +47,11 @@ private:
 	
 	std::vector<std::shared_ptr<EntityMaster>> entityVec;
 	sf::Clock physicsClock;
-	uint8_t physicsHertz = 120;
+	uint8_t physicsHertz = 60;
 	float stepDt = 1.0f / (float)physicsHertz;
 	float substepDt;
 
+
+	std::mutex operateEnttMutex;
 };
 
