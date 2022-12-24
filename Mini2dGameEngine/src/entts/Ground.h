@@ -14,6 +14,10 @@ class Ground :
 public:
     Ground(Global* globalVariables, std::string myName) : EntityMaster(globalVariables, myName)
     {
+        componentHandler.addComponent(renderComponent);
+        componentHandler.addComponent(physicsComponent);
+        componentHandler.addComponent(colliderComponent);
+
         // Boundaries of the collision polygon
         sf::VertexArray collisionVertexArray;
         collisionVertexArray.append(sf::Vertex(sf::Vector2f(-128, -20)));
@@ -27,9 +31,7 @@ public:
         physicsComponent->mass = 1;
         isDynamic = false;
         // Adicionando os componentes
-        componentHandler.addComponent(renderComponent);
-        componentHandler.addComponent(physicsComponent);
-        componentHandler.addComponent(colliderComponent);
+
 
         
 
@@ -46,9 +48,9 @@ public:
 
 
     // Criando os componenetes
-    std::shared_ptr<C_RenderSprite> renderComponent = std::make_shared<C_RenderSprite>(global, sf::Vector2u(256, 0), sf::Vector2f(256, 40), sf::Vector2u(256, 40));
-    std::shared_ptr<C_Collider2d> colliderComponent = std::make_shared<C_Collider2d>(global);
-    std::shared_ptr<C_Physics2d> physicsComponent = std::make_shared<C_Physics2d>(global, transform, colliderComponent, isDynamic);
+    std::shared_ptr<C_RenderSprite> renderComponent = std::make_shared<C_RenderSprite>(sf::Vector2u(256, 0), sf::Vector2f(256, 40), sf::Vector2u(256, 40));
+    std::shared_ptr<C_Collider2d> colliderComponent = std::make_shared<C_Collider2d>();
+    std::shared_ptr<C_Physics2d> physicsComponent = std::make_shared<C_Physics2d>(colliderComponent, isDynamic);
 
 };
 

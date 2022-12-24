@@ -9,10 +9,10 @@ class C_Physics2d :
     public ComponentMaster
 {
 public:
-    C_Physics2d(Global* globalVariables, myMath::Transform initialTransform, std::shared_ptr<C_Collider2d> _collider, bool& _isDynamic);
     C_Physics2d(
-        Global* globalVariables, 
-        myMath::Transform initialTransform,
+        std::shared_ptr<C_Collider2d> _collider, 
+        bool& _isDynamic);
+    C_Physics2d(
         sf::Vector2f initialSpeed,
         double initialRotationSpeed,
         std::shared_ptr<C_Collider2d> _collider,
@@ -24,9 +24,8 @@ public:
     sf::Vector2f getSpeed() { return speed; }
     double getRotationSpeed() { return rotationSpeed; }
     bool getIsDynamic() { return *isDynamic; }
-    myMath::Transform getTransform();
 
-    void setPosition(sf::Vector2f newPosition) { transform.position = newPosition; }
+    void setPosition(sf::Vector2f newPosition) { transform->position = newPosition; }
     void setRotation(double newRotation);
     void setSpeed(sf::Vector2f newSpeed) { speed = newSpeed; }
 
@@ -42,7 +41,6 @@ public:
 
     sf::Vector2f gravity = sf::Vector2f(0, 0);
 
-    myMath::Transform transform;
     myMath::Transform lastTransform;
 
     std::shared_ptr<C_Collider2d> collider;

@@ -1,6 +1,8 @@
 #include "C_Physics2d.h"
 
-C_Physics2d::C_Physics2d(Global* globalVariables, myMath::Transform initialTransform, std::shared_ptr<C_Collider2d> _collider, bool& _isDynamic) : ComponentMaster(globalVariables)
+C_Physics2d::C_Physics2d(
+	std::shared_ptr<C_Collider2d> _collider, 
+	bool& _isDynamic) : ComponentMaster()
 {
 	collider = _collider;
 	controlsTransform = true;
@@ -10,16 +12,12 @@ C_Physics2d::C_Physics2d(Global* globalVariables, myMath::Transform initialTrans
 }
 
 C_Physics2d::C_Physics2d(
-	Global* globalVariables,
-	myMath::Transform initialTransform,
 	sf::Vector2f initialSpeed,
 	double initialRotationSpeed,
 	std::shared_ptr<C_Collider2d> _collider,
-	bool& _isDynamic) :
-		ComponentMaster(globalVariables)
+	bool& _isDynamic) : ComponentMaster()
 {
 	
-	transform = initialTransform;
 	setSpeed(initialSpeed);
 	setRotationSpeed(initialRotationSpeed);
 	collider = _collider;
@@ -32,27 +30,21 @@ C_Physics2d::C_Physics2d(
 void C_Physics2d::process()
 {
 
-
-
 	ComponentMaster::process();
 }
 
 void C_Physics2d::processDeltaTime(double deltaTime)
 {
-	setRotation(transform.rotation + (getRotationSpeed() * global->deltaTime));
+	setRotation(transform->rotation + (getRotationSpeed() * global->deltaTime));
 	applyGravity();
 	updatePosition(deltaTime);
 	ComponentMaster::processDeltaTime(deltaTime);
 }
 
-myMath::Transform C_Physics2d::getTransform()
-{
-	return transform;
-}
 	
 void C_Physics2d::setRotation(double newRotation)
 {
-	transform.rotation = newRotation; 
+	transform->rotation = newRotation; 
 }
 void C_Physics2d::accelerate(sf::Vector2f _acceleration)
 {
@@ -66,9 +58,9 @@ void C_Physics2d::updatePosition(float deltaTime)
 
 	applyGravity();
 	//setSpeed((transform.position - lastTransform.position));
-	lastTransform.position = transform.position;
+	lastTransform.position = transform->position;
 	calculateSpeed(deltaTime);
-	sf::Vector2f newPos = transform.position + (speed) + (0.5f * (acceleration * deltaTime * deltaTime));
+	sf::Vector2f newPos = transform->position + (speed) + (0.5f * (acceleration * deltaTime * deltaTime));
 
 	setPosition(newPos);
 

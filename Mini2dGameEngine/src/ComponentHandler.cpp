@@ -1,15 +1,14 @@
 #include "ComponentHandler.h"
 
 
-ComponentHandler::ComponentHandler(Global* globalVariables)
+ComponentHandler::ComponentHandler(Global* globalVariables, myMath::Transform* enttTransform)
 {
 	global = globalVariables;
-	transform.position = sf::Vector2f(200, 200);
+	transform = enttTransform;
 }
 
 ComponentHandler::~ComponentHandler()
 {
-	//std::cout << "Delet";
 
 }
 
@@ -27,12 +26,7 @@ void ComponentHandler::beginPlay()
 void ComponentHandler::process()
 {
 	for (int i = 0; i < componentVec.size(); i++)
-	{
-		if (componentVec.at(i)->controlsTransform)
-			transform = componentVec.at(i)->getTransform();
-		else
-			componentVec.at(i)->setTransform(transform);
-	
+	{	
 		componentVec.at(i)->process();
 	}
 
@@ -53,4 +47,5 @@ void ComponentHandler::endGame()
 void ComponentHandler::addComponent(std::shared_ptr<ComponentMaster> component)
 {
 	componentVec.push_back(component);
+	component->setPointers(global, transform);
 }

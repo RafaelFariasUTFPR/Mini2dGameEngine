@@ -1,12 +1,12 @@
 #include "C_Collider2d.h"
 
-C_Collider2d::C_Collider2d(Global* globalVariables, sf::VertexArray _collisionVertexArray) : ComponentMaster(globalVariables)
+C_Collider2d::C_Collider2d(sf::VertexArray _collisionVertexArray) : ComponentMaster()
 {
 	setCollisionPoligon(_collisionVertexArray);
 
 }
 
-C_Collider2d::C_Collider2d(Global* globalVariables) : ComponentMaster(globalVariables)
+C_Collider2d::C_Collider2d()
 {
 
 }
@@ -34,8 +34,8 @@ void C_Collider2d::process()
 
 	for (int i = 0; i < collisionPoligon.getVertexCount(); i++)
 	{
-		collisionPoligon[i].position += transform.position;
-		collisionPoligon[i].position = myMath::rotatePointArrounPoint(collisionPoligon[i].position, transform.position, transform.rotation);
+		collisionPoligon[i].position += transform->position;
+		collisionPoligon[i].position = myMath::rotatePointArrounPoint(collisionPoligon[i].position, transform->position, transform->rotation);
 	}
 
 

@@ -6,11 +6,11 @@
 
 #include "ComponentMaster.h"
 #include "Global.h"
-
+#include "MyMath.h"
 class ComponentHandler
 {
 public:
-	ComponentHandler(Global* globalVariables);
+	ComponentHandler(Global* globalVariables, myMath::Transform* enttTransform);
 	~ComponentHandler();
 
 	void beforePlay();
@@ -22,13 +22,12 @@ public:
 	void addComponent(std::shared_ptr<ComponentMaster> component);
 
 
-	//Standard Variables
-	myMath::Transform transform;
 
 	std::vector<std::shared_ptr<ComponentMaster>> componentVec;
 
 private:
 	Global* global;
+	myMath::Transform* transform;
 
 };
 

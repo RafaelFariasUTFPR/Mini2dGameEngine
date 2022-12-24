@@ -10,7 +10,7 @@
 class ComponentMaster
 {
 public:
-	ComponentMaster(Global* globalVariables);
+	ComponentMaster();
 
 	virtual void beforePlay() {}
 	virtual void beginPlay() {}
@@ -19,13 +19,15 @@ public:
 	virtual void endGame() {}
 	virtual void draw() {}
 
-	virtual myMath::Transform getTransform() { return transform; }
-	void setTransform(myMath::Transform _transform) { transform = _transform; }
+	void setPointers(Global* globalVariables, myMath::Transform* enttTransform);
+
+	virtual myMath::Transform getTransform() { return *transform; }
+	void setTransform(myMath::Transform _transform) { *transform = _transform; }
 
 	bool controlsTransform = false;
+	myMath::Transform* transform;
 
 protected:
-	myMath::Transform transform;
 	Global* global;
 };
 

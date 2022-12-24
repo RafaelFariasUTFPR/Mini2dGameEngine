@@ -1,6 +1,9 @@
 #include "C_RenderSprite.h"
 
-C_RenderSprite::C_RenderSprite(Global* globalVariables, sf::Vector2u _tileCoordinate, sf::Vector2f _dimension, sf::Vector2u _spriteDimensionInPixels) : ComponentMaster(globalVariables)
+C_RenderSprite::C_RenderSprite(
+    sf::Vector2u _tileCoordinate, 
+    sf::Vector2f _dimension, 
+    sf::Vector2u _spriteDimensionInPixels) : ComponentMaster()
 {
     tileCoordinate = _tileCoordinate;
     quad = sf::VertexArray(sf::Quads, 4);
@@ -11,7 +14,6 @@ C_RenderSprite::C_RenderSprite(Global* globalVariables, sf::Vector2u _tileCoordi
 
     setSpriteParameters(_spriteDimensionInPixels);
 
-    updateVertexPosition();
 }
 
 void C_RenderSprite::setPivotOffset(sf::Vector2f offset)
@@ -49,18 +51,22 @@ void C_RenderSprite::draw()
 
 void C_RenderSprite::updateVertexPosition()
 {
-
     for (int i = 0; i < quad.getVertexCount(); i++)
     {
-        vertexArr[i].position = quad[i].position + transform.position;
-        vertexArr[i].position = myMath::rotatePointArrounPoint(vertexArr[i].position, transform.position, transform.rotation);
+        vertexArr[i].position = quad[i].position + transform->position;
+        vertexArr[i].position = myMath::rotatePointArrounPoint(vertexArr[i].position, transform->position, transform->rotation);
     }
     
     
 }
 
 
+void C_RenderSprite::beforePlay()
+{
+    updateVertexPosition();
 
+    ComponentMaster::beforePlay();
+}
 
 void C_RenderSprite::process()
 {

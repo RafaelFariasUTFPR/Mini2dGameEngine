@@ -18,7 +18,7 @@ void Coll2d::runCollisionSystem(std::vector<std::shared_ptr<C_Physics2d>> physic
 			
 			//Otimização
 			double influenceDist = physicsCompVec.at(i)->collider->influenceRadius + physicsCompVec.at(i2)->collider->influenceRadius;
-			if (myMath::distBetweenPoints(physicsCompVec.at(i)->transform.position, physicsCompVec.at(i2)->transform.position) > influenceDist)
+			if (myMath::distBetweenPoints(physicsCompVec.at(i)->getTransform().position, physicsCompVec.at(i2)->getTransform().position) > influenceDist)
 				continue;
 
 			SAT::ColResult result = SAT::SATCollision(*physicsCompVec.at(i)->collider, *physicsCompVec.at(i2)->collider);
@@ -32,7 +32,7 @@ void Coll2d::runCollisionSystem(std::vector<std::shared_ptr<C_Physics2d>> physic
 				myMath::CollResult solveResult = myMath::calculateInelasticCollision(physicsCompVec.at(i)->getSpeed(), physicsCompVec.at(i)->mass, physicsCompVec.at(i2)->getSpeed(), physicsCompVec.at(i2)->mass, 1);
 				if (physicsCompVec.at(i)->getIsDynamic())
 				{
-					physicsCompVec.at(i)->transform.position += result.displacement;
+					physicsCompVec.at(i)->transform->position += result.displacement;
 					physicsCompVec.at(i)->setSpeed(physicsCompVec.at(i)->getSpeed() + (solveResult.velocity1 - physicsCompVec.at(i)->getSpeed()));
 
 				}

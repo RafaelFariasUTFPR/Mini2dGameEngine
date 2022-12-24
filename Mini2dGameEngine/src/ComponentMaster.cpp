@@ -1,7 +1,12 @@
 #include "ComponentMaster.h"
 
-ComponentMaster::ComponentMaster(Global* globalVariables)
+ComponentMaster::ComponentMaster()
 {
-	global = globalVariables;
+
 }
 
+void ComponentMaster::setPointers(Global* globalVariables, myMath::Transform* enttTransform)
+{
+	global = globalVariables;
+	transform = enttTransform;
+}

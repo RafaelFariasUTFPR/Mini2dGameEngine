@@ -1,6 +1,6 @@
 #include "EntityMaster.h"
 
-EntityMaster::EntityMaster(Global* globalVariables, std::string myName) : componentHandler(globalVariables)
+EntityMaster::EntityMaster(Global* globalVariables, std::string myName) : componentHandler(globalVariables, &transform)
 {
 
 	global = globalVariables;
@@ -26,8 +26,6 @@ void EntityMaster::beginPlay()
 void EntityMaster::process()
 {
 	componentHandler.process();
-	
-	transform = componentHandler.transform;
 }
 
 void EntityMaster::endGame()

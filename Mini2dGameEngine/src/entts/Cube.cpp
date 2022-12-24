@@ -38,11 +38,11 @@ void Cube::process()
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
 	{
-		physicsComponent->setRotation(physicsComponent->transform.rotation - (60 * global->deltaTime));
+		physicsComponent->setRotation(transform.rotation - (60 * global->deltaTime));
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
 	{
-		physicsComponent->setRotation(physicsComponent->transform.rotation + (60 * global->deltaTime));
+		physicsComponent->setRotation(transform.rotation + (60 * global->deltaTime));
 	}
 
 

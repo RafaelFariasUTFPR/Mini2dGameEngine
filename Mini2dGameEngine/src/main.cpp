@@ -14,11 +14,13 @@
 #include "entts/Cube.h"
 #include "entts/Ground.h"
 
+
 void threadPhysicsUpdate(Game* game)
 {
     while (game->running)
     {
         game->enttHandler.physicsProcess();
+
     }
 }
 

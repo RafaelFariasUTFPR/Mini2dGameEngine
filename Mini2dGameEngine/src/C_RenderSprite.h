@@ -9,9 +9,15 @@ class C_RenderSprite :
     public ComponentMaster
 {
 public:
-    C_RenderSprite(Global* globalVariables, sf::Vector2u _tileCoordinate, sf::Vector2f _dimension, sf::Vector2u _spriteDimensionInPixels);
+    C_RenderSprite(
+        sf::Vector2u _tileCoordinate, 
+        sf::Vector2f _dimension, 
+        sf::Vector2u _spriteDimensionInPixels);
+
+    void beforePlay() override;
 
     void process() override;
+    
     void draw() override;
     void setSpriteParameters(sf::Vector2u _dimensionInPixels);
 

@@ -7,8 +7,8 @@ class C_Collider2d :
     public ComponentMaster
 {
 public:
-    C_Collider2d(Global* globalVariables, sf::VertexArray _collisionVertexArray);
-    C_Collider2d(Global* globalVariables);
+    C_Collider2d(sf::VertexArray _collisionVertexArray);
+    C_Collider2d();
 
     void process() override;
 

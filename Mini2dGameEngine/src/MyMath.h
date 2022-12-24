@@ -4,8 +4,9 @@
 
 #include <SFML/Graphics.hpp>
 #include <math.h>
-
+#include <atomic>
 #include <iostream>
+
 
 namespace myMath
 {
