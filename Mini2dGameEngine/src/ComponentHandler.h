@@ -10,12 +10,13 @@
 class ComponentHandler
 {
 public:
-	ComponentHandler(Global* globalVariables, myMath::Transform* enttTransform);
+	ComponentHandler(Global* globalVariables, myMath::Transform* enttTransform, uint32_t* _myId);
 	~ComponentHandler();
 
 	void beforePlay();
 	void beginPlay();
 	void process();
+	void fixedProcess(double deltaTime);
 	void draw();
 	void endGame();
 
@@ -28,6 +29,8 @@ public:
 private:
 	Global* global;
 	myMath::Transform* transform;
+	uint32_t* myId;
+
 
 };
 

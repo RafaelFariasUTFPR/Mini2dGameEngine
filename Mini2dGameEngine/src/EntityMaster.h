@@ -17,12 +17,13 @@ public:
 	virtual void beforePlay();
 	virtual void beginPlay();
 	virtual void process();
+	virtual void fixedProcess(double deltaTime);
 	virtual void endGame();
 	virtual void draw();
 
 
 	std::string name;
-	int id;
+	uint32_t id;
 
 	//Standard Variables
 	myMath::Transform transform;

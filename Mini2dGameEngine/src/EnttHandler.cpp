@@ -46,38 +46,63 @@ void EnttHandler::physicsProcess()
 
 	physicsClock.restart();
 
+	std::vector<std::shared_ptr<C_Collider2d>> colliderCompVec;
 	std::vector<std::shared_ptr<C_Physics2d>> physicsCompVec;
+
 	for (int i = 0; i < entityVec.size(); i++)
 	{
 		if (entityVec.at(i) == nullptr)
 			continue;
 		for (int j = 0; j < entityVec[i]->componentHandler.componentVec.size(); j++)
 		{
+			if (std::dynamic_pointer_cast<C_Collider2d> (entityVec[i]->componentHandler.componentVec[j]))
+			{
+				colliderCompVec.push_back(std::dynamic_pointer_cast<C_Collider2d> (entityVec[i]->componentHandler.componentVec[j]));
+
+			}
 			if (std::dynamic_pointer_cast<C_Physics2d> (entityVec[i]->componentHandler.componentVec[j]))
 			{
 				physicsCompVec.push_back(std::dynamic_pointer_cast<C_Physics2d> (entityVec[i]->componentHandler.componentVec[j]));
+
 			}
 		}
 	}
 
+
+
 	//double dtSubstep = 0.015;
 	double startingTime = physicsClock.getElapsedTime().asSeconds() ;
 	
-
 	double currentTime = 0;
 	
 	for (uint8_t i = 0; i < global->physicsSubSteps; i++)
 	{
-		Coll2d::runCollisionSystem(physicsCompVec, substepDt, global);
+		std::vector<Collision> collisionsVector = Coll2d::runCollisionSystem(colliderCompVec);
+
+
+		Coll2d::solvePhysicsCollisions(entityVec, collisionsVector, stepDt);
+
+
+		// Chamando o physics process em todos os componentes
+		for (unsigned int j = 0; j < entityVec.size(); j++)
+		{
+			if (entityVec.at(j) == nullptr)
+				continue;
+			entityVec.at(j)->fixedProcess(stepDt);
+		}
+
+
+		// Travando o update
 		currentTime = physicsClock.getElapsedTime().asSeconds();
 		double finishedCalcTime = physicsClock.getElapsedTime().asSeconds();
 		while (currentTime < finishedCalcTime + substepDt)
-		{
 			currentTime = physicsClock.getElapsedTime().asSeconds();
 
-		}
 
 	}
+
+
+
 	/*
 	currentTime = physicsClock.getElapsedTime().asSeconds();
 	while (currentTime < stepDt)
@@ -121,18 +146,10 @@ void EnttHandler::addEntt(std::shared_ptr<EntityMaster> entity)
 
 void EnttHandler::deleteEntt(int enttId)
 {
-	operateEnttMutex.lock();
 	if (entityVec.size() == 0)
 	{
-		operateEnttMutex.unlock();
 		return;
 	}
-
 	entityVec.erase(entityVec.begin() + enttId);
-	for (int i = enttId; i < entityVec.size(); i++)
-		entityVec.at(i)->id = i;
-
-		
-	operateEnttMutex.unlock();
 
 }

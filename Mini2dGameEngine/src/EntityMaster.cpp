@@ -1,6 +1,6 @@
 #include "EntityMaster.h"
 
-EntityMaster::EntityMaster(Global* globalVariables, std::string myName) : componentHandler(globalVariables, &transform)
+EntityMaster::EntityMaster(Global* globalVariables, std::string myName) : componentHandler(globalVariables, &transform, &id)
 {
 
 	global = globalVariables;
@@ -27,6 +27,12 @@ void EntityMaster::process()
 {
 	componentHandler.process();
 }
+
+void EntityMaster::fixedProcess(double deltaTime)
+{
+	componentHandler.fixedProcess(deltaTime);
+}
+
 
 void EntityMaster::endGame()
 {

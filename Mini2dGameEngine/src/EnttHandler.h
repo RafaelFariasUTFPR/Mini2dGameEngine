@@ -3,7 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <mutex>
-
+#include <queue>
 
 
 #include "EntityMaster.h"
@@ -51,7 +51,7 @@ private:
 	float stepDt = 1.0f / (float)physicsHertz;
 	float substepDt;
 
-
+	//std::queue<uint32_t> availableIndexes;
 	std::mutex operateEnttMutex;
 };
 

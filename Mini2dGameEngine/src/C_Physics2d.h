@@ -21,7 +21,7 @@ public:
         bool& _isDynamic);
 
     void process() override;
-    void processDeltaTime(double deltaTime) override;
+    void fixedProcess(double deltaTime) override;
 
     sf::Vector2f getSpeed() { return speed; }
     double getRotationSpeed() { return rotationSpeed; }
@@ -46,7 +46,7 @@ public:
     bool isSolid = true;
     float mass = 1.0;
 
-    sf::Vector2f gravity = sf::Vector2f(0, 2);
+    sf::Vector2f gravity = sf::Vector2f(0, .5);
 
     myMath::Transform lastTransform;
 

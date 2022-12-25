@@ -1,10 +1,11 @@
 #include "ComponentHandler.h"
 
 
-ComponentHandler::ComponentHandler(Global* globalVariables, myMath::Transform* enttTransform)
+ComponentHandler::ComponentHandler(Global* globalVariables, myMath::Transform* enttTransform, uint32_t* _myId)
 {
 	global = globalVariables;
 	transform = enttTransform;
+	myId = _myId;
 }
 
 ComponentHandler::~ComponentHandler()
@@ -32,6 +33,15 @@ void ComponentHandler::process()
 
 }
 
+void ComponentHandler::fixedProcess(double deltaTime)
+{
+	for (int i = 0; i < componentVec.size(); i++)
+	{
+		componentVec.at(i)->fixedProcess(deltaTime);
+	}
+
+}
+
 void ComponentHandler::draw()
 {
 	for (int i = 0; i < componentVec.size(); i++)
@@ -47,5 +57,5 @@ void ComponentHandler::endGame()
 void ComponentHandler::addComponent(std::shared_ptr<ComponentMaster> component)
 {
 	componentVec.push_back(component);
-	component->setPointers(global, transform);
+	component->setPointers(global, transform, myId);
 }

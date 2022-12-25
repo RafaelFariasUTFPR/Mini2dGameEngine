@@ -15,17 +15,21 @@ public:
 	virtual void beforePlay() {}
 	virtual void beginPlay() {}
 	virtual void process() {}
-	virtual void processDeltaTime(double deltaTime) {}
+	virtual void fixedProcess(double deltaTime) {}
 	virtual void endGame() {}
 	virtual void draw() {}
 
-	void setPointers(Global* globalVariables, myMath::Transform* enttTransform);
+	void setPointers(Global* globalVariables, myMath::Transform* enttTransform, uint32_t* _myId);
 
 	virtual myMath::Transform getTransform() { return *transform; }
 	void setTransform(myMath::Transform _transform) { *transform = _transform; }
 
+	uint32_t getMyId() { return *myId; }
+
 	bool controlsTransform = false;
 	myMath::Transform* transform;
+
+	uint32_t* myId;
 
 protected:
 	Global* global;
