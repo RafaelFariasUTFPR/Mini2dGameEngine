@@ -39,13 +39,13 @@ void EnttHandler::process()
 
 void EnttHandler::physicsProcess()
 {
-	
+
 
 	physicsClock.restart();
 	colliderCompVec.clear();
 	std::vector<std::shared_ptr<C_Physics2d>> physicsCompVec;
 
-	operateEnttMutex.try_lock();
+	operateEnttMutex.lock();
 
 	for (int i = 0; i < entityVec.size(); i++)
 	{
@@ -64,6 +64,7 @@ void EnttHandler::physicsProcess()
 
 	}
 
+
 	collisionsVector.clear();
 	//double dtSubstep = 0.015;
 	
@@ -71,8 +72,8 @@ void EnttHandler::physicsProcess()
 	
 	for (uint8_t i = 0; i < global->physicsSubSteps; i++)
 	{
-
-	
+		
+		
 		collisionsVector = Coll2d::runCollisionSystem(colliderCompVec);
 
 
@@ -87,11 +88,11 @@ void EnttHandler::physicsProcess()
 				continue;
 			entityVec.at(j)->fixedProcess(stepDt);
 		}
-
+		
 		// Travando o update
 		currentTime = physicsClock.getElapsedTime().asSeconds();
-		double finishedCalcTime = physicsClock.getElapsedTime().asSeconds();
-		while (currentTime < finishedCalcTime + substepDt)
+		double finishedCalcTime = currentTime + substepDt;
+		while (currentTime < finishedCalcTime)
 			currentTime = physicsClock.getElapsedTime().asSeconds();
 
 
@@ -149,7 +150,7 @@ void EnttHandler::deleteEntt(int enttId)
 
 	if (entityVec.size() == 0)
 	{
-		if(locked)
+		if (locked)
 			operateEnttMutex.unlock();
 		return;
 	}

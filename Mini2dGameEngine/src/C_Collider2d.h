@@ -11,7 +11,6 @@ struct Collision {
     //std::shared_ptr<C_Collider2d> otherCollider = nullptr;
     sf::Vector2f displacement = sf::Vector2f(0, 0);
 
-
 };
 
 class C_Collider2d :
@@ -56,7 +55,6 @@ private:
     sf::VertexArray collisionDebugVertexArray;
 
     std::vector<Collision> collisionsVector;
-
 
 };
 

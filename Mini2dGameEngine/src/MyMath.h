@@ -15,7 +15,17 @@ namespace myMath
 	{
 		sf::Vector2f position = sf::Vector2f(0, 0);
 		sf::Vector2f scale = sf::Vector2f(1, 1);
-		double rotation = 0;
+		float rotation = 0;
+
+		bool operator==(const Transform T1)
+		{
+			if (
+				this->position == T1.position &&
+				this->scale == T1.scale &&
+				this->rotation == T1.rotation)
+				return true;
+			return false;
+		}
 	};
 
 	struct CollResult

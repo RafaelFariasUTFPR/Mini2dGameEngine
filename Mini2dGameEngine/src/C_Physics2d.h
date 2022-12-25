@@ -55,8 +55,6 @@ public:
 
     sf::Vector2f gravity = sf::Vector2f(0, 0);
 
-    myMath::Transform lastTransform;
-
     std::shared_ptr<C_Collider2d> collider;
     void calculateSpeed(float dt);
 

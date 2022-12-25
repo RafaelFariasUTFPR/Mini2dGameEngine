@@ -36,5 +36,6 @@ protected:
 	Global* global;
 	bool* isDynamic;
 
+	myMath::Transform lastTransform;
 };
 

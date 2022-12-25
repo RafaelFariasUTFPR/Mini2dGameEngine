@@ -42,6 +42,10 @@ void C_Collider2d::fixedProcess(double deltaTime)
 
 void C_Collider2d::updatePosition()
 {
+	if (*transform == lastTransform)
+		return;
+
+
 	collisionPoligon = collisionVertexArray;
 
 	for (int i = 0; i < collisionPoligon.getVertexCount(); i++)
@@ -56,6 +60,8 @@ void C_Collider2d::updatePosition()
 		collisionDebugVertexArray.append(collisionPoligon[0]);
 
 	}
+
+	lastTransform = *transform;
 
 }
 

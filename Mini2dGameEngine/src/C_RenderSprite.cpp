@@ -51,13 +51,17 @@ void C_RenderSprite::draw()
 
 void C_RenderSprite::updateVertexPosition()
 {
+    if (*transform == lastTransform)
+        return;
     for (int i = 0; i < quad.getVertexCount(); i++)
     {
         vertexArr[i].position = quad[i].position + transform->position;
         vertexArr[i].position = myMath::rotatePointArrounPoint(vertexArr[i].position, transform->position, transform->rotation);
     }
+
     
-    
+    lastTransform = *transform;
+
 }
 
 

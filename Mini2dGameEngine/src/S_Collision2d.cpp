@@ -6,6 +6,7 @@ std::vector<Collision> Coll2d::runCollisionSystem(std::vector<std::shared_ptr<C_
 	std::vector<Collision> collisionsVector;
 	for (int i = 0; i < colliderCompVec.size(); i++)
 	{
+		colliderCompVec.at(i)->clearCollisions();
 		//Skipping if theres no vertex in the poligon
 		if (!colliderCompVec.at(i)->getCollisionPoligon().getVertexCount())
 			continue;
@@ -38,7 +39,9 @@ std::vector<Collision> Coll2d::runCollisionSystem(std::vector<std::shared_ptr<C_
 				coll.collisionNormal = myMath::Normalize(result.displacement);
 				coll.displacement = result.displacement;
 
+				// Adicionando a lista de colisões do componente
 				colliderCompVec.at(i)->addCollisions(coll);
+
 				collisionsVector.push_back(coll);
 			}
 
@@ -55,8 +58,8 @@ void Coll2d::solvePhysicsCollisions(std::vector<std::shared_ptr<C_Physics2d>> ph
 {
 	for (unsigned int i = 0; i < collisionsVector.size(); i++)
 	{
-		if (physicsCompVec.at(collisionsVector.at(i).myId) == nullptr || physicsCompVec.at(collisionsVector.at(i).otherId) == nullptr)
-			continue;
+		//if (physicsCompVec.at(collisionsVector.at(i).myId) == nullptr || physicsCompVec.at(collisionsVector.at(i).otherId) == nullptr)
+		//	continue;
 
 		
 		std::shared_ptr<C_Physics2d> bodyPhysicsComp;
