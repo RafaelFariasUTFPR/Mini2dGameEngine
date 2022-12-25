@@ -19,12 +19,11 @@ std::vector<Collision> Coll2d::runCollisionSystem(std::vector<std::shared_ptr<C_
 			if (myMath::distBetweenPoints(colliderCompVec.at(i)->getTransform().position, colliderCompVec.at(i2)->getTransform().position) > influenceDist)
 				continue;
 
+			// Calculando a colisão
 			SAT::ColResult result = SAT::SATCollision(*colliderCompVec.at(i), *colliderCompVec.at(i2));
 
-			// Talvez tirar isso
-			//if (!physicsCompVec.at(i)->getIsDynamic())
-			//	continue;
 
+			// Se estiver colidindo
 			if (result.result)
 			{
 				//myMath::CollResult solveResult = myMath::calculateInelasticCollision(physicsCompVec.at(i)->getSpeed(), physicsCompVec.at(i)->mass, physicsCompVec.at(i2)->getSpeed(), physicsCompVec.at(i2)->mass, 1);
@@ -49,14 +48,12 @@ std::vector<Collision> Coll2d::runCollisionSystem(std::vector<std::shared_ptr<C_
 }
 
 
-void Coll2d::solvePhysicsCollisions(std::vector<std::shared_ptr<EntityMaster>> entityVec, std::vector<Collision>collisionsVector, double dt)
+void Coll2d::solvePhysicsCollisions(std::vector<std::shared_ptr<C_Physics2d>> physicsCompVec, std::vector<Collision>collisionsVector, double dt)
 {
 	for (unsigned int i = 0; i < collisionsVector.size(); i++)
 	{
-		if (entityVec.at(collisionsVector.at(i).myId) == nullptr || entityVec.at(collisionsVector.at(i).otherId) == nullptr)
+		if (physicsCompVec.at(collisionsVector.at(i).myId) == nullptr || physicsCompVec.at(collisionsVector.at(i).otherId) == nullptr)
 			continue;
-		std::shared_ptr<EntityMaster> body = entityVec.at(collisionsVector.at(i).myId);
-		std::shared_ptr<EntityMaster> otherBody = entityVec.at(collisionsVector.at(i).otherId);
 
 		//printf("%u && %u\n", body->id, otherBody->id);
 		
@@ -65,14 +62,13 @@ void Coll2d::solvePhysicsCollisions(std::vector<std::shared_ptr<EntityMaster>> e
 
 
 		// Pegando o componente C_Physics2d do boddy
-		for (unsigned int j = 0; j < body->componentHandler.componentVec.size(); j++)
-			if (std::dynamic_pointer_cast<C_Physics2d> (body->componentHandler.componentVec[j]))
-				bodyPhysicsComp = std::dynamic_pointer_cast<C_Physics2d> (body->componentHandler.componentVec[j]);
-		
-		// Pegando o componente C_Physics2d do otherBody
-		for (unsigned int j = 0; j < otherBody->componentHandler.componentVec.size(); j++)
-			if (std::dynamic_pointer_cast<C_Physics2d> (otherBody->componentHandler.componentVec[j]))
-				otherBodyPhysicsComp = std::dynamic_pointer_cast<C_Physics2d> (otherBody->componentHandler.componentVec[j]);
+		for (unsigned int j = 0; j < physicsCompVec.size(); j++)
+		{
+			if (physicsCompVec.at(j)->getMyId() == collisionsVector.at(i).myId)
+				bodyPhysicsComp = physicsCompVec.at(j);
+			else if (physicsCompVec.at(j)->getMyId() == collisionsVector.at(i).otherId)
+				otherBodyPhysicsComp = physicsCompVec.at(j);
+		}
 
 
 		myMath::CollResult solveResult = myMath::calculateInelasticCollision(bodyPhysicsComp->getSpeed(), bodyPhysicsComp->mass, otherBodyPhysicsComp->getSpeed(), otherBodyPhysicsComp->mass, 1);

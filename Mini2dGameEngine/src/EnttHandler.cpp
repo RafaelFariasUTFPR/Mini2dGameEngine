@@ -55,16 +55,12 @@ void EnttHandler::physicsProcess()
 			continue;
 		for (int j = 0; j < entityVec[i]->componentHandler.componentVec.size(); j++)
 		{
+			//Pegando os componentes C_Collider2d e colocando em um vetor
 			if (std::dynamic_pointer_cast<C_Collider2d> (entityVec[i]->componentHandler.componentVec[j]))
-			{
 				colliderCompVec.push_back(std::dynamic_pointer_cast<C_Collider2d> (entityVec[i]->componentHandler.componentVec[j]));
 
-			}
 			if (std::dynamic_pointer_cast<C_Physics2d> (entityVec[i]->componentHandler.componentVec[j]))
-			{
 				physicsCompVec.push_back(std::dynamic_pointer_cast<C_Physics2d> (entityVec[i]->componentHandler.componentVec[j]));
-
-			}
 		}
 	}
 
@@ -80,7 +76,7 @@ void EnttHandler::physicsProcess()
 		std::vector<Collision> collisionsVector = Coll2d::runCollisionSystem(colliderCompVec);
 
 
-		Coll2d::solvePhysicsCollisions(entityVec, collisionsVector, stepDt);
+		Coll2d::solvePhysicsCollisions(physicsCompVec, collisionsVector, stepDt);
 
 
 		// Chamando o physics process em todos os componentes

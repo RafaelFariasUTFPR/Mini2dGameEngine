@@ -20,7 +20,7 @@ namespace Coll2d
 
 	std::vector<Collision> runCollisionSystem(std::vector<std::shared_ptr<C_Collider2d>> colliderCompVec);
 
-	void solvePhysicsCollisions(std::vector<std::shared_ptr<EntityMaster>> entityVec, std::vector<Collision>collisionsVector, double dt);
+	void solvePhysicsCollisions(std::vector<std::shared_ptr<C_Physics2d>> physicsCompVec, std::vector<Collision>collisionsVector, double dt);
 
 
 

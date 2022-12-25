@@ -5,6 +5,9 @@
 #include <mutex>
 #include <queue>
 
+#include <thread>         // std::this_thread::sleep_for
+#include <chrono>         // std::chrono::seconds
+
 
 #include "EntityMaster.h"
 #include "entts/Cube.h"
