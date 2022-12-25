@@ -12,7 +12,8 @@
 class EntityMaster
 {
 public:
-	EntityMaster(Global* globalVariables, std::string myName);
+	EntityMaster(Global* globalVariables, std::string myName, myMath::Transform initialTransform);
+
 	~EntityMaster();
 	virtual void beforePlay();
 	virtual void beginPlay();

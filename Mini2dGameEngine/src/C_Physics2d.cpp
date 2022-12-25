@@ -35,7 +35,7 @@ void C_Physics2d::process()
 
 void C_Physics2d::fixedProcess(double deltaTime)
 {
-	setRotation(transform->rotation + (getRotationSpeed() * global->deltaTime));
+	setRotation(transform->rotation + (getRotationSpeed() * deltaTime));
 	applyGravity();
 	updatePosition(deltaTime);
 	ComponentMaster::fixedProcess(deltaTime);

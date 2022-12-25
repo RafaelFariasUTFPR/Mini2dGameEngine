@@ -10,7 +10,7 @@
 class ComponentHandler
 {
 public:
-	ComponentHandler(Global* globalVariables, myMath::Transform* enttTransform, uint32_t* _myId);
+	ComponentHandler(Global* globalVariables, myMath::Transform* enttTransform, uint32_t* _myId, bool* _isDynamic);
 	~ComponentHandler();
 
 	void beforePlay();
@@ -30,6 +30,7 @@ private:
 	Global* global;
 	myMath::Transform* transform;
 	uint32_t* myId;
+	bool* isDynamic;
 
 
 };

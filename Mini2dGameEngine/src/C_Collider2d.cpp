@@ -29,8 +29,20 @@ void C_Collider2d::setCollisionPoligon(sf::VertexArray _collisionVertexArray)
 
 void C_Collider2d::process()
 {
-	collisionPoligon = collisionVertexArray;
 
+	ComponentMaster::process();
+}
+
+void C_Collider2d::fixedProcess(double deltaTime)
+{
+	updatePosition();
+
+	ComponentMaster::fixedProcess(deltaTime);
+}
+
+void C_Collider2d::updatePosition()
+{
+	collisionPoligon = collisionVertexArray;
 
 	for (int i = 0; i < collisionPoligon.getVertexCount(); i++)
 	{
@@ -38,20 +50,20 @@ void C_Collider2d::process()
 		collisionPoligon[i].position = myMath::rotatePointArrounPoint(collisionPoligon[i].position, transform->position, transform->rotation);
 	}
 
+	if (drawDebug)
+	{
+		collisionDebugVertexArray = collisionPoligon;
+		collisionDebugVertexArray.append(collisionPoligon[0]);
 
-	ComponentMaster::process();
+	}
+
 }
-
 
 void C_Collider2d::draw()
 {
 	if (drawDebug && collisionPoligon.getVertexCount())
 	{
-		sf::VertexArray collisionDebugVertexArray = collisionPoligon;
-		collisionDebugVertexArray.append(collisionPoligon[0]);
-
 		global->window.draw(collisionDebugVertexArray);
-
 	}
 
 	ComponentMaster::draw();

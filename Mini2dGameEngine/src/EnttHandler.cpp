@@ -6,6 +6,7 @@ EnttHandler::EnttHandler(Global& globalVariables)
 {
 	global = &globalVariables;
 	substepDt = stepDt / global->physicsSubSteps;
+
 }
 
 void EnttHandler::beforePlay()
@@ -38,16 +39,13 @@ void EnttHandler::process()
 
 void EnttHandler::physicsProcess()
 {
-	while (operateEnttMutex.try_lock())
-	{
-
-	}
 	
 
 	physicsClock.restart();
-
-	std::vector<std::shared_ptr<C_Collider2d>> colliderCompVec;
+	colliderCompVec.clear();
 	std::vector<std::shared_ptr<C_Physics2d>> physicsCompVec;
+
+	operateEnttMutex.try_lock();
 
 	for (int i = 0; i < entityVec.size(); i++)
 	{
@@ -59,24 +57,27 @@ void EnttHandler::physicsProcess()
 			if (std::dynamic_pointer_cast<C_Collider2d> (entityVec[i]->componentHandler.componentVec[j]))
 				colliderCompVec.push_back(std::dynamic_pointer_cast<C_Collider2d> (entityVec[i]->componentHandler.componentVec[j]));
 
+
 			if (std::dynamic_pointer_cast<C_Physics2d> (entityVec[i]->componentHandler.componentVec[j]))
 				physicsCompVec.push_back(std::dynamic_pointer_cast<C_Physics2d> (entityVec[i]->componentHandler.componentVec[j]));
 		}
+
 	}
 
-
-
+	collisionsVector.clear();
 	//double dtSubstep = 0.015;
-	double startingTime = physicsClock.getElapsedTime().asSeconds() ;
 	
 	double currentTime = 0;
 	
 	for (uint8_t i = 0; i < global->physicsSubSteps; i++)
 	{
-		std::vector<Collision> collisionsVector = Coll2d::runCollisionSystem(colliderCompVec);
+
+	
+		collisionsVector = Coll2d::runCollisionSystem(colliderCompVec);
 
 
 		Coll2d::solvePhysicsCollisions(physicsCompVec, collisionsVector, stepDt);
+
 
 
 		// Chamando o physics process em todos os componentes
@@ -86,7 +87,6 @@ void EnttHandler::physicsProcess()
 				continue;
 			entityVec.at(j)->fixedProcess(stepDt);
 		}
-
 
 		// Travando o update
 		currentTime = physicsClock.getElapsedTime().asSeconds();
@@ -135,17 +135,25 @@ void EnttHandler::endGame()
 
 void EnttHandler::addEntt(std::shared_ptr<EntityMaster> entity)
 {
+
 	entity->id = entityVec.size();
 	entityVec.push_back(entity);
+
 }
 
 
 void EnttHandler::deleteEntt(int enttId)
 {
+	bool locked = operateEnttMutex.try_lock();
+
+
 	if (entityVec.size() == 0)
 	{
+		if(locked)
+			operateEnttMutex.unlock();
 		return;
 	}
 	entityVec.erase(entityVec.begin() + enttId);
-
+	if (locked)
+		operateEnttMutex.unlock();
 }

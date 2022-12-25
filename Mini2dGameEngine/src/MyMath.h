@@ -55,6 +55,9 @@ namespace myMath
 
 	//sf::Vector2f VecAbs(sf::Vector2f v);
 
+	sf::Vector2f GetReflection(sf::Vector2f v, sf::Vector2f normal);
+
+
 	CollResult calculateInelasticCollision(sf::Vector2f velocity1, float mass1, sf::Vector2f velocity2, float mass2, float elasticity);
 }
 

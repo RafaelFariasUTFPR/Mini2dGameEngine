@@ -22,8 +22,10 @@ public:
     C_Collider2d();
 
     void process() override;
-
+    void fixedProcess(double deltaTime) override;
     void draw() override;
+
+    void updatePosition();
 
     void setCollisionPoligon(sf::VertexArray _collisionVertexArray);
     sf::VertexArray getCollisionPoligon() { return collisionPoligon; }
@@ -51,8 +53,10 @@ private:
     // Actual collider
     sf::VertexArray collisionPoligon;
 
+    sf::VertexArray collisionDebugVertexArray;
 
     std::vector<Collision> collisionsVector;
+
 
 };
 

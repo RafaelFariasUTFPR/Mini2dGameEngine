@@ -13,6 +13,10 @@ std::vector<Collision> Coll2d::runCollisionSystem(std::vector<std::shared_ptr<C_
 		{
 			if (i2 == i)
 				continue;
+			if (!colliderCompVec.at(i)->getIsDynamic() && !colliderCompVec.at(i2)->getIsDynamic())
+				continue;
+
+			//printf("%i && %i\n", i, i2);
 
 			//Otimização
 			double influenceDist = colliderCompVec.at(i)->influenceRadius + colliderCompVec.at(i2)->influenceRadius;
@@ -31,8 +35,7 @@ std::vector<Collision> Coll2d::runCollisionSystem(std::vector<std::shared_ptr<C_
 				Collision coll;
 				coll.myId = i;
 				coll.otherId = i2;
-				//coll.collisionNormal
-				//coll.otherCollider = colliderCompVec.at(i2);
+				coll.collisionNormal = myMath::Normalize(result.displacement);
 				coll.displacement = result.displacement;
 
 				colliderCompVec.at(i)->addCollisions(coll);
@@ -55,7 +58,6 @@ void Coll2d::solvePhysicsCollisions(std::vector<std::shared_ptr<C_Physics2d>> ph
 		if (physicsCompVec.at(collisionsVector.at(i).myId) == nullptr || physicsCompVec.at(collisionsVector.at(i).otherId) == nullptr)
 			continue;
 
-		//printf("%u && %u\n", body->id, otherBody->id);
 		
 		std::shared_ptr<C_Physics2d> bodyPhysicsComp;
 		std::shared_ptr<C_Physics2d> otherBodyPhysicsComp;
@@ -74,16 +76,27 @@ void Coll2d::solvePhysicsCollisions(std::vector<std::shared_ptr<C_Physics2d>> ph
 		myMath::CollResult solveResult = myMath::calculateInelasticCollision(bodyPhysicsComp->getSpeed(), bodyPhysicsComp->mass, otherBodyPhysicsComp->getSpeed(), otherBodyPhysicsComp->mass, 1);
 
 
+		
 		if (bodyPhysicsComp->getIsDynamic())
 		{
 			bodyPhysicsComp->setPosition(bodyPhysicsComp->transform->position + collisionsVector.at(i).displacement);
-			bodyPhysicsComp->setSpeed(bodyPhysicsComp->getSpeed() + (solveResult.velocity1 - bodyPhysicsComp->getSpeed()));
+
+			if (otherBodyPhysicsComp->hasInfiniteMass())
+			{
+				bodyPhysicsComp->setSpeed(myMath::GetReflection(bodyPhysicsComp->getSpeed(), collisionsVector.at(i).collisionNormal));
+
+			}
 
 		}
 		if (otherBodyPhysicsComp->getIsDynamic())
 		{
 
-			otherBodyPhysicsComp->setSpeed(otherBodyPhysicsComp->getSpeed() + (solveResult.velocity2 - otherBodyPhysicsComp->getSpeed()));
+			//otherBodyPhysicsComp->setSpeed(otherBodyPhysicsComp->getSpeed() + (solveResult.velocity2 - otherBodyPhysicsComp->getSpeed()));
+		
+			if (bodyPhysicsComp->hasInfiniteMass())
+			{
+
+			}
 		}
 
 

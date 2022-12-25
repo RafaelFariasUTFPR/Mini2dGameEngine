@@ -1,11 +1,12 @@
 #include "EntityMaster.h"
 
-EntityMaster::EntityMaster(Global* globalVariables, std::string myName) : componentHandler(globalVariables, &transform, &id)
+EntityMaster::EntityMaster(Global* globalVariables, std::string myName, myMath::Transform initialTransform) : componentHandler(globalVariables, &transform, &id, &isDynamic)
 {
-
 	global = globalVariables;
 	name = myName;
+	transform = initialTransform;
 }
+
 
 EntityMaster::~EntityMaster()
 {

@@ -41,12 +41,19 @@ public:
 
     void accelerate(sf::Vector2f _acceleration);
 
+    // Se a massa for igual a 0 será infinita
+    bool hasInfiniteMass()
+    {
+        if (!mass)
+            return true;
+        return false;
+    }
 
     // Define se o sistema de colisão pode mover ou não a entidade
     bool isSolid = true;
     float mass = 1.0;
 
-    sf::Vector2f gravity = sf::Vector2f(0, .5);
+    sf::Vector2f gravity = sf::Vector2f(0, 0);
 
     myMath::Transform lastTransform;
 
@@ -61,8 +68,7 @@ private:
     sf::Vector2f acceleration = sf::Vector2f(0,0);
     double rotationSpeed = 0;
 
-    // Ponteiro para a variavel "isDynamic" da entidade
-    bool* isDynamic;
+
 
     std::mutex positionMutex;
 };

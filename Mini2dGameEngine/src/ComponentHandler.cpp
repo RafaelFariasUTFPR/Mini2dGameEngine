@@ -1,11 +1,12 @@
 #include "ComponentHandler.h"
 
 
-ComponentHandler::ComponentHandler(Global* globalVariables, myMath::Transform* enttTransform, uint32_t* _myId)
+ComponentHandler::ComponentHandler(Global* globalVariables, myMath::Transform* enttTransform, uint32_t* _myId, bool* _isDynamic)
 {
 	global = globalVariables;
 	transform = enttTransform;
 	myId = _myId;
+	isDynamic = _isDynamic;
 }
 
 ComponentHandler::~ComponentHandler()
@@ -57,5 +58,5 @@ void ComponentHandler::endGame()
 void ComponentHandler::addComponent(std::shared_ptr<ComponentMaster> component)
 {
 	componentVec.push_back(component);
-	component->setPointers(global, transform, myId);
+	component->setPointers(global, transform, myId, isDynamic);
 }

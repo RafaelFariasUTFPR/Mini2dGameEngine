@@ -172,6 +172,7 @@
     <ClCompile Include="src\S_Collision2d.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\entts\Wall.h" />
     <ClInclude Include="src\SAT_Collision.h" />
     <ClInclude Include="src\C_Collider2d.h" />
     <ClInclude Include="src\entts\Ground.h" />

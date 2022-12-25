@@ -163,6 +163,21 @@ namespace myMath
 	}
 	*/
 
+	sf::Vector2f GetReflection(sf::Vector2f v, sf::Vector2f normal)
+	{
+		sf::Vector2f reflection;
+		v.x *= -1;
+		v.y *= -1;
+		reflection.x = (2 * (normal.x * v.x) * normal.x) - v.x;
+		reflection.y = (2 * (normal.y * v.y) * normal.y) - v.y;
+
+		return reflection;
+
+	
+	}
+
+
+
 	CollResult calculateInelasticCollision(sf::Vector2f velocity1, float mass1, sf::Vector2f velocity2, float mass2, float elasticity)
 	{
 		CollResult result;

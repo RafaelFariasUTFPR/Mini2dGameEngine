@@ -49,6 +49,9 @@ private:
 	Global* global;
 	
 	std::vector<std::shared_ptr<EntityMaster>> entityVec;
+	std::vector<std::shared_ptr<C_Collider2d>> colliderCompVec;
+	std::vector<Collision> collisionsVector;
+	
 	sf::Clock physicsClock;
 	uint8_t physicsHertz = 60;
 	float stepDt = 1.0f / (float)physicsHertz;

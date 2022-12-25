@@ -9,7 +9,7 @@ class Cube :
     public EntityMaster
 {
 public:
-    Cube(Global* globalVariables, std::string myName) : EntityMaster(globalVariables, myName)
+    Cube(Global* globalVariables, std::string myName, myMath::Transform initialTransform) : EntityMaster(globalVariables, myName, initialTransform)
     {
         componentHandler.addComponent(renderComponent);
         componentHandler.addComponent(physicsComponent);
