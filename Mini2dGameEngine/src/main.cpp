@@ -16,11 +16,20 @@
 #include "entts/Wall.h"
 
 
+
 void threadPhysicsUpdate(Game* game)
 {
     while (game->running)
     {
         game->enttHandler.physicsProcess();
+
+    }
+}
+
+void p(int id)
+{
+    while (true)
+    {
 
     }
 }
@@ -32,7 +41,8 @@ int main()
 
     ImGui::SFML::Init(global.window);
 
-    
+
+
     //Lembra que precisa deletar posteriormente
     myMath::Transform cubeTransform;
     cubeTransform.position = sf::Vector2f(100, 100);
@@ -94,9 +104,9 @@ int main()
     global.sceneBuffer.renderState.texture = &t1;
     
     std::thread physicsThread(threadPhysicsUpdate, &game);
+
     while (global.window.isOpen())
     {
-
         global.debugVertexArray.clear();
         
         while (global.window.pollEvent(global.events))

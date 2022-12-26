@@ -2,7 +2,7 @@
 
 
 
-EnttHandler::EnttHandler(Global& globalVariables)
+EnttHandler::EnttHandler(Global& globalVariables) : threadPool(std::thread::hardware_concurrency())
 {
 	global = &globalVariables;
 	substepDt = stepDt / global->physicsSubSteps;
@@ -27,7 +27,6 @@ void EnttHandler::beginPlay()
 
 void EnttHandler::process()
 {
-	//Coll2d::runCollisionSystem(entityVec,global);
 	for (int i = 0; i < entityVec.size(); i++)
 	{
 		if (entityVec.at(i) == nullptr)
@@ -39,7 +38,6 @@ void EnttHandler::process()
 
 void EnttHandler::physicsProcess()
 {
-
 
 	physicsClock.restart();
 	colliderCompVec.clear();
@@ -60,13 +58,13 @@ void EnttHandler::physicsProcess()
 
 			if (std::dynamic_pointer_cast<C_Physics2d> (entityVec[i]->componentHandler.componentVec[j]))
 				physicsCompVec.push_back(std::dynamic_pointer_cast<C_Physics2d> (entityVec[i]->componentHandler.componentVec[j]));
+		
 		}
 
 	}
+	operateEnttMutex.unlock();
 
 
-	collisionsVector.clear();
-	//double dtSubstep = 0.015;
 	
 	double currentTime = 0;
 	
@@ -74,20 +72,25 @@ void EnttHandler::physicsProcess()
 	{
 		
 		
-		collisionsVector = Coll2d::runCollisionSystem(colliderCompVec);
+		collisionsQueue = Coll2d::runCollisionSystem(colliderCompVec, &threadPool, &operateEnttMutex);
 
 
-		Coll2d::solvePhysicsCollisions(physicsCompVec, collisionsVector, stepDt);
+		operateEnttMutex.lock();
+
+		Coll2d::solvePhysicsCollisions(physicsCompVec, collisionsQueue, stepDt);
 
 
 
 		// Chamando o physics process em todos os componentes
+		
 		for (unsigned int j = 0; j < entityVec.size(); j++)
 		{
 			if (entityVec.at(j) == nullptr)
 				continue;
 			entityVec.at(j)->fixedProcess(stepDt);
 		}
+		operateEnttMutex.unlock();
+
 		
 		// Travando o update
 		currentTime = physicsClock.getElapsedTime().asSeconds();
@@ -108,7 +111,6 @@ void EnttHandler::physicsProcess()
 
 	}
 	*/
-	operateEnttMutex.unlock();
 
 	global->actualPhysicsUpdateTime = currentTime;
 	//printf("Number of steps %u\n", numberOfSubSteps);
@@ -145,16 +147,14 @@ void EnttHandler::addEntt(std::shared_ptr<EntityMaster> entity)
 
 void EnttHandler::deleteEntt(int enttId)
 {
-	bool locked = operateEnttMutex.try_lock();
+	operateEnttMutex.lock();
 
 
 	if (entityVec.size() == 0)
 	{
-		if (locked)
-			operateEnttMutex.unlock();
+		operateEnttMutex.unlock();
 		return;
 	}
 	entityVec.erase(entityVec.begin() + enttId);
-	if (locked)
-		operateEnttMutex.unlock();
+	operateEnttMutex.unlock();
 }

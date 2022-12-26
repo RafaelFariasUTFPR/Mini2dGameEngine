@@ -8,6 +8,8 @@
 #include <thread>         // std::this_thread::sleep_for
 #include <chrono>         // std::chrono::seconds
 
+#include <CTPL/ctpl_stl.h>
+
 
 #include "EntityMaster.h"
 #include "entts/Cube.h"
@@ -50,7 +52,7 @@ private:
 	
 	std::vector<std::shared_ptr<EntityMaster>> entityVec;
 	std::vector<std::shared_ptr<C_Collider2d>> colliderCompVec;
-	std::vector<Collision> collisionsVector;
+	std::queue<Collision> collisionsQueue;
 	
 	sf::Clock physicsClock;
 	uint8_t physicsHertz = 60;
@@ -59,5 +61,7 @@ private:
 
 	//std::queue<uint32_t> availableIndexes;
 	std::mutex operateEnttMutex;
+
+	ctpl::thread_pool threadPool;
 };
 
