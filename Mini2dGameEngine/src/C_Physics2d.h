@@ -53,7 +53,7 @@ public:
     bool isSolid = true;
     float mass = 1.0;
 
-    sf::Vector2f gravity = sf::Vector2f(0, 0);
+    sf::Vector2f gravity = sf::Vector2f(0, 3);
 
     std::shared_ptr<C_Collider2d> collider;
     void calculateSpeed(float dt);

@@ -134,7 +134,7 @@ void Coll2d::solvePhysicsCollisions(std::vector<std::shared_ptr<C_Physics2d>> ph
 		}
 
 
-		myMath::CollResult solveResult = myMath::calculateInelasticCollision(bodyPhysicsComp->getSpeed(), bodyPhysicsComp->mass, otherBodyPhysicsComp->getSpeed(), otherBodyPhysicsComp->mass, 1);
+		myMath::CollResult solveResult = myMath::calculateInelasticCollision(bodyPhysicsComp->getSpeed(), bodyPhysicsComp->mass, otherBodyPhysicsComp->getSpeed(), otherBodyPhysicsComp->mass, .8);
 
 
 		
@@ -147,6 +147,11 @@ void Coll2d::solvePhysicsCollisions(std::vector<std::shared_ptr<C_Physics2d>> ph
 				bodyPhysicsComp->setSpeed(myMath::GetReflection(bodyPhysicsComp->getSpeed(), frontCollider.collisionNormal));
 
 			}
+			else
+			{
+				bodyPhysicsComp->setSpeed(myMath::GetReflection(solveResult.velocity1, frontCollider.collisionNormal));
+
+			}
 
 		}
 		if (otherBodyPhysicsComp->getIsDynamic())
@@ -156,6 +161,11 @@ void Coll2d::solvePhysicsCollisions(std::vector<std::shared_ptr<C_Physics2d>> ph
 		
 			if (bodyPhysicsComp->hasInfiniteMass())
 			{
+
+			}
+			else
+			{
+				//otherBodyPhysicsComp->setSpeed(myMath::GetReflection(solveResult.velocity1, frontCollider.collisionNormal));
 
 			}
 		}
