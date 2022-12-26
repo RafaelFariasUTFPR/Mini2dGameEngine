@@ -14,11 +14,14 @@ namespace SAT
 	struct ColResult
 	{
 		sf::Vector2f displacement = sf::Vector2f(0, 0);
+		std::vector<sf::Vector2f> collisionPoints;
 		bool result;
 	};
 
 
 	const float INF = std::numeric_limits<float>::infinity();
+
+	std::vector<sf::Vector2f> getCollidingVertices(C_Collider2d body, C_Collider2d other);
 
 	ColResult SATCollision(C_Collider2d body, C_Collider2d other);
 

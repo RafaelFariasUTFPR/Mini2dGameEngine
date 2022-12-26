@@ -63,6 +63,7 @@ void C_Physics2d::updatePosition(float deltaTime)
 	sf::Vector2f newPos = transform->position + (speed) + (0.5f * (acceleration * deltaTime * deltaTime));
 
 	setPosition(newPos);
+	setRotation(transform->rotation + (rotationSpeed * deltaTime));
 
 	//std::cout << acceleration.y << std::endl;
 	acceleration = {};
@@ -76,6 +77,20 @@ void C_Physics2d::applyGravity()
 		accelerate(gravity);
 	}
 }
+
+void C_Physics2d::applyTorque(float radius, float force, float angle)
+{
+	float torque = radius * force * sin(angle);
+	float angularAcceleration = torque / momentOfInertia;
+	accelerateAngularRotation(angularAcceleration);
+}
+
+void C_Physics2d::accelerateAngularRotation(float acceleration)
+{
+	setRotationSpeed(getRotationSpeed() + (acceleration * global->deltaTime));
+}
+
+
 
 void C_Physics2d::calculateSpeed(float dt)
 {

@@ -38,11 +38,14 @@ void Cube::process()
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
 	{
-		physicsComponent->setRotation(transform.rotation - (60 * global->deltaTime));
+		physicsComponent->applyTorque(50, 10, -90);
+		//physicsComponent->setRotation(transform.rotation - (60 * global->deltaTime));
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
 	{
-		physicsComponent->setRotation(transform.rotation + (60 * global->deltaTime));
+		physicsComponent->applyTorque(50, 10, 90);
+
+		//physicsComponent->setRotation(transform.rotation + (60 * global->deltaTime));
 	}
 
 

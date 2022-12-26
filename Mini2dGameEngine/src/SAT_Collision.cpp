@@ -52,9 +52,20 @@ namespace SAT
 					minOverlap = overlap;
 
 					result.displacement = a * overlap;
+
 				}
 			}
 		}
+
+
+		// Calculando os pontos de colisão
+		std::vector<sf::Vector2f> collidingVertices = getCollidingVertices(body, other);
+		result.collisionPoints.insert(result.collisionPoints.end(), collidingVertices.begin(), collidingVertices.end());
+
+		//std::vector<sf::Vector2f> otherCollidingVertices = getCollidingVertices(other, body);
+		//result.collisionPoints.insert(result.collisionPoints.end(), otherCollidingVertices.begin(), otherCollidingVertices.end());
+
+
 
 		if (myMath::DotProduct(myMath::GetCenter(bodyVertices) - myMath::GetCenter(otherVertices), result.displacement) < 0.0f)
 			result.displacement *= -1.0f;
@@ -158,6 +169,35 @@ namespace SAT
 	}
 	*/
 	
+	std::vector<sf::Vector2f> getCollidingVertices(C_Collider2d body, C_Collider2d other)
+	{
+		std::vector<sf::Vector2f> resultVector;
+		sf::VertexArray bodyVertices = body.getCollisionPoligon();
+		sf::VertexArray otherVertices = other.getCollisionPoligon();
+
+		for (int i = 0; i < bodyVertices.getVertexCount(); i++)
+		{
+			bool isInside = true;
+			for (int j = 1; j < otherVertices.getVertexCount(); j++)
+			{
+				sf::Vector2f initialLinePoint(otherVertices[j].position);
+				sf::Vector2f endLinePoint(otherVertices[j - 1].position);
+
+				if (myMath::doLinesIntersect(bodyVertices[i].position, other.transform->position, initialLinePoint, endLinePoint))
+				{
+					isInside = false;
+					break;
+				}
+
+			}
+
+			if(isInside)
+				resultVector.push_back(bodyVertices[i].position);
+
+		}
+		return resultVector;
+	}
+
 
 	sf::Vector2f CircleAxis(sf::VertexArray vertices, uint32_t count, sf::Vector2f center) {
 		sf::Vector2f axis;

@@ -10,6 +10,7 @@ struct Collision {
 
     //std::shared_ptr<C_Collider2d> otherCollider = nullptr;
     sf::Vector2f displacement = sf::Vector2f(0, 0);
+    std::vector<sf::Vector2f> collisionPoints;
 
 };
 

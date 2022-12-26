@@ -37,6 +37,7 @@ std::queue<Collision> Coll2d::threadedCollisionSystem(int id, uint32_t startInde
 				coll.otherId = i2;
 				coll.collisionNormal = myMath::Normalize(result.displacement);
 				coll.displacement = result.displacement;
+				coll.collisionPoints = result.collisionPoints;
 
 
 				collisionsQueue.push(coll);
@@ -140,11 +141,30 @@ void Coll2d::solvePhysicsCollisions(std::vector<std::shared_ptr<C_Physics2d>> ph
 		
 		if (bodyPhysicsComp->getIsDynamic())
 		{
+			// ###### TODO ######
+			// refazer essa parte, pode criar uma função no physics componente
+			// chamada applyImpuseAt, e esse fica responsavel por gerar torque e 
+			// tudo mais
+
+			float momentum = (pow(myMath::Length(bodyPhysicsComp->getSpeed()),2) * bodyPhysicsComp->mass) + (bodyPhysicsComp->mass * myMath::Length(bodyPhysicsComp->gravity));
+			float momentumPerContactPoint = momentum / frontCollider.collisionPoints.size();
+			for (int i = 0; i < frontCollider.collisionPoints.size(); i++)
+			{
+				float contactPointRadius = myMath::distBetweenPoints(frontCollider.collisionPoints.at(i), bodyPhysicsComp->getTransform().position);
+				if((frontCollider.collisionPoints.at(i) - bodyPhysicsComp->getTransform().position).x > 0)
+					bodyPhysicsComp->applyTorque(contactPointRadius, momentum * 20, -90);
+				else
+					bodyPhysicsComp->applyTorque(contactPointRadius, momentum * 20, 90);
+
+			}
+			
+			// ###### #### ######
+			
 			bodyPhysicsComp->setPosition(bodyPhysicsComp->transform->position + frontCollider.displacement);
 
 			if (otherBodyPhysicsComp->hasInfiniteMass())
 			{
-				bodyPhysicsComp->setSpeed(myMath::GetReflection(bodyPhysicsComp->getSpeed(), frontCollider.collisionNormal));
+				bodyPhysicsComp->setSpeed(myMath::GetReflection(bodyPhysicsComp->getSpeed() * bodyPhysicsComp->elasticity, frontCollider.collisionNormal));
 
 			}
 			else

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <mutex>
+#include <math.h>
 
 #include "ComponentMaster.h"
 #include "MyMath.h"
@@ -38,6 +39,7 @@ public:
 
 
     void setRotationSpeed(double newRotationSpeed) { rotationSpeed = newRotationSpeed; }
+    void accelerateAngularRotation(float acceleration);
 
     void accelerate(sf::Vector2f _acceleration);
 
@@ -52,11 +54,20 @@ public:
     // Define se o sistema de colisão pode mover ou não a entidade
     bool isSolid = true;
     float mass = 1.0;
+    float momentOfInertia = 1.0f;
+    
+    // Perca de energia   0  ==>  1   conservação maxima 
+    float elasticity = 0.8f;
+
 
     sf::Vector2f gravity = sf::Vector2f(0, 3);
 
     std::shared_ptr<C_Collider2d> collider;
     void calculateSpeed(float dt);
+
+
+    void applyTorque(float radius, float force, float angle);
+
 
 private:
     void updatePosition(float deltaTime);
