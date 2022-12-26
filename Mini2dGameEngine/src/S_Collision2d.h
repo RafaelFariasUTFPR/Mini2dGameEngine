@@ -3,6 +3,10 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <thread>
+#include <queue>
+
+#include <CTPL/ctpl_stl.h>
+
 
 #include "MyMath.h"
 #include "C_Physics2d.h"
@@ -16,10 +20,10 @@ namespace Coll2d
 {
 	const sf::Color debugLineColor = sf::Color::Cyan;
 
+	// Todas as funções que irão para a thread pool precisam do "id" como primeiro argumento
+	std::vector<Collision> threadedCollisionSystem(int id, uint32_t startIndex, uint32_t endIndex, std::vector<std::shared_ptr<C_Collider2d>> colliderCompVec);
 
-	//void threadedCollisionSystem(uint32_t startIndex, uint32_t endIndex, std::vector<std::shared_ptr<C_Collider2d>> colliderCompVec, std::vector<Collision>* resultCollisionVector);
-
-	std::vector<Collision> runCollisionSystem(std::vector<std::shared_ptr<C_Collider2d>> colliderCompVec);
+	std::vector<Collision> runCollisionSystem(std::vector<std::shared_ptr<C_Collider2d>> colliderCompVec, ctpl::thread_pool* threadPool, std::mutex* operateEnttMutex);
 
 	void solvePhysicsCollisions(std::vector<std::shared_ptr<C_Physics2d>> physicsCompVec, std::vector<Collision>collisionsVector, double dt);
 

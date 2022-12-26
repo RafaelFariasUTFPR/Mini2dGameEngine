@@ -40,3 +40,8 @@ Um dos grandes focos é a otimização do código, fazendo algo sem muitas funci
 
 * Também foi implementada a colisão de pontos, permitindo maior performance para objetos pequenos como projeteis por exemplo.
 
+
+
+# Dependencias
+
+* [CTPL](https://github.com/vit-vit/CTPL)

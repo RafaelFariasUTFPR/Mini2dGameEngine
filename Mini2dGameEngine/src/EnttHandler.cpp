@@ -2,7 +2,7 @@
 
 
 
-EnttHandler::EnttHandler(Global& globalVariables)
+EnttHandler::EnttHandler(Global& globalVariables) : threadPool(std::thread::hardware_concurrency())
 {
 	global = &globalVariables;
 	substepDt = stepDt / global->physicsSubSteps;
@@ -60,9 +60,11 @@ void EnttHandler::physicsProcess()
 
 			if (std::dynamic_pointer_cast<C_Physics2d> (entityVec[i]->componentHandler.componentVec[j]))
 				physicsCompVec.push_back(std::dynamic_pointer_cast<C_Physics2d> (entityVec[i]->componentHandler.componentVec[j]));
+		
 		}
 
 	}
+	operateEnttMutex.unlock();
 
 
 	collisionsVector.clear();
@@ -74,20 +76,25 @@ void EnttHandler::physicsProcess()
 	{
 		
 		
-		collisionsVector = Coll2d::runCollisionSystem(colliderCompVec);
+		collisionsVector = Coll2d::runCollisionSystem(colliderCompVec, &threadPool, &operateEnttMutex);
 
+
+		operateEnttMutex.lock();
 
 		Coll2d::solvePhysicsCollisions(physicsCompVec, collisionsVector, stepDt);
 
 
 
 		// Chamando o physics process em todos os componentes
+		
 		for (unsigned int j = 0; j < entityVec.size(); j++)
 		{
 			if (entityVec.at(j) == nullptr)
 				continue;
 			entityVec.at(j)->fixedProcess(stepDt);
 		}
+		operateEnttMutex.unlock();
+
 		
 		// Travando o update
 		currentTime = physicsClock.getElapsedTime().asSeconds();
@@ -108,7 +115,6 @@ void EnttHandler::physicsProcess()
 
 	}
 	*/
-	operateEnttMutex.unlock();
 
 	global->actualPhysicsUpdateTime = currentTime;
 	//printf("Number of steps %u\n", numberOfSubSteps);
