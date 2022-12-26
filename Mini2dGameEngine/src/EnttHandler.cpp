@@ -27,7 +27,6 @@ void EnttHandler::beginPlay()
 
 void EnttHandler::process()
 {
-	//Coll2d::runCollisionSystem(entityVec,global);
 	for (int i = 0; i < entityVec.size(); i++)
 	{
 		if (entityVec.at(i) == nullptr)
@@ -39,7 +38,6 @@ void EnttHandler::process()
 
 void EnttHandler::physicsProcess()
 {
-
 
 	physicsClock.restart();
 	colliderCompVec.clear();
@@ -67,8 +65,6 @@ void EnttHandler::physicsProcess()
 	operateEnttMutex.unlock();
 
 
-	collisionsVector.clear();
-	//double dtSubstep = 0.015;
 	
 	double currentTime = 0;
 	
@@ -76,12 +72,12 @@ void EnttHandler::physicsProcess()
 	{
 		
 		
-		collisionsVector = Coll2d::runCollisionSystem(colliderCompVec, &threadPool, &operateEnttMutex);
+		collisionsQueue = Coll2d::runCollisionSystem(colliderCompVec, &threadPool, &operateEnttMutex);
 
 
 		operateEnttMutex.lock();
 
-		Coll2d::solvePhysicsCollisions(physicsCompVec, collisionsVector, stepDt);
+		Coll2d::solvePhysicsCollisions(physicsCompVec, collisionsQueue, stepDt);
 
 
 
@@ -151,16 +147,14 @@ void EnttHandler::addEntt(std::shared_ptr<EntityMaster> entity)
 
 void EnttHandler::deleteEntt(int enttId)
 {
-	bool locked = operateEnttMutex.try_lock();
+	operateEnttMutex.lock();
 
 
 	if (entityVec.size() == 0)
 	{
-		if (locked)
-			operateEnttMutex.unlock();
+		operateEnttMutex.unlock();
 		return;
 	}
 	entityVec.erase(entityVec.begin() + enttId);
-	if (locked)
-		operateEnttMutex.unlock();
+	operateEnttMutex.unlock();
 }

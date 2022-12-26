@@ -18,18 +18,21 @@
 #include "EntityMaster.h"
 
 
+#define COLL_NUMBER_OF_THREADS_USED 8
+
 namespace Coll2d
 {
+
 
 
 	const sf::Color debugLineColor = sf::Color::Cyan;
 
 	// Todas as funções que irão para a thread pool precisam do "id" como primeiro argumento
-	std::vector<Collision> threadedCollisionSystem(int id, uint32_t startIndex, uint8_t n_ofThreadsUsed, std::vector<std::shared_ptr<C_Collider2d>> colliderCompVec);
+	std::queue<Collision> threadedCollisionSystem(int id, uint32_t startIndex, uint8_t n_ofThreadsUsed, std::vector<std::shared_ptr<C_Collider2d>> colliderCompVec);
 
-	std::vector<Collision> runCollisionSystem(std::vector<std::shared_ptr<C_Collider2d>> colliderCompVec, ctpl::thread_pool* threadPool, std::mutex* operateEnttMutex);
+	std::queue<Collision> runCollisionSystem(std::vector<std::shared_ptr<C_Collider2d>> colliderCompVec, ctpl::thread_pool* threadPool, std::mutex* operateEnttMutex);
 
-	void solvePhysicsCollisions(std::vector<std::shared_ptr<C_Physics2d>> physicsCompVec, std::vector<Collision>collisionsVector, double dt);
+	void solvePhysicsCollisions(std::vector<std::shared_ptr<C_Physics2d>> physicsCompVec, std::queue<Collision>collisionsVector, double dt);
 
 
 

@@ -52,7 +52,7 @@ private:
 	
 	std::vector<std::shared_ptr<EntityMaster>> entityVec;
 	std::vector<std::shared_ptr<C_Collider2d>> colliderCompVec;
-	std::vector<Collision> collisionsVector;
+	std::queue<Collision> collisionsQueue;
 	
 	sf::Clock physicsClock;
 	uint8_t physicsHertz = 60;
