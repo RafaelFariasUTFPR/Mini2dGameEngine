@@ -1,10 +1,10 @@
 #include "S_Collision2d.h"
 
-std::vector<Collision> Coll2d::threadedCollisionSystem(int id, uint32_t startIndex, uint32_t endIndex, std::vector<std::shared_ptr<C_Collider2d>> colliderCompVec)
+std::vector<Collision> Coll2d::threadedCollisionSystem(int id, uint32_t startIndex, uint8_t n_ofThreadsUsed, std::vector<std::shared_ptr<C_Collider2d>> colliderCompVec)
 {
 	std::vector<Collision> collisionsVector;
 
-	for (int i = startIndex; i < endIndex; i++)
+	for (int i = startIndex; i < colliderCompVec.size(); i += n_ofThreadsUsed)
 	{
 		if (i >= colliderCompVec.size())
 			break;
@@ -71,33 +71,28 @@ std::vector<Collision> Coll2d::runCollisionSystem(std::vector<std::shared_ptr<C_
 	operateEnttMutex->lock();
 
 	
-	std::vector<Collision> collisionsVector;
-	uint16_t numberOfColliderPerThread = 5;
+	std::vector<Collision> collisionsResult;
 
-	uint16_t remainig = colliderCompVec.size() % numberOfColliderPerThread;
 
-	uint16_t numberOfThreadsNecessary = (colliderCompVec.size() - remainig) / numberOfColliderPerThread;
-	if (remainig)
-		numberOfThreadsNecessary++;
+	uint8_t numberOfThreadsUseds = 8;
 
-	std::vector<std::vector<Collision>> vectorOfCollisionsVector(numberOfThreadsNecessary);
 
-	uint32_t currentIteration = 0;
+
+
+	auto result1 = threadPool->push(threadedCollisionSystem, 0, numberOfThreadsUseds, colliderCompVec);
+	auto result2 = threadPool->push(threadedCollisionSystem, 1, numberOfThreadsUseds, colliderCompVec);
+	auto result3 = threadPool->push(threadedCollisionSystem, 2, numberOfThreadsUseds, colliderCompVec);
+	auto result4 = threadPool->push(threadedCollisionSystem, 3, numberOfThreadsUseds, colliderCompVec);
+	auto result5 = threadPool->push(threadedCollisionSystem, 4, numberOfThreadsUseds, colliderCompVec);
+	auto result6 = threadPool->push(threadedCollisionSystem, 5, numberOfThreadsUseds, colliderCompVec);
+	auto result7 = threadPool->push(threadedCollisionSystem, 6, numberOfThreadsUseds, colliderCompVec);
+	auto result8 = threadPool->push(threadedCollisionSystem, 7, numberOfThreadsUseds, colliderCompVec);
+
+
 	
-	/*
-	for (uint32_t i = 0; i < colliderCompVec.size() - remainig; i += numberOfColliderPerThread)
-	{
-		threadPool->push(threadedCollisionSystem, i, i + numberOfColliderPerThread, colliderCompVec, &vectorOfCollisionsVector.at(currentIteration));
-		currentIteration++;
-	}
-
-	threadPool->push(threadedCollisionSystem, colliderCompVec.size() - remainig, colliderCompVec.size(), colliderCompVec, &vectorOfCollisionsVector.at(currentIteration));
-	*/
-	std::vector<Collision> colVect;
-	auto f1 = threadPool->push(threadedCollisionSystem, 0, colliderCompVec.size(), colliderCompVec);
 	//threadPool->push(threadedCollisionSystem, 0, colliderCompVec.size(), colliderCompVec, &vectorOfCollisionsVector.at(currentIteration));
 
-	colVect = f1.get();
+	
 
 	// Fazendo isso para que o compilador não otimize esse while
 	volatile int numberOfOccupiedThreads = threadPool->n_occupied();
@@ -107,22 +102,46 @@ std::vector<Collision> Coll2d::runCollisionSystem(std::vector<std::shared_ptr<C_
 		
 	}
 
-	collisionsVector = colVect;
 
-	//collisionsVector = colVec;
-	/*
-	for (uint16_t i = 0; i < 1; i++)
-	{
-		for(int j = 0; j < vectorOfCollisionsVector.at(i).size(); j++)
-			collisionsVector.push_back(vectorOfCollisionsVector.at(i).at(j));
-	}
-	//ollisionsVector.push_back(colVec);
-	*/
+
+
+
+
+	std::vector<Collision> vec1 = result1.get();
+	std::vector<Collision> vec2 = result2.get();
+	std::vector<Collision> vec3 = result3.get();
+	std::vector<Collision> vec4 = result4.get();
+	std::vector<Collision> vec5 = result5.get();
+	std::vector<Collision> vec6 = result6.get();
+	std::vector<Collision> vec7 = result7.get();
+	std::vector<Collision> vec8 = result8.get();
+
+
+
+	for (int i = 0; i < vec1.size(); i++)
+		collisionsResult.push_back(vec1.at(i));
+	for (int i = 0; i < vec2.size(); i++)
+		collisionsResult.push_back(vec2.at(i));
+	for (int i = 0; i < vec3.size(); i++)
+		collisionsResult.push_back(vec3.at(i));
+	for (int i = 0; i < vec4.size(); i++)
+		collisionsResult.push_back(vec4.at(i));
+	for (int i = 0; i < vec5.size(); i++)
+		collisionsResult.push_back(vec5.at(i));
+	for (int i = 0; i < vec6.size(); i++)
+		collisionsResult.push_back(vec6.at(i));
+	for (int i = 0; i < vec7.size(); i++)
+		collisionsResult.push_back(vec7.at(i));
+	for (int i = 0; i < vec8.size(); i++)
+		collisionsResult.push_back(vec8.at(i));
 
 	if (locked)
 		operateEnttMutex->unlock();
 
-	return collisionsVector;
+
+
+
+	return collisionsResult;
 
 }
 
